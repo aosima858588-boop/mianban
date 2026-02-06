@@ -2,857 +2,1282 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>海豚社区辅助工具 - 快捷访问</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>海豚社区工具</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        :root {
+            --primary: #3a7bd5;
+            --primary-dark: #2a5298;
+            --primary-light: #00d2ff;
+            --secondary: #764ba2;
+            --success: #43e97b;
+            --warning: #f093fb;
+            --danger: #f5576c;
+            --dark: #1a2a6c;
+            --light: #f5f7fa;
+            --gray: #7f8c8d;
+            --border: #e1e8f0;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --radius: 16px;
+            --radius-sm: 10px;
         }
         
         body {
-            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(135deg, #1a2a6c, #2a5298, #3a7bd5);
-            color: white;
-            line-height: 1.6;
-            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #2a5298);
+            color: #333;
+            line-height: 1.5;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            height: 100vh;
+            width: 100vw;
+        }
+        
+        #app {
+            height: 100vh;
+            width: 100vw;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+        /* 登录界面 */
+        #loginPage {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             padding: 20px;
-            flex: 1;
+            background: linear-gradient(135deg, #1a2a6c, #2a5298, #3a7bd5);
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1000;
         }
         
-        /* 顶部导航 */
-        .top-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-            margin-bottom: 30px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 22px;
-            font-weight: 700;
-        }
-        
-        .logo i {
-            font-size: 28px;
-            color: #00d2ff;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-        
-        .nav-link {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .nav-link:hover {
-            color: #00d2ff;
-        }
-        
-        .login-btn {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px 20px;
-            border-radius: 25px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
-        }
-        
-        .login-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
-        
-        /* 页面标题 */
-        .page-header {
+        .login-logo {
             text-align: center;
             margin-bottom: 40px;
         }
         
-        .page-title {
-            font-size: 36px;
-            margin-bottom: 10px;
-            background: linear-gradient(to right, #ffffff, #00d2ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .page-subtitle {
-            font-size: 18px;
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        /* 工具卡片网格 */
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 25px;
-            margin-bottom: 50px;
-        }
-        
-        .tool-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        
-        .tool-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-            border-color: rgba(0, 210, 255, 0.3);
-            background: rgba(255, 255, 255, 0.15);
-        }
-        
-        .tool-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .tool-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-        }
-        
-        .tool-1 .tool-icon {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-        }
-        
-        .tool-2 .tool-icon {
-            background: linear-gradient(135deg, #f093fb, #f5576c);
-        }
-        
-        .tool-3 .tool-icon {
-            background: linear-gradient(135deg, #4facfe, #00f2fe);
-        }
-        
-        .tool-title {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-        
-        .tool-desc {
-            font-size: 15px;
-            opacity: 0.9;
-            margin-bottom: 25px;
-            flex-grow: 1;
-        }
-        
-        .tool-features {
-            margin-bottom: 25px;
-        }
-        
-        .feature-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-        
-        .feature-item i {
-            color: #00d2ff;
-        }
-        
-        .tool-actions {
-            display: flex;
-            gap: 15px;
-            margin-top: auto;
-        }
-        
-        .btn {
-            flex: 1;
-            padding: 14px;
-            border-radius: 12px;
-            text-align: center;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(to right, #3a7bd5, #00d2ff);
+        .login-logo i {
+            font-size: 60px;
             color: white;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 7px 20px rgba(58, 123, 213, 0.4);
-        }
-        
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-3px);
-        }
-        
-        /* 使用指南部分 */
-        .guide-section {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px;
-            padding: 30px;
-            margin-top: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .section-title {
-            font-size: 24px;
             margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .guide-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        
-        .guide-item {
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            transition: all 0.3s;
-        }
-        
-        .guide-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-5px);
-        }
-        
-        .guide-item i {
-            font-size: 28px;
-            color: #00d2ff;
-            margin-bottom: 15px;
             display: block;
-        }
-        
-        .guide-item h4 {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-        
-        .guide-item p {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-        
-        /* 页脚 */
-        .footer {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 30px 0;
-            margin-top: 50px;
-            text-align: center;
-        }
-        
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .footer-link {
-            color: white;
-            text-decoration: none;
-            opacity: 0.8;
-            transition: opacity 0.3s;
-        }
-        
-        .footer-link:hover {
-            opacity: 1;
-            text-decoration: underline;
-        }
-        
-        .copyright {
-            opacity: 0.6;
-            font-size: 14px;
-        }
-        
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .tools-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .page-title {
-                font-size: 28px;
-            }
-            
-            .page-subtitle {
-                font-size: 16px;
-            }
-            
-            .tool-card {
-                padding: 20px;
-            }
-            
-            .tool-title {
-                font-size: 20px;
-            }
-            
-            .nav-links {
-                display: none;
-            }
-            
-            .tool-actions {
-                flex-direction: column;
-            }
-        }
-        
-        /* 浮动动画 */
-        .float-animation {
-            animation: float 6s ease-in-out infinite;
+            animation: float 3s ease-in-out infinite;
         }
         
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+            50% { transform: translateY(-10px); }
         }
         
-        /* 粒子背景 */
-        .particles {
+        .login-logo h1 {
+            font-size: 28px;
+            color: white;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .login-logo p {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 14px;
+        }
+        
+        .login-form {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: var(--radius);
+            padding: 30px 25px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 15px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            background-color: var(--light);
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(58, 123, 213, 0.1);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(58, 123, 213, 0.3);
+        }
+        
+        .login-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 3px 10px rgba(58, 123, 213, 0.2);
+        }
+        
+        .demo-info {
+            font-size: 13px;
+            color: #777;
+            text-align: center;
+            margin-top: 20px;
+            padding: 12px;
+            background-color: var(--light);
+            border-radius: var(--radius-sm);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .demo-info strong {
+            color: var(--dark);
+        }
+        
+        /* 主应用界面 */
+        #mainPage {
+            display: none;
+            height: 100vh;
+            width: 100vw;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        /* 头部 */
+        .app-header {
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            color: white;
+            padding: 15px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(58, 123, 213, 0.2);
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .app-title {
+            font-size: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+        
+        .header-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 8px 5px;
+        }
+        
+        .stat-value {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 2px;
+            white-space: nowrap;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            opacity: 0.9;
+            white-space: nowrap;
+        }
+        
+        /* 主内容区 */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 15px;
+            background-color: var(--light);
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* 工具卡片区域 */
+        .tools-section {
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            color: var(--dark);
+            margin-bottom: 15px;
+            padding-left: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .tool-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 20px 15px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 160px;
+            position: relative;
+            border: 2px solid transparent;
+        }
+        
+        .tool-card:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tool-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            font-size: 22px;
+            color: white;
+        }
+        
+        .tool-card:nth-child(1) .tool-icon {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        
+        .tool-card:nth-child(2) .tool-icon {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+        }
+        
+        .tool-card:nth-child(3) .tool-icon {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+        
+        .tool-card:nth-child(4) .tool-icon {
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+        }
+        
+        .tool-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 6px;
+            line-height: 1.2;
+        }
+        
+        .tool-desc {
+            font-size: 11px;
+            color: var(--gray);
+            line-height: 1.3;
+        }
+        
+        .external-link {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            color: var(--primary);
+            font-size: 12px;
+        }
+        
+        /* 快速访问区域 */
+        .quick-section {
+            margin-bottom: 20px;
+        }
+        
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .quick-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 18px 12px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 120px;
+        }
+        
+        .quick-card:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .quick-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            font-size: 20px;
+            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+        }
+        
+        .quick-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 4px;
+        }
+        
+        .quick-desc {
+            font-size: 11px;
+            color: var(--gray);
+        }
+        
+        /* 通知区域 */
+        .notifications-section {
+            margin-bottom: 20px;
+        }
+        
+        .notification-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .notification-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .notification-badge {
+            background: var(--danger);
+            color: white;
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+        
+        .notification-item {
+            padding: 12px 15px;
+            border-left: 4px solid var(--primary);
+            background-color: var(--light);
+            margin-bottom: 10px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 14px;
+        }
+        
+        .notification-item i {
+            color: var(--primary);
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+        
+        /* 底部导航 */
+        .bottom-nav {
+            background: var(--card-bg);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
+            flex-shrink: 0;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 11px;
+            transition: color 0.3s;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .nav-item.active {
+            color: var(--primary);
+        }
+        
+        .nav-item i {
+            font-size: 20px;
+        }
+        
+        /* 工具详情页 */
+        .tool-detail-page {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
+            width: 100vw;
+            height: 100vh;
+            background: var(--light);
+            z-index: 100;
+            display: none;
+            flex-direction: column;
         }
         
-        .particle {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
+        .detail-header {
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        
+        .detail-title {
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .back-btn {
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 15px;
+        }
+        
+        .detail-content {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 15px;
+        }
+        
+        .iframe-container {
+            width: 100%;
+            height: 400px;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 15px;
+        }
+        
+        .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .tool-info-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        .info-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--light);
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .info-label {
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        .info-value {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 14px;
+        }
+        
+        /* 加载动画 */
+        .loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .loader.active {
+            display: flex;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--border);
+            border-top-color: var(--primary);
             border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 滚动条样式 */
+        .main-content::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .main-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        .main-content::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 2px;
+        }
+        
+        .main-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray);
+        }
+        
+        .empty-state i {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: var(--border);
+        }
+        
+        /* 响应式调整 */
+        @media (min-width: 768px) {
+            #app {
+                max-width: 500px;
+                margin: 0 auto;
+                height: 100vh;
+                box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+                position: relative;
+            }
+            
+            .bottom-nav {
+                max-width: 500px;
+                margin: 0 auto;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+        
+        /* 工具状态指示器 */
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-left: 5px;
+        }
+        
+        .status-online {
+            background-color: var(--success);
+        }
+        
+        .status-offline {
+            background-color: var(--danger);
+        }
+        
+        /* 统计卡片动画 */
+        .stat-card {
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:active {
+            transform: scale(0.98);
+        }
+        
+        /* 工具卡片悬停效果 */
+        @media (hover: hover) {
+            .tool-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+                border-color: var(--primary);
+            }
+            
+            .quick-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+            }
+        }
+        
+        /* 键盘导航焦点样式 */
+        .form-input:focus, 
+        .login-btn:focus,
+        .tool-card:focus,
+        .quick-card:focus,
+        .nav-item:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+        
+        /* 安全区域适配 */
+        @supports (padding: max(0px)) {
+            .bottom-nav {
+                padding-bottom: max(12px, env(safe-area-inset-bottom));
+            }
+            
+            .main-content {
+                padding-left: max(15px, env(safe-area-inset-left));
+                padding-right: max(15px, env(safe-area-inset-right));
+            }
         }
     </style>
 </head>
 <body>
-    <!-- 粒子背景 -->
-    <div class="particles" id="particles"></div>
-    
-    <div class="container">
-        <!-- 顶部导航 -->
-        <nav class="top-nav">
-            <div class="logo">
-                <i class="fas fa-dolphin float-animation"></i>
-                <span>海豚社区</span>
+    <div id="app">
+        <!-- 登录界面 -->
+        <div id="loginPage">
+            <div class="login-logo">
+                <i class="fas fa-dolphin"></i>
+                <h1>海豚社区工具</h1>
+                <p>一站式辅助工具平台</p>
             </div>
             
-            <div class="nav-links">
-                <a href="#tools" class="nav-link">
-                    <i class="fas fa-tools"></i>
-                    <span>核心工具</span>
-                </a>
-                <a href="#guide" class="nav-link">
-                    <i class="fas fa-book"></i>
-                    <span>使用指南</span>
-                </a>
-                <a href="javascript:void(0)" class="nav-link login-btn" onclick="openLoginModal()">
-                    <i class="fas fa-sign-in-alt"></i>
-                    <span>登录完整版</span>
-                </a>
-            </div>
-        </nav>
-        
-        <!-- 页面标题 -->
-        <header class="page-header">
-            <h1 class="page-title">海豚社区辅助工具</h1>
-            <p class="page-subtitle">无需登录，直接访问海豚社区三大核心辅助工具。所有工具均可独立使用，点击即可打开。</p>
-        </header>
-        
-        <!-- 工具卡片网格 -->
-        <section id="tools" class="tools-grid">
-            <!-- 工具1：海豚动态经济模型 -->
-            <div class="tool-card tool-1">
-                <div class="tool-header">
-                    <div class="tool-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <div>
-                        <h2 class="tool-title">海豚动态经济模型</h2>
-                        <div style="font-size: 14px; opacity: 0.8; display: flex; align-items: center; gap: 5px;">
-                            <i class="fas fa-circle" style="color: #2ecc71; font-size: 10px;"></i>
-                            <span>实时更新</span>
-                        </div>
-                    </div>
+            <div class="login-form">
+                <div class="form-group">
+                    <label class="form-label">请输入H的注册号码</label>
+                    <input type="text" id="username" class="form-input" placeholder="例如：H2023001" value="H2023001">
                 </div>
                 
-                <p class="tool-desc">
-                    全面分析海豚社区经济模型，可视化展示关键指标和趋势预测。帮助您理解经济机制，做出明智决策。
-                </p>
-                
-                <div class="tool-features">
-                    <div class="feature-item">
-                        <i class="fas fa-check-circle"></i>
-                        <span>实时数据可视化</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-check-circle"></i>
-                        <span>经济指标分析</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-check-circle"></i>
-                        <span>趋势预测模型</span>
-                    </div>
+                <div class="form-group">
+                    <label class="form-label">请输入登记密码</label>
+                    <input type="password" id="password" class="form-input" placeholder="请输入您的密码" value="dolphin123">
                 </div>
                 
-                <div class="tool-actions">
-                    <a href="https://aosima858588-boop.github.io/h.web3/" target="_blank" class="btn btn-primary">
-                        <i class="fas fa-external-link-alt"></i>
-                        <span>打开工具</span>
-                    </a>
-                    <a href="javascript:void(0)" class="btn btn-secondary" onclick="showToolInfo('model')">
-                        <i class="fas fa-info-circle"></i>
-                        <span>工具信息</span>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- 工具2：链上赚币|OKX Boost -->
-            <div class="tool-card tool-2">
-                <div class="tool-header">
-                    <div class="tool-icon">
-                        <i class="fas fa-coins"></i>
-                    </div>
-                    <div>
-                        <h2 class="tool-title">链上赚币 | OKX Boost</h2>
-                        <div style="font-size: 14px; opacity: 0.8; display: flex; align-items: center; gap: 5px;">
-                            <i class="fas fa-circle" style="color: #f39c12; font-size: 10px;"></i>
-                            <span>高收益工具</span>
-                        </div>
-                    </div>
-                </div>
+                <button id="loginBtn" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> 登录系统
+                </button>
                 
-                <p class="tool-desc">
-                    参与链上赚币活动，利用OKX Boost功能最大化收益。提供完整参与指南和收益计算，助您获得最佳回报。
-                </p>
-                
-                <div class="tool-features">
-                    <div class="feature-item">
-                        <i class="fas fa-check-circle"></i>
-                        <span>Boost参与指南</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-check-circle"></i>
-                        <span>收益计算器</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-check-circle"></i>
-                        <span>实时收益追踪</span>
-                    </div>
+                <div class="demo-info">
+                    <p><strong>演示账号：</strong> 用户：H2023001 密码：dolphin123</p>
+                    <p>登录后可访问所有海豚社区辅助工具</p>
                 </div>
-                
-                <div class="tool-actions">
-                    <a href="https://aosima858588-boop.github.io/shequpindao/" target="_blank" class="btn btn-primary">
-                        <i class="fas fa-external-link-alt"></i>
-                        <span>打开工具</span>
-                    </a>
-                    <a href="javascript:void(0)" class="btn btn-secondary" onclick="showToolInfo('boost')">
-                        <i class="fas fa-info-circle"></i>
-                        <span>工具信息</span>
-                    </a>
-                </div>
-            </div>
-            
-            <!-- 工具3：质押收益计算器 -->
-            <div class="tool-card tool-3">
-                <div class="tool-header">
-                    <div class="tool-icon">
-                        <i class="fas fa-calculator"></i>
-                    </div>
-                    <div>
-                        <h2 class="tool-title">质押收益计算器</h2>
-                        <div style="font-size: 14px; opacity: 0.8; display: flex; align-items: center; gap: 5px;">
-                            <i class="fas fa-circle" style="color: #3498db; font-size: 10px;"></i>
-                            <span>精确计算</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <p class="tool-desc">
-                    精确计算质押收益，模拟不同质押策略的回报率。支持多种参数调整，帮助您优化质押方案。
-                </p>
-                
-                <div class="tool-features">
-                    <div class="feature-item">
-                        <i class="fas fa-check-circle"></i>
-                        <span>多参数计算</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-check-circle"></i>
-                        <span>策略模拟</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-check-circle"></i>
-                        <span>收益对比分析</span>
-                    </div>
-                </div>
-                
-                <div class="tool-actions">
-                    <a href="https://aosima858588-boop.github.io/-/" target="_blank" class="btn btn-primary">
-                        <i class="fas fa-external-link-alt"></i>
-                        <span>打开工具</span>
-                    </a>
-                    <a href="javascript:void(0)" class="btn btn-secondary" onclick="showToolInfo('calculator')">
-                        <i class="fas fa-info-circle"></i>
-                        <span>工具信息</span>
-                    </a>
-                </div>
-            </div>
-        </section>
-        
-        <!-- 使用指南 -->
-        <section id="guide" class="guide-section">
-            <h2 class="section-title">
-                <i class="fas fa-book-open"></i>
-                <span>使用指南</span>
-            </h2>
-            
-            <div class="guide-grid">
-                <div class="guide-item">
-                    <i class="fas fa-rocket"></i>
-                    <h4>快速开始</h4>
-                    <p>点击上方工具卡片中的"打开工具"按钮，即可直接访问相应工具，无需任何登录或注册。</p>
-                </div>
-                
-                <div class="guide-item">
-                    <i class="fas fa-shield-alt"></i>
-                    <h4>安全使用</h4>
-                    <p>所有工具均在新标签页打开，不会收集您的个人信息。请确保使用官方链接访问。</p>
-                </div>
-                
-                <div class="guide-item">
-                    <i class="fas fa-chart-bar"></i>
-                    <h4>数据说明</h4>
-                    <p>工具中显示的数据为实时或模拟数据，仅供参考。实际数据可能有所差异。</p>
-                </div>
-                
-                <div class="guide-item">
-                    <i class="fas fa-user-plus"></i>
-                    <h4>进阶功能</h4>
-                    <p>如需使用个性化功能、保存偏好设置或访问更多工具，请登录完整版应用。</p>
-                </div>
-            </div>
-        </section>
-        
-        <!-- 登录提示模态框 -->
-        <div id="loginModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 1000; justify-content: center; align-items: center;">
-            <div style="background: linear-gradient(135deg, #1a2a6c, #2a5298); border-radius: 20px; padding: 40px; max-width: 500px; width: 90%; text-align: center;">
-                <h3 style="font-size: 24px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 10px;">
-                    <i class="fas fa-dolphin"></i>
-                    <span>登录完整版</span>
-                </h3>
-                <p style="margin-bottom: 30px; opacity: 0.9;">
-                    登录完整版海豚社区辅助工具App，解锁更多功能：个性化仪表板、数据保存、高级分析工具和社区功能。
-                </p>
-                <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px;">
-                    <a href="main-app.html" style="background: linear-gradient(to right, #3a7bd5, #00d2ff); color: white; padding: 16px; border-radius: 12px; text-decoration: none; font-weight: 600; transition: all 0.3s;">
-                        <i class="fas fa-sign-in-alt"></i>
-                        前往登录页面
-                    </a>
-                    <button onclick="closeLoginModal()" style="background: rgba(255, 255, 255, 0.1); color: white; padding: 16px; border-radius: 12px; border: none; font-weight: 600; cursor: pointer;">
-                        稍后再说
-                    </button>
-                </div>
-                <p style="font-size: 14px; opacity: 0.7;">
-                    提示：完整版需要H注册号码和密码登录
-                </p>
             </div>
         </div>
         
-        <!-- 工具信息模态框 -->
-        <div id="toolInfoModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 1000; justify-content: center; align-items: center;">
-            <div style="background: linear-gradient(135deg, #1a2a6c, #2a5298); border-radius: 20px; padding: 40px; max-width: 500px; width: 90%;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-                    <h3 id="toolInfoTitle" style="font-size: 22px; display: flex; align-items: center; gap: 10px;">
-                        <i class="fas fa-chart-line"></i>
-                        <span>工具信息</span>
-                    </h3>
-                    <button onclick="closeToolInfo()" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer;">
-                        <i class="fas fa-times"></i>
-                    </button>
+        <!-- 主应用界面 -->
+        <div id="mainPage">
+            <!-- 头部 -->
+            <header class="app-header">
+                <div class="header-top">
+                    <div class="app-title">
+                        <i class="fas fa-dolphin"></i>
+                        <span>海豚社区工具</span>
+                    </div>
+                    <div class="user-info">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="userDisplay">H2023001</span>
+                    </div>
                 </div>
                 
-                <div id="toolInfoContent" style="margin-bottom: 30px;">
-                    <!-- 动态内容 -->
+                <div class="header-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="tvlValue">$4.2M</div>
+                        <div class="stat-label">TVL</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="apyValue">18.5%</div>
+                        <div class="stat-label">平均APY</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="boostValue">2.4x</div>
+                        <div class="stat-label">Boost倍数</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="rankValue">#128</div>
+                        <div class="stat-label">社区排名</div>
+                    </div>
                 </div>
+            </header>
+            
+            <!-- 主内容区 -->
+            <main class="main-content">
+                <!-- 核心工具 -->
+                <section class="tools-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-tools"></i>
+                        <span>核心工具</span>
+                    </h2>
+                    
+                    <div class="tools-grid">
+                        <!-- 经济模型实验室 -->
+                        <div class="tool-card" data-tool="model" data-url="https://aosima858588-boop.github.io/h.web3/">
+                            <div class="tool-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div>
+                                <div class="tool-name">经济模型实验室</div>
+                                <div class="tool-desc">动态经济模型分析与预测</div>
+                            </div>
+                            <a href="https://aosima858588-boop.github.io/h.web3/" target="_blank" class="external-link">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                        
+                        <!-- 链上赚币|OKX Boost -->
+                        <div class="tool-card" data-tool="boost" data-url="https://aosima858588-boop.github.io/shequpindao/">
+                            <div class="tool-icon">
+                                <i class="fas fa-coins"></i>
+                            </div>
+                            <div>
+                                <div class="tool-name">链上赚币|OKX Boost</div>
+                                <div class="tool-desc">Boost参与与收益追踪</div>
+                            </div>
+                            <a href="https://aosima858588-boop.github.io/shequpindao/" target="_blank" class="external-link">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                        
+                        <!-- 质押收益计算器 -->
+                        <div class="tool-card" data-tool="calculator" data-url="https://aosima858588-boop.github.io/-/">
+                            <div class="tool-icon">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            <div>
+                                <div class="tool-name">质押收益计算器</div>
+                                <div class="tool-desc">质押收益计算与模拟</div>
+                            </div>
+                            <a href="https://aosima858588-boop.github.io/-/" target="_blank" class="external-link">
+                                <i class="fas fa-external-link-alt"></i>
+                            </a>
+                        </div>
+                        
+                        <!-- 社区面板 -->
+                        <div class="tool-card" data-tool="community">
+                            <div class="tool-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div>
+                                <div class="tool-name">社区面板</div>
+                                <div class="tool-desc">社区动态与用户排名</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
                 
-                <button onclick="closeToolInfo()" style="width: 100%; background: rgba(255, 255, 255, 0.1); color: white; padding: 14px; border-radius: 12px; border: none; font-weight: 600; cursor: pointer;">
-                    关闭
-                </button>
+                <!-- 快速访问 -->
+                <section class="quick-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-bolt"></i>
+                        <span>快速访问</span>
+                    </h2>
+                    
+                    <div class="quick-grid">
+                        <div class="quick-card">
+                            <div class="quick-icon">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                            <div class="quick-name">钱包管理</div>
+                            <div class="quick-desc">多链钱包连接</div>
+                        </div>
+                        
+                        <div class="quick-card">
+                            <div class="quick-icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <div class="quick-name">数据分析</div>
+                            <div class="quick-desc">深度数据报告</div>
+                        </div>
+                        
+                        <div class="quick-card">
+                            <div class="quick-icon">
+                                <i class="fas fa-gift"></i>
+                            </div>
+                            <div class="quick-name">奖励中心</div>
+                            <div class="quick-desc">奖励查询与领取</div>
+                        </div>
+                        
+                        <div class="quick-card">
+                            <div class="quick-icon">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                            <div class="quick-name">设置</div>
+                            <div class="quick-desc">应用偏好设置</div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 通知 -->
+                <section class="notifications-section">
+                    <div class="notification-header">
+                        <h2 class="notification-title">
+                            <i class="fas fa-bell"></i>
+                            <span>系统通知</span>
+                        </h2>
+                        <span class="notification-badge">3</span>
+                    </div>
+                    
+                    <div class="notification-card">
+                        <div class="notification-item">
+                            <i class="fas fa-check-circle"></i>
+                            <div>您的质押即将到期，请及时续期以获得持续收益</div>
+                        </div>
+                        <div class="notification-item">
+                            <i class="fas fa-bullhorn"></i>
+                            <div>社区新活动：邀请好友可获得额外Boost奖励</div>
+                        </div>
+                        <div class="notification-item">
+                            <i class="fas fa-chart-line"></i>
+                            <div>经济模型已更新，请查看最新数据和分析</div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+            
+            <!-- 底部导航 -->
+            <nav class="bottom-nav">
+                <div class="nav-item active">
+                    <i class="fas fa-home"></i>
+                    <span>首页</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>数据</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-tools"></i>
+                    <span>工具</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fas fa-user"></i>
+                    <span>我的</span>
+                </div>
+            </nav>
+        </div>
+        
+        <!-- 工具详情页 -->
+        <div id="toolDetailPage" class="tool-detail-page">
+            <div class="detail-header">
+                <div class="back-btn" id="backBtn">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>返回</span>
+                </div>
+                <div class="detail-title">
+                    <i id="detailIcon" class="fas fa-chart-line"></i>
+                    <span id="detailTitle">海豚动态经济模型</span>
+                </div>
+                <div></div>
             </div>
+            
+            <div class="detail-content">
+                <div class="iframe-container">
+                    <iframe id="toolFrame" src="" frameborder="0"></iframe>
+                </div>
+                
+                <div class="tool-info-card">
+                    <h3 class="info-title">工具信息</h3>
+                    <div class="info-row">
+                        <div class="info-label">工具状态</div>
+                        <div class="info-value">
+                            <span id="toolStatus">正常</span>
+                            <span class="status-indicator status-online"></span>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">最后更新</div>
+                        <div class="info-value" id="lastUpdate">2023-11-15</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">访问次数</div>
+                        <div class="info-value" id="visitCount">1,245次</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">用户评分</div>
+                        <div class="info-value" id="userRating">4.8/5.0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 加载动画 -->
+        <div id="loader" class="loader">
+            <div class="spinner"></div>
+            <div>加载中...</div>
         </div>
     </div>
     
-    <!-- 页脚 -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-links">
-                <a href="#tools" class="footer-link">核心工具</a>
-                <a href="#guide" class="footer-link">使用指南</a>
-                <a href="javascript:void(0)" class="footer-link" onclick="openLoginModal()">登录完整版</a>
-                <a href="javascript:void(0)" class="footer-link" onclick="showAbout()">关于我们</a>
-            </div>
-            <p class="copyright">
-                &copy; 2023 海豚社区辅助工具. 保留所有权利. 本页面提供快捷访问入口，所有工具均独立运行.
-            </p>
-        </div>
-    </footer>
-    
     <script>
-        // 工具数据
-        const tools = {
-            model: {
-                title: "海豚动态经济模型",
-                icon: "fa-chart-line",
-                description: "全面分析海豚社区经济模型，可视化展示关键指标和趋势预测。",
-                features: [
-                    "实时数据可视化图表",
-                    "经济指标分析（TVL、APY、用户增长等）",
-                    "趋势预测模型",
-                    "历史数据对比",
-                    "自定义参数调整"
-                ],
-                lastUpdate: "2023-11-15",
-                usage: "每月超过5,000次访问",
-                note: "数据每24小时更新一次"
-            },
-            boost: {
-                title: "链上赚币 | OKX Boost",
-                icon: "fa-coins",
-                description: "参与链上赚币活动，利用OKX Boost功能最大化收益。",
-                features: [
-                    "Boost参与完整指南",
-                    "收益计算器",
-                    "实时收益追踪",
-                    "资格状态检查",
-                    "策略优化建议"
-                ],
-                lastUpdate: "2023-11-10",
-                usage: "每月超过3,200次访问",
-                note: "与OKX交易所数据同步"
-            },
-            calculator: {
-                title: "质押收益计算器",
-                icon: "fa-calculator",
-                description: "精确计算质押收益，模拟不同质押策略的回报率。",
-                features: [
-                    "多参数精确计算",
-                    "不同质押策略模拟",
-                    "收益对比分析",
-                    "年化收益率(APY)计算",
-                    "风险收益评估"
-                ],
-                lastUpdate: "2023-11-12",
-                usage: "每月超过4,500次访问",
-                note: "计算结果仅供参考，实际收益可能不同"
+        // 全局状态管理
+        const AppState = {
+            currentUser: null,
+            currentTool: null,
+            tools: {
+                model: {
+                    title: "海豚动态经济模型",
+                    icon: "fa-chart-line",
+                    url: "https://aosima858588-boop.github.io/h.web3/",
+                    status: "正常",
+                    lastUpdate: "2023-11-15",
+                    visitCount: "1,245次",
+                    userRating: "4.8/5.0"
+                },
+                boost: {
+                    title: "链上赚币|OKX Boost",
+                    icon: "fa-coins",
+                    url: "https://aosima858588-boop.github.io/shequpindao/",
+                    status: "正常",
+                    lastUpdate: "2023-11-10",
+                    visitCount: "892次",
+                    userRating: "4.6/5.0"
+                },
+                calculator: {
+                    title: "质押收益计算器",
+                    icon: "fa-calculator",
+                    url: "https://aosima858588-boop.github.io/-/",
+                    status: "正常",
+                    lastUpdate: "2023-11-12",
+                    visitCount: "1,567次",
+                    userRating: "4.9/5.0"
+                }
             }
         };
         
-        // 初始化粒子背景
-        function initParticles() {
-            const container = document.getElementById('particles');
-            const particleCount = 30;
+        // DOM元素
+        const loginPage = document.getElementById('loginPage');
+        const mainPage = document.getElementById('mainPage');
+        const toolDetailPage = document.getElementById('toolDetailPage');
+        const loader = document.getElementById('loader');
+        const loginBtn = document.getElementById('loginBtn');
+        const backBtn = document.getElementById('backBtn');
+        const userDisplay = document.getElementById('userDisplay');
+        const toolFrame = document.getElementById('toolFrame');
+        const detailTitle = document.getElementById('detailTitle');
+        const detailIcon = document.getElementById('detailIcon');
+        
+        // 登录功能
+        loginBtn.addEventListener('click', function() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
             
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
+            if (!username || !password) {
+                alert('请输入注册号码和密码');
+                return;
+            }
+            
+            // 显示加载动画
+            showLoader();
+            
+            // 模拟登录验证
+            setTimeout(() => {
+                if (username === 'H2023001' && password === 'dolphin123') {
+                    // 登录成功
+                    AppState.currentUser = username;
+                    userDisplay.textContent = username;
+                    
+                    // 切换界面
+                    loginPage.style.display = 'none';
+                    mainPage.style.display = 'flex';
+                    
+                    // 隐藏加载动画
+                    hideLoader();
+                    
+                    // 初始化数据
+                    initStats();
+                    
+                    // 显示欢迎消息
+                    showNotification('欢迎回来，' + username + '！');
+                } else {
+                    // 登录失败
+                    hideLoader();
+                    alert('登录失败，请检查用户名和密码');
+                }
+            }, 1000);
+        });
+        
+        // 允许按Enter键登录
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                loginBtn.click();
+            }
+        });
+        
+        // 工具卡片点击事件
+        document.querySelectorAll('.tool-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                // 防止外部链接图标触发卡片点击
+                if (e.target.classList.contains('external-link') || 
+                    e.target.parentElement.classList.contains('external-link')) {
+                    return;
+                }
                 
-                // 随机大小
-                const size = Math.random() * 10 + 5;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
+                const toolType = this.getAttribute('data-tool');
+                if (toolType && AppState.tools[toolType]) {
+                    openToolDetail(toolType);
+                } else if (toolType === 'community') {
+                    // 社区面板功能
+                    showNotification('社区面板功能开发中，敬请期待！');
+                }
+            });
+        });
+        
+        // 外部链接图标点击事件
+        document.querySelectorAll('.external-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.stopPropagation(); // 阻止事件冒泡
                 
-                // 随机位置
-                particle.style.left = `${Math.random() * 100}%`;
-                particle.style.top = `${Math.random() * 100}%`;
+                const toolType = this.parentElement.getAttribute('data-tool');
+                if (toolType && AppState.tools[toolType]) {
+                    // 在新标签页打开原始工具
+                    window.open(AppState.tools[toolType].url, '_blank');
+                }
+            });
+        });
+        
+        // 返回按钮事件
+        backBtn.addEventListener('click', function() {
+            toolDetailPage.style.display = 'none';
+            mainPage.style.display = 'flex';
+            toolFrame.src = ''; // 清空iframe
+        });
+        
+        // 快速访问卡片点击事件
+        document.querySelectorAll('.quick-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const toolName = this.querySelector('.quick-name').textContent;
+                showNotification(toolName + '功能开发中，敬请期待！');
+            });
+        });
+        
+        // 打开工具详情页
+        function openToolDetail(toolType) {
+            const tool = AppState.tools[toolType];
+            if (!tool) return;
+            
+            // 更新详情页内容
+            detailTitle.textContent = tool.title;
+            detailIcon.className = 'fas ' + tool.icon;
+            
+            // 更新工具信息
+            document.getElementById('toolStatus').textContent = tool.status;
+            document.getElementById('lastUpdate').textContent = tool.lastUpdate;
+            document.getElementById('visitCount').textContent = tool.visitCount;
+            document.getElementById('userRating').textContent = tool.userRating;
+            
+            // 显示加载动画
+            showLoader();
+            
+            // 加载iframe
+            toolFrame.src = tool.url;
+            
+            // 切换界面
+            mainPage.style.display = 'none';
+            toolDetailPage.style.display = 'flex';
+            
+            // 隐藏加载动画（iframe加载完成后）
+            toolFrame.onload = function() {
+                hideLoader();
+            };
+            
+            // 设置超时，防止iframe加载失败
+            setTimeout(() => {
+                hideLoader();
+            }, 3000);
+        }
+        
+        // 显示加载动画
+        function showLoader() {
+            loader.classList.add('active');
+        }
+        
+        // 隐藏加载动画
+        function hideLoader() {
+            loader.classList.remove('active');
+        }
+        
+        // 显示通知
+        function showNotification(message) {
+            // 创建通知元素
+            const notification = document.createElement('div');
+            notification.className = 'notification-item';
+            notification.innerHTML = `
+                <i class="fas fa-info-circle"></i>
+                <div>${message}</div>
+            `;
+            
+            // 添加到通知区域
+            const notificationsContainer = document.querySelector('.notification-card');
+            if (notificationsContainer) {
+                notificationsContainer.prepend(notification);
                 
-                // 随机透明度
-                particle.style.opacity = Math.random() * 0.3 + 0.1;
-                
-                // 随机动画
-                const duration = Math.random() * 20 + 10;
-                particle.style.animation = `float ${duration}s ease-in-out infinite`;
-                particle.style.animationDelay = `${Math.random() * 5}s`;
-                
-                container.appendChild(particle);
+                // 3秒后移除
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
             }
         }
         
-        // 打开登录模态框
-        function openLoginModal() {
-            document.getElementById('loginModal').style.display = 'flex';
+        // 初始化统计数据
+        function initStats() {
+            // 开始定期数据更新
+            setInterval(updateStats, 5000);
         }
         
-        // 关闭登录模态框
-        function closeLoginModal() {
-            document.getElementById('loginModal').style.display = 'none';
+        // 更新统计数据
+        function updateStats() {
+            // 随机更新统计数据
+            const tvlElement = document.getElementById('tvlValue');
+            const currentTvl = parseFloat(tvlElement.textContent.replace('$', '').replace('M', ''));
+            const newTvl = Math.max(3.8, Math.min(4.5, currentTvl + (Math.random() - 0.5) * 0.05));
+            tvlElement.textContent = '$' + newTvl.toFixed(1) + 'M';
+            
+            const apyElement = document.getElementById('apyValue');
+            const currentApy = parseFloat(apyElement.textContent.replace('%', ''));
+            const newApy = Math.max(16.5, Math.min(20.5, currentApy + (Math.random() - 0.5) * 0.2));
+            apyElement.textContent = newApy.toFixed(1) + '%';
+            
+            const boostElement = document.getElementById('boostValue');
+            const currentBoost = parseFloat(boostElement.textContent.replace('x', ''));
+            const newBoost = Math.max(1.5, Math.min(3.5, currentBoost + (Math.random() - 0.5) * 0.1));
+            boostElement.textContent = newBoost.toFixed(1) + 'x';
+            
+            const rankElement = document.getElementById('rankValue');
+            const currentRank = parseInt(rankElement.textContent.replace('#', ''));
+            const rankChange = Math.random() > 0.5 ? 1 : -1;
+            const newRank = Math.max(1, currentRank + rankChange);
+            rankElement.textContent = '#' + newRank;
         }
         
-        // 显示工具信息
-        function showToolInfo(toolId) {
-            const tool = tools[toolId];
-            if (!tool) return;
+        // 初始化应用
+        function initApp() {
+            // 默认显示登录界面
+            loginPage.style.display = 'flex';
+            mainPage.style.display = 'none';
+            toolDetailPage.style.display = 'none';
             
-            // 更新标题
-            document.getElementById('toolInfoTitle').innerHTML = `
-                <i class="fas ${tool.icon}"></i>
-                <span>${tool.title}</span>
-            `;
+            // 设置视口高度
+            function setViewportHeight() {
+                const vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--vh', `${vh}px`);
+            }
             
-            // 更新内容
-            document.getElementById('toolInfoContent').innerHTML = `
-                <p style="margin-bottom: 20px; font-size: 16px; opacity: 0.9;">${tool.description}</p>
+            setViewportHeight();
+            window.addEventListener('resize', setViewportHeight);
+            
+            // 添加触摸反馈
+            document.querySelectorAll('.tool-card, .quick-card, .login-btn').forEach(element => {
+                element.addEventListener('touchstart', function() {
+                    this.style.opacity = '0.8';
+                });
                 
-                <div style="margin-bottom: 20px;">
-                    <h4 style="margin-bottom: 10px; font-size: 16px; display: flex; align-items: center; gap: 8px;">
-                        <i class="fas fa-list"></i>
-                        <span>主要功能</span>
-                    </h4>
-                    <ul style="list-style: none; padding-left: 10px;">
-                        ${tool.features.map(feature => `
-                            <li style="margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px;">
-                                <i class="fas fa-check" style="color: #00d2ff; margin-top: 4px;"></i>
-                                <span>${feature}</span>
-                            </li>
-                        `).join('')}
-                    </ul>
-                </div>
-                
-                <div style="background: rgba(255, 255, 255, 0.05); border-radius: 10px; padding: 15px; margin-bottom: 20px;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                        <span style="opacity: 0.8;">最后更新</span>
-                        <span style="font-weight: 600;">${tool.lastUpdate}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                        <span style="opacity: 0.8;">使用频率</span>
-                        <span style="font-weight: 600;">${tool.usage}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <span style="opacity: 0.8;">备注</span>
-                        <span style="font-weight: 600; color: #00d2ff;">${tool.note}</span>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('toolInfoModal').style.display = 'flex';
-        }
-        
-        // 关闭工具信息
-        function closeToolInfo() {
-            document.getElementById('toolInfoModal').style.display = 'none';
-        }
-        
-        // 显示关于信息
-        function showAbout() {
-            alert("海豚社区辅助工具 - 快捷访问页面\n\n此页面提供海豚社区三大核心工具的快捷访问入口，无需登录即可使用。\n\n所有工具均独立运行，数据实时更新。\n\n如需使用完整功能，请登录完整版应用。");
+                element.addEventListener('touchend', function() {
+                    this.style.opacity = '1';
+                });
+            });
         }
         
         // 页面加载完成后初始化
-        window.addEventListener('DOMContentLoaded', function() {
-            initParticles();
-            
-            // 平滑滚动
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
-                    
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        e.preventDefault();
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 100,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-            
-            // 点击模态框外部关闭
-            window.addEventListener('click', function(e) {
-                if (e.target.id === 'loginModal') {
-                    closeLoginModal();
-                }
-                if (e.target.id === 'toolInfoModal') {
-                    closeToolInfo();
-                }
-            });
-            
-            // 添加键盘事件
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeLoginModal();
-                    closeToolInfo();
-                }
-            });
-            
-            // 更新访问次数显示（模拟）
-            setInterval(() => {
-                const visitElements = document.querySelectorAll('.visit-count');
-                visitElements.forEach(el => {
-                    const current = parseInt(el.textContent);
-                    if (!isNaN(current)) {
-                        // 随机增加1-5次访问
-                        el.textContent = current + Math.floor(Math.random() * 5) + 1;
-                    }
-                });
-            }, 10000);
-        });
+        window.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
 </html>
