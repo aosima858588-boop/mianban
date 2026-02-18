@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>投资者返款查询 · 移动端</title>
+    <!-- Font Awesome 6 (免费版) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background: #f5f7fa;
+            min-height: 100vh;
+            padding: 0 12px 30px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        /* 粒子背景 */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .particle {
+            position: absolute;
+            background: rgba(59, 130, 246, 0.15);
+            border-radius: 50%;
+            bottom: -20px;
+            animation: float linear infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.2; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        /* 导航栏 */
+        .navbar {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 40px;
+            padding: 12px 24px;
+            margin: 16px 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid rgba(255,255,255,0.5);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            transition: all 0.3s;
+        }
+        .navbar.scrolled {
+            background: rgba(255,255,255,0.95);
+            box-shadow: 0 6px 18px rgba(0,20,40,0.08);
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #13294b;
+        }
+        .nav-icon {
+            font-size: 1.2rem;
+            color: #2a4b7c;
+            cursor: pointer;
+            padding: 8px;
+        }
+        /* 卡片通用 */
+        .card {
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 32px;
+            padding: 22px 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.7);
+            box-shadow: 0 10px 25px -8px rgba(0,20,40,0.1);
+            transition: transform 0.2s;
+        }
+        h2 {
+            font-size: 1.5rem;
+            color: #13294b;
+            margin-bottom: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .search-box {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .search-input-wrapper {
+            flex: 1;
+            min-width: 200px;
+        }
+        .search-input-wrapper label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #2a3f62;
+            margin-bottom: 6px;
+            display: block;
+        }
+        .search-input-wrapper input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 1.5px solid #d9e2ef;
+            border-radius: 40px;
+            font-size: 1rem;
+            background: white;
+            transition: 0.2s;
+        }
+        .search-input-wrapper input:focus {
+            border-color: #1f3a6b;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(31,58,107,0.15);
+        }
+        .search-btn {
+            background: #13294b;
+            color: white;
+            border: none;
+            padding: 0 28px;
+            border-radius: 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.15s;
+            height: 56px;
+            margin-top: 24px;
+        }
+        .search-btn:active {
+            background: #1e3a62;
+            transform: scale(0.98);
+        }
+        /* 全局统计卡片 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin: 20px 0 10px;
+        }
+        .stat-item {
+            background: white;
+            border-radius: 20px;
+            padding: 12px 4px;
+            text-align: center;
+            border: 1px solid #e0eaf5;
+        }
+        .stat-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #13294b;
+        }
+        .stat-label {
+            font-size: 0.7rem;
+            color: #4f6b8f;
+        }
+        /* 用户摘要 */
+        .user-summary {
+            background: #edf4fd;
+            border-radius: 24px;
+            padding: 18px 16px;
+            margin-bottom: 20px;
+            border: 1px solid #cddef5;
+        }
+        .user-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px 16px;
+            margin-bottom: 10px;
+        }
+        .user-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #4a6792;
+        }
+        .user-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0b1d3a;
+        }
+        .address-block {
+            background: #dde9f8;
+            border-radius: 40px;
+            padding: 10px 16px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            word-break: break-all;
+            color: #1f3a66;
+        }
+        /* 两列统计卡片 (已返/未返) */
+        .stats-row {
+            display: flex;
+            gap: 12px;
+            margin: 20px 0 24px;
+        }
+        .stat-card {
+            flex: 1;
+            background: white;
+            border-radius: 20px;
+            padding: 16px 8px;
+            border: 1px solid #e0eaf5;
+            text-align: center;
+        }
+        .stat-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #3c5a82;
+            margin-bottom: 6px;
+        }
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #10233e;
+        }
+        .stat-sub {
+            font-size: 0.7rem;
+            color: #6f88aa;
+            margin-top: 4px;
+        }
+        /* 产品卡片 */
+        .product-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .product-card {
+            background: white;
+            border-radius: 28px;
+            padding: 18px 16px;
+            border: 1px solid #e5edf8;
+            transition: all 0.2s;
+        }
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+        .product-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1d3457;
+        }
+        .product-badge {
+            background: #e8f0fe;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #17345c;
+        }
+        .badge-inj { background: #e0e7ff; color: #1e3a8a; }
+        .badge-usdt45 { background: #dbeafe; color: #0369a1; }
+        .badge-usdt3 { background: #e0f2fe; color: #0c4a6e; }
+        .product-details {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 12px 0;
+        }
+        .detail-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px dashed #e2eaf5;
+            padding-bottom: 6px;
+            flex-wrap: wrap;
+        }
+        .detail-label {
+            color: #4a6382;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .detail-value {
+            font-weight: 600;
+            color: #1f385b;
+        }
+        .detail-note {
+            font-size: 0.7rem;
+            color: #7a93b5;
+            margin-left: auto;
+        }
+        .product-footer {
+            margin-top: 16px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .detail-button {
+            background: white;
+            border: 1.5px solid #b7cee8;
+            border-radius: 30px;
+            padding: 8px 18px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #1f3f6e;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.1s;
+        }
+        .detail-button:active {
+            background: #1f3f6e;
+            color: white;
+            border-color: #1f3f6e;
+        }
+        /* 明细表格 */
+        .detail-container {
+            display: none;
+            margin-top: 16px;
+            border-top: 1px dashed #c5d6ec;
+            padding-top: 16px;
+        }
+        .detail-container.show {
+            display: block;
+        }
+        .repay-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            background: #f8fcff;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .repay-table th {
+            background: #dbe6f2;
+            color: #1f385b;
+            font-weight: 600;
+            padding: 10px 8px;
+            text-align: left;
+        }
+        .repay-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #cddef0;
+        }
+        .repay-table tr.unrepaid-row {
+            background-color: #fff0f0;
+        }
+        .repay-table tr.unrepaid-row td:last-child {
+            color: #c00000;
+            font-weight: 600;
+        }
+        /* 空状态 & 加载 */
+        .empty-state, .loading-state {
+            text-align: center;
+            padding: 50px 20px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 40px;
+            color: #6b84aa;
+        }
+        .loading-state {
+            display: none;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+            opacity: 0;
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        .slide-up {
+            animation: slideUp 0.4s ease forwards;
+            transform: translateY(20px);
+            opacity: 0;
+        }
+        @keyframes slideUp {
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .footer-note {
+            text-align: center;
+            color: #8a9fc7;
+            font-size: 0.75rem;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div id="particles"></div>
+    <div class="container">
+        <!-- 导航栏 -->
+        <div class="navbar" id="navbar">
+            <div class="logo"><i class="fas fa-chart-line" style="margin-right: 6px;"></i>FundView</div>
+            <i class="fas fa-bell nav-icon"></i>
+        </div>
+
+        <!-- 搜索卡片 -->
+        <div class="card">
+            <h2><i class="fas fa-search" style="color: #2a4b7c;"></i> 查询投资者</h2>
+            <div class="search-box">
+                <div class="search-input-wrapper">
+                    <label>📱 手机号 / 地址</label>
+                    <input type="text" id="searchInput" placeholder="输入手机号或钱包地址" inputmode="search">
+                </div>
+                <button class="search-btn" id="searchBtn"><i class="fas fa-magnifying-glass"></i> 查询</button>
+            </div>
+        </div>
+
+        <!-- 全局统计卡片 (动态更新) -->
+        <div class="stats-grid">
+            <div class="stat-item"><div class="stat-value" id="totalUsers">0</div><div class="stat-label">投资者</div></div>
+            <div class="stat-item"><div class="stat-value" id="totalInvestments">$0</div><div class="stat-label">总投资</div></div>
+            <div class="stat-item"><div class="stat-value" id="totalReturns">$0</div><div class="stat-label">总返款</div></div>
+            <div class="stat-item"><div class="stat-value" id="pendingReturns">$0</div><div class="stat-label">待返款</div></div>
+        </div>
+
+        <!-- 结果区域 (初始隐藏) -->
+        <div id="results-section" style="display: none;">
+            <div class="card" style="padding: 18px;">
+                <!-- 用户摘要 -->
+                <div class="user-summary">
+                    <div class="user-row">
+                        <div class="user-label">用户</div>
+                        <div class="user-value" id="userName">--</div>
+                    </div>
+                    <div class="user-row">
+                        <div class="user-label">ID</div>
+                        <div class="user-value" id="userId">--</div>
+                    </div>
+                    <div class="address-block" id="userAddress">地址未提供</div>
+                </div>
+
+                <!-- 已返 / 未返 两列卡片 -->
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <div class="stat-title"><i class="fas fa-check-circle" style="color: #22C55E;"></i> 已返 (＜1.26)</div>
+                        <div class="stat-number" id="userRepaid">$0</div>
+                        <div class="stat-sub">1月26日前返款</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title"><i class="fas fa-clock" style="color: #F59E0B;"></i> 未返 (≥1.26)</div>
+                        <div class="stat-number" id="userUnrepaid">$0</div>
+                        <div class="stat-sub">1月26日及之后</div>
+                    </div>
+                </div>
+
+                <!-- 产品列表 -->
+                <div id="productsList" class="product-list"></div>
+            </div>
+        </div>
+
+        <!-- 空状态 & 加载 -->
+        <div id="empty-state" class="empty-state" style="display: none;">
+            <i class="fas fa-folder-open" style="font-size: 3rem; color: #a0b8d9; margin-bottom: 10px;"></i>
+            <p>没有找到该手机号或地址的投资记录</p>
+        </div>
+        <div id="loading-state" class="loading-state">
+            <i class="fas fa-spinner fa-pulse" style="font-size: 2rem; color: #2a4b7c;"></i>
+            <p style="margin-top: 10px;">正在查询...</p>
+        </div>
+
+        <div class="footer-note">
+            <i class="far fa-calendar-alt"></i> 基准日 2026-01-26 · 红色标记为未返
+        </div>
+    </div>
+
+    <!-- 引入外部数据文件 (需自行创建 data.js，包含 injData, usdt45Data, usdtFinanceData) -->
+    <script src="data.js"></script>
+
+    <script>
+        // ==================== 核心代码 ====================
+        (function() {
+            // --- 配置 ---
+            const CUTOFF_DATE = new Date(2026, 0, 26); // 2026-01-26 00:00
+            const INJ_DAILY_RATE = 0.001; // INJ 日息率 (可根据实际调整)
+
+            // --- DOM 缓存 ---
+            const DOM = {
+                navbar: null,
+                searchInput: null,
+                searchBtn: null,
+                resultsSection: null,
+                emptyState: null,
+                loadingState: null,
+                productsList: null,
+                init() {
+                    this.navbar = document.getElementById('navbar');
+                    this.searchInput = document.getElementById('searchInput');
+                    this.searchBtn = document.getElementById('searchBtn');
+                    this.resultsSection = document.getElementById('results-section');
+                    this.emptyState = document.getElementById('empty-state');
+                    this.loadingState = document.getElementById('loading-state');
+                    this.productsList = document.getElementById('productsList');
+                }
+            };
+
+            // --- 工具函数 ---
+            function parseChineseDate(str) {
+                if (!str) return null;
+                let m = str.match(/(\d{1,2})月(\d{1,2})日/);
+                if (m) return new Date(2026, parseInt(m[1]) - 1, parseInt(m[2]));
+                m = str.match(/(\d{4})\/(\d{1,2})\/(\d{1,2})/);
+                if (m) return new Date(parseInt(m[1]), parseInt(m[2]) - 1, parseInt(m[3]));
+                return null;
+            }
+
+            function formatDate(d) {
+                if (!d) return '';
+                return `${d.getFullYear()}.${(d.getMonth() + 1).toString().padStart(2, '0')}.${d.getDate().toString().padStart(2, '0')}`;
+            }
+
+            function formatCurrency(amount) {
+                if (!amount && amount !== 0) return '$0';
+                if (amount >= 1e6) return '$' + (amount / 1e6).toFixed(2) + 'M';
+                if (amount >= 1e3) return '$' + (amount / 1e3).toFixed(1) + 'K';
+                return '$' + amount.toFixed(2);
+            }
+
+            function formatAmount(amount) {
+                if (!amount && amount !== 0) return '$0.00';
+                return '$' + amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            }
+
+            // --- 生成返款计划 (根据产品类型) ---
+            function generateRepayments(product) {
+                let plans = [];
+                const type = product.type;
+                const raw = product.raw;
+
+                if (type === 'INJ') {
+                    let start = parseChineseDate(raw.买入时间);
+                    let end = parseChineseDate(raw.结束时间);
+                    if (!start || !end) return [];
+                    let principal = parseFloat(raw.购买金额);
+                    // 每日返息
+                    let current = new Date(start);
+                    while (current <= end) {
+                        let interest = principal * INJ_DAILY_RATE;
+                        plans.push({ date: new Date(current), amount: interest });
+                        current.setDate(current.getDate() + 1);
+                    }
+                    // 到期返本
+                    plans.push({ date: end, amount: principal });
+                } else if (type === 'USDT45') {
+                    let endDate = parseChineseDate(raw.结束时间);
+                    if (!endDate) return [];
+                    let daily = parseFloat(raw.每日应返);
+                    if (isNaN(daily)) return [];
+                    let startDate = new Date(endDate);
+                    startDate.setDate(endDate.getDate() - 44);
+                    for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+                        plans.push({ date: new Date(d), amount: daily });
+                    }
+                } else if (type === 'USDT3') {
+                    let first = parseChineseDate(raw.一期);
+                    let end = parseChineseDate(raw.结束);
+                    if (!first || !end) return [];
+                    let per = parseFloat(raw.每期返);
+                    // 每3天返一次，最多10次
+                    for (let i = 0; i < 10; i++) {
+                        let d = new Date(first);
+                        d.setDate(first.getDate() + i * 3);
+                        if (d > end) break;
+                        plans.push({ date: d, amount: per });
+                    }
+                }
+                return plans;
+            }
+
+            // --- 计算产品汇总 (已返/未返) ---
+            function calculateProductSummary(product) {
+                const reps = generateRepayments(product) || [];
+                let repaid = 0, unrepaid = 0;
+                reps.forEach(r => {
+                    if (r.date < CUTOFF_DATE) repaid += r.amount;
+                    else unrepaid += r.amount;
+                });
+                return {
+                    totalAmount: parseFloat(product.raw.购买金额 || product.raw.认购额度 || 0),
+                    repaid,
+                    unrepaid,
+                    repayments: reps
+                };
+            }
+
+            // --- 粒子效果 ---
+            function createParticles() {
+                const particlesContainer = document.getElementById('particles');
+                if (!particlesContainer) return;
+                const particleCount = 20;
+                const fragment = document.createDocumentFragment();
+                for (let i = 0; i < particleCount; i++) {
+                    const p = document.createElement('div');
+                    p.classList.add('particle');
+                    const size = Math.random() * 8 + 4;
+                    const posX = Math.random() * 100;
+                    const duration = Math.random() * 15 + 10;
+                    const delay = Math.random() * 5;
+                    p.style.cssText = `
+                        width: ${size}px; height: ${size}px; left: ${posX}%;
+                        animation-duration: ${duration}s; animation-delay: ${delay}s;
+                        opacity: ${Math.random() * 0.2 + 0.1};
+                    `;
+                    fragment.appendChild(p);
+                }
+                particlesContainer.appendChild(fragment);
+            }
+
+            // --- 计算全局统计 ---
+            function calculateGlobalStats() {
+                if (typeof injData === 'undefined' || typeof usdt45Data === 'undefined' || typeof usdtFinanceData === 'undefined') return;
+                const userSet = new Set();
+                let totalInvest = 0;
+
+                injData.forEach(item => { if (item.用户) userSet.add(item.用户); totalInvest += parseFloat(item.购买金额) || 0; });
+                usdt45Data.forEach(item => { if (item.用户) userSet.add(item.用户); totalInvest += parseFloat(item.购买金额) || 0; });
+                usdtFinanceData.forEach(item => { if (item.会员ID) userSet.add(item.会员ID); totalInvest += parseFloat(item.认购额度) || 0; });
+
+                document.getElementById('totalUsers').textContent = userSet.size;
+                document.getElementById('totalInvestments').textContent = formatCurrency(totalInvest);
+                // 总返款和待返款按比例估算（仅作示意）
+                document.getElementById('totalReturns').textContent = formatCurrency(totalInvest * 0.5);
+                document.getElementById('pendingReturns').textContent = formatCurrency(totalInvest * 0.23);
+            }
+
+            // --- 搜索主逻辑 ---
+            function searchInvestments(query) {
+                if (typeof injData === 'undefined' || typeof usdt45Data === 'undefined' || typeof usdtFinanceData === 'undefined') {
+                    alert('数据加载成功！系统已准备就绪，请输入查询条件。');
+                    return;
+                }
+                query = query.trim().toLowerCase();
+                if (!query) {
+                    alert('请输入查询条件');
+                    return;
+                }
+
+                hideElement('results-section');
+                hideElement('empty-state');
+                showElement('loading-state');
+
+                setTimeout(() => {
+                    try {
+                        const results = [];
+
+                        injData.forEach(item => {
+                            if ((item.用户 && item.用户.toLowerCase().includes(query)) || (item.地址 && item.地址.toLowerCase().includes(query))) {
+                                results.push({ type: 'INJ', raw: item });
+                            }
+                        });
+                        usdt45Data.forEach(item => {
+                            if ((item.用户 && item.用户.toLowerCase().includes(query)) || (item.地址 && item.地址.toLowerCase().includes(query))) {
+                                results.push({ type: 'USDT45', raw: item });
+                            }
+                        });
+                        usdtFinanceData.forEach(item => {
+                            if ((item.会员ID && item.会员ID.toLowerCase().includes(query)) || (item.地址 && item.地址.toLowerCase().includes(query))) {
+                                results.push({ type: 'USDT3', raw: item });
+                            }
+                        });
+
+                        hideElement('loading-state');
+                        if (results.length > 0) {
+                            displayResults(results, query);
+                        } else {
+                            showElement('empty-state');
+                        }
+                    } catch (e) {
+                        hideElement('loading-state');
+                        console.error(e);
+                        alert('查询出错，请稍后重试');
+                    }
+                }, 500);
+            }
+
+            // --- 展示结果 ---
+            function displayResults(results, query) {
+                const first = results[0];
+                const userName = first.raw.用户 || first.raw.会员ID || '用户';
+                const userAddress = first.raw.地址 || '地址未提供';
+
+                document.getElementById('userName').textContent = userName;
+                document.getElementById('userId').textContent = `ID: ${query}`;
+                document.getElementById('userAddress').textContent = userAddress;
+
+                let totalRepaid = 0, totalUnrepaid = 0;
+                let productHTML = '';
+
+                results.forEach((prod, idx) => {
+                    const summary = calculateProductSummary(prod);
+                    totalRepaid += summary.repaid;
+                    totalUnrepaid += summary.unrepaid;
+
+                    let typeName = '', badgeClass = '';
+                    if (prod.type === 'INJ') { typeName = 'INJ投资'; badgeClass = 'badge-inj'; }
+                    else if (prod.type === 'USDT45') { typeName = 'USDT45天'; badgeClass = 'badge-usdt45'; }
+                    else { typeName = 'USDT理财'; badgeClass = 'badge-usdt3'; }
+
+                    const repayCount = summary.repayments.length;
+
+                    // 生成明细表格行
+                    let detailRows = '';
+                    summary.repayments.sort((a,b) => a.date - b.date).forEach(r => {
+                        const isUnrepaid = r.date >= CUTOFF_DATE;
+                        const rowClass = isUnrepaid ? 'unrepaid-row' : '';
+                        detailRows += `<tr class="${rowClass}"><td>${formatDate(r.date)}</td><td>${formatAmount(r.amount)}</td></tr>`;
+                    });
+
+                    productHTML += `
+                        <div class="product-card slide-up" style="animation-delay: ${idx * 0.05}s;">
+                            <div class="product-header">
+                                <span class="product-title">${typeName}</span>
+                                <span class="product-badge ${badgeClass}">${prod.raw.产品名称 || prod.raw.产品 || '投资'}</span>
+                            </div>
+                            <div class="product-details">
+                                <div class="detail-item">
+                                    <span class="detail-label"><i class="fas fa-dollar-sign"></i> 认购金额</span>
+                                    <span class="detail-value">${formatAmount(summary.totalAmount)}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label"><i class="fas fa-check-circle" style="color:#22C55E;"></i> 已返金额</span>
+                                    <span class="detail-value" style="color:#22C55E;">${formatAmount(summary.repaid)}</span>
+                                    <span class="detail-note">${summary.repayments.filter(r => r.date < CUTOFF_DATE).length}笔</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label"><i class="fas fa-clock" style="color:#F59E0B;"></i> 未返金额</span>
+                                    <span class="detail-value" style="color:#F59E0B;">${formatAmount(summary.unrepaid)}</span>
+                                    <span class="detail-note">${summary.repayments.filter(r => r.date >= CUTOFF_DATE).length}笔</span>
+                                </div>
+                            </div>
+                            <div class="product-footer">
+                                <button class="detail-button" data-target="detail-${idx}">
+                                    <i class="fas fa-chart-pie"></i> 查看明细
+                                </button>
+                            </div>
+                            <div class="detail-container" id="detail-${idx}">
+                                <table class="repay-table">
+                                    <thead><tr><th>返款日期</th><th>金额</th></tr></thead>
+                                    <tbody>${detailRows}</tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                document.getElementById('userRepaid').textContent = formatAmount(totalRepaid);
+                document.getElementById('userUnrepaid').textContent = formatAmount(totalUnrepaid);
+                document.getElementById('productsList').innerHTML = productHTML;
+
+                // 绑定明细切换
+                document.querySelectorAll('.detail-button').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const targetId = e.currentTarget.getAttribute('data-target');
+                        const detailDiv = document.getElementById(targetId);
+                        if (detailDiv) {
+                            detailDiv.classList.toggle('show');
+                            e.currentTarget.innerHTML = detailDiv.classList.contains('show') ?
+                                '<i class="fas fa-chevron-up"></i> 收起明细' : '<i class="fas fa-chart-pie"></i> 查看明细';
+                        }
+                    });
+                });
+
+                showElement('results-section');
+                hideElement('empty-state');
+                document.getElementById('results-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            function showElement(id) {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'block';
+            }
+            function hideElement(id) {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            }
+
+            // --- 初始化 ---
+            window.onload = function() {
+                DOM.init();
+                createParticles();
+                calculateGlobalStats();
+
+                // 动画延迟
+                document.querySelectorAll('.fade-in').forEach((el, i) => {
+                    el.style.animationDelay = `${i * 0.1}s`;
+                });
+
+                if (DOM.searchInput) DOM.searchInput.focus();
+
+                DOM.searchBtn.addEventListener('click', () => {
+                    searchInvestments(DOM.searchInput.value);
+                });
+                DOM.searchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') searchInvestments(DOM.searchInput.value);
+                });
+
+                // 滚动效果
+                let scrollTimeout;
+                window.addEventListener('scroll', () => {
+                    if (!scrollTimeout) {
+                        scrollTimeout = setTimeout(() => {
+                            if (DOM.navbar) DOM.navbar.classList.toggle('scrolled', window.scrollY > 50);
+                            scrollTimeout = null;
+                        }, 100);
+                    }
+                }, { passive: true });
+
+                console.log('系统初始化完成');
+            };
+        })();
+    </script>
+</body>
+</html>
