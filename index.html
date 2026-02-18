@@ -3,160 +3,154 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>海豚社区 · 辅助工具 · 字体明亮版</title>
+  <meta name="description" content="海豚社区辅助工具，社区数据、常用工具、代币行情一站式服务。">
+  <title>海豚社区 · 高饱和精进版</title>
   <!-- Font Awesome 6 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- Inter 字体 -->
+  <!-- Inter 字体优化加载 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;1,14..32,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
   <style>
-    /* ===== 设计令牌 - 字体明亮优化 ===== */
+    /* ===== 设计令牌（高饱和度版本） ===== */
     :root {
-      /* 背景层 - 极浅暖灰 */
-      --bg-color: #F8FAFD;
+      /* 背景色 - 微调为更纯净的冷灰，衬托高饱和元素 */
+      --bg: #F0F4FA;           /* 原 #F8FAFD，稍深一点增强对比 */
       
-      /* 卡片 - 纯白 */
-      --card-color: #FFFFFF;
+      /* 卡片保持纯白 */
+      --card: #FFFFFF;
       
-      /* 品牌色 */
-      --brand-color: #1D7DF0;
-      --brand-light: rgba(29, 125, 240, 0.08);
-      --brand-gradient: linear-gradient(145deg, #1D7DF0, #4B9EFF);
-      --brand-glow: 0 8px 20px rgba(29, 125, 240, 0.2);
+      /* 品牌色 - 提高饱和度，更鲜艳的海洋蓝 */
+      --brand: #0A66E0;         /* 原 #1D7DF0，更饱和 */
+      --brand-light: rgba(10, 102, 224, 0.08);
+      --brand-gradient: linear-gradient(145deg, #0A66E0, #3B8CFF);
       
-      /* 辅助色 */
-      --success: #2E9D6B;
-      --danger: #E65D4F;
-      --warning: #F4A261;
+      /* 灰色系统 - 增加色相微调，偏冷灰，提升质感 */
+      --gray-soft: #F0F3F7;     /* 原 #F2F4F6，稍冷 */
+      --gray-mid: #E1E6ED;      /* 原 #E9ECF0，加深 */
+      --gray-border: #CFD7E3;   /* 原 #DDE1E6，加深 */
+      --gray-icon: #B0BCCA;     /* 原 #BFC6CD，加深饱和 */
+      --gray-text-light: #8A97A8; /* 原 #9AA4B0，加深 */
+      --gray-text: #64748B;      /* 原 #7A8593，加深饱和 */
+      --gray-text-dark: #334155; /* 原 #5A6573，加深 */
+      --gray-heading: #0F172A;   /* 原 #1E293B，更深 */
+
+      /* 文字颜色直接引用 */
+      --text-primary: var(--gray-heading);
+      --text-secondary: var(--gray-text-dark);
+      --text-tertiary: var(--gray-text);
       
-      /* 灰色系统 - 调亮字体颜色 (更深更醒目) */
-      --gray-50: #F9FAFB;
-      --gray-100: #F2F4F6;
-      --gray-200: #E9ECF0;
-      --gray-300: #DDE1E6;
-      --gray-400: #BFC6CD;
-      --gray-500: #9AA4B0;
-      --gray-600: #6B7A8F;   /* 原 #7A8593，加深 */
-      --gray-700: #4A5A70;   /* 原 #5A6573，加深 */
-      --gray-800: #2C3D55;   /* 原 #3A4552，加深 */
-      --gray-900: #132231;   /* 原 #1E293B，加深 */
-      
-      /* 文字颜色 - 提高对比度 */
-      --text-primary: var(--gray-900);
-      --text-secondary: var(--gray-800);
-      --text-tertiary: var(--gray-700);
-      --text-inverse: #FFFFFF;
-      
-      /* 字体微调 */
-      --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-weight-light: 400;
-      --font-weight-regular: 500;
-      --font-weight-medium: 600;
-      --font-weight-bold: 700;
-      --font-weight-extrabold: 800;
-      
-      --letter-spacing-tight: -0.02em;
-      --letter-spacing-normal: 0em;
-      --letter-spacing-wide: 0.02em;
-      
-      --line-height-tight: 1.2;
-      --line-height-normal: 1.4;
-      --line-height-loose: 1.6;
-      
-      /* 阴影系统 */
-      --shadow-xs: 0 2px 4px rgba(0,0,0,0.02);
-      --shadow-sm: 0 4px 10px rgba(0,0,0,0.03);
-      --shadow-md: 0 8px 20px rgba(0,0,0,0.04);
-      --shadow-lg: 0 16px 30px -8px rgba(0,0,0,0.08);
-      --shadow-xl: 0 24px 40px -12px rgba(0,0,0,0.12);
-      --shadow-glow: 0 8px 25px rgba(29, 125, 240, 0.2);
-      
-      /* 圆角 */
+      /* 字体权重 */
+      --fw-regular: 500;
+      --fw-medium: 600;
+      --fw-bold: 700;
+      --fw-extrabold: 800;
+
+      /* 阴影系统 - 增强光感 */
+      --shadow-card: 0 20px 35px -10px rgba(0,20,50,0.12);
+      --shadow-elevated: 0 12px 25px -6px rgba(0,20,50,0.15);
+      --shadow-flat: 0 6px 14px rgba(0,0,0,0.02);
+      --shadow-glow: 0 10px 28px rgba(10,102,224,0.3); /* 品牌光更强 */
+
+      /* 圆角 - 统一 */
       --radius-card: 32px;
       --radius-element: 24px;
       --radius-btn: 60px;
-      --radius-icon: 50%;
-      
-      /* 间距 */
-      --space-2xs: 2px;
+      --radius-circle: 50%;
+
+      /* 间距 - 保留关键档位 */
       --space-xs: 4px;
       --space-sm: 8px;
       --space-md: 12px;
       --space-lg: 16px;
       --space-xl: 20px;
       --space-2xl: 24px;
-      --space-3xl: 32px;
-      
+
       /* 动画 */
-      --transition-fast: 0.15s cubic-bezier(0.2, 0, 0, 1);
-      --transition-base: 0.25s cubic-bezier(0.2, 0, 0, 1);
-      --transition-bounce: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      --transition: 0.25s cubic-bezier(0.2, 0, 0, 1);
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: var(--font-family);
     }
 
     body {
-      background-color: var(--bg-color);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
       display: flex;
       flex-direction: column;
       height: 100vh;
       max-width: 450px;
       margin: 0 auto;
-      box-shadow: 0 0 40px rgba(0,0,0,0.02);
+      -webkit-tap-highlight-color: transparent;
     }
 
-    /* 滚动容器 */
-    .main-scroll {
+    /* 主滚动区域 */
+    .app-main {
       flex: 1;
       overflow-y: auto;
-      padding: var(--space-lg) var(--space-lg) var(--space-sm) var(--space-lg);
-      background: var(--bg-color);
+      padding: var(--space-lg) var(--space-lg) var(--space-sm);
       display: flex;
       flex-direction: column;
       gap: var(--space-xl);
       scrollbar-width: thin;
-      scrollbar-color: var(--gray-400) var(--gray-200);
+      scrollbar-color: var(--gray-icon) var(--gray-mid);
     }
-    .main-scroll::-webkit-scrollbar {
+    .app-main::-webkit-scrollbar {
       width: 4px;
     }
-    .main-scroll::-webkit-scrollbar-track {
-      background: var(--gray-200);
+    .app-main::-webkit-scrollbar-track {
+      background: var(--gray-mid);
     }
-    .main-scroll::-webkit-scrollbar-thumb {
-      background-color: var(--gray-400);
+    .app-main::-webkit-scrollbar-thumb {
+      background-color: var(--gray-icon);
       border-radius: 8px;
     }
 
-    /* 卡片 */
+    /* 卡片通用 */
     .card {
-      background: var(--card-color);
+      background: var(--card);
       border-radius: var(--radius-card);
-      padding: var(--space-xl) var(--space-xl);
-      box-shadow: var(--shadow-lg);
-      transition: var(--transition-base);
-      position: relative;
-      isolation: isolate;
+      padding: var(--space-xl);
+      box-shadow: var(--shadow-card);
+      transition: var(--transition);
     }
     .card:active {
       transform: scale(0.998);
-      box-shadow: var(--shadow-md);
+      box-shadow: var(--shadow-elevated);
     }
 
-    /* 波纹点击效果 */
-    .ripple-effect {
+    /* 卡片标题 - 增加文字阴影提升立体感 */
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      margin-bottom: var(--space-lg);
+      font-weight: var(--fw-bold);
+      font-size: 18px;
+      color: var(--text-primary);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    }
+    .card-header i {
+      color: var(--brand);
+      font-size: 20px;
+      filter: drop-shadow(0 2px 4px rgba(10,102,224,0.3));
+    }
+
+    /* 波纹点击效果（GPU加速） */
+    .ripple {
       position: relative;
       overflow: hidden;
       cursor: default;
-      -webkit-tap-highlight-color: transparent;
+      transition: var(--transition);
+      transform: translateZ(0);
     }
-    .ripple-effect::after {
+    .ripple:active {
+      transform: scale(0.96) translateZ(0);
+    }
+    .ripple::after {
       content: '';
       position: absolute;
       top: 50%;
@@ -166,50 +160,24 @@
       border-radius: 50%;
       background: currentColor;
       opacity: 0.1;
-      transform: translate(-50%, -50%);
-      transition: width 0.3s ease-out, height 0.3s ease-out, opacity 0.3s ease-out;
+      transform: translate(-50%, -50%) scale(0);
+      transition: width 0.3s, height 0.3s, opacity 0.3s;
       pointer-events: none;
-      z-index: 1;
     }
-    .ripple-effect:active::after {
+    .ripple:active::after {
       width: 200px;
       height: 200px;
       opacity: 0;
-      transition: width 0.4s ease-out, height 0.4s ease-out, opacity 0.4s ease-out;
+      transform: translate(-50%, -50%) scale(1);
     }
 
-    /* 可点击元素 */
-    .clickable, .user-info-clickable, .coin-btn, .quick-btn, .tool-item, .carousel-arrow, .menu-item {
-      transition: var(--transition-fast);
-      cursor: default;
-      -webkit-tap-highlight-color: transparent;
-      position: relative;
-      overflow: hidden;
-    }
-    .clickable:active, .user-info-clickable:active, 
-    .coin-btn:active, .quick-btn:active, .tool-item:active, 
-    .carousel-arrow:active, .menu-item:active {
-      transform: scale(0.96);
-    }
-
-    /* 品牌色高亮 */
-    .brand-text {
-      color: var(--brand-color);
-      font-weight: var(--font-weight-bold);
-    }
-    .brand-bg {
-      background: var(--brand-gradient);
-      color: white;
-      box-shadow: var(--shadow-glow);
-    }
-
-    /* 顶部用户卡片 */
-    .user-header-row {
+    /* 用户卡片 */
+    .user-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-    .user-info-clickable {
+    .user-info {
       display: flex;
       align-items: center;
       gap: var(--space-sm);
@@ -217,63 +185,63 @@
       padding: var(--space-xs) 0;
       border-radius: 50px;
     }
-    .h-icon {
+    .avatar {
       width: 48px;
       height: 48px;
-      background: var(--brand-light);
-      border-radius: var(--radius-icon);
+      background: linear-gradient(145deg, #E0EBFF, #C2D9FF); /* 更饱和 */
+      border-radius: var(--radius-circle);
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 26px;
-      font-weight: var(--font-weight-bold);
-      color: var(--brand-color);
-      box-shadow: var(--shadow-sm);
-      transition: var(--transition-base);
-    }
-    .h-icon:active {
-      transform: scale(0.94);
+      font-weight: var(--fw-bold);
+      color: var(--brand);
+      box-shadow: 0 6px 12px rgba(10,102,224,0.15);
     }
     .nickname {
       font-size: 18px;
-      font-weight: var(--font-weight-bold);
+      font-weight: var(--fw-bold);
       color: var(--text-primary);
-      letter-spacing: var(--letter-spacing-tight);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.02);
     }
-    .level-badge {
+    .badge {
       background: var(--brand-gradient);
       color: white;
       font-size: 13px;
-      font-weight: var(--font-weight-medium);
+      font-weight: var(--fw-medium);
       padding: 6px 16px;
       border-radius: 40px;
       box-shadow: var(--shadow-glow);
-      letter-spacing: var(--letter-spacing-normal);
+      animation: pulse 2s infinite;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(10,102,224,0.4); }
+      70% { box-shadow: 0 0 0 8px rgba(10,102,224,0); }
     }
 
-    /* 充币/提币按钮 */
+    /* 充提币按钮组 */
     .action-row {
       display: flex;
       justify-content: flex-end;
       margin-top: var(--space-md);
     }
-    .action-buttons {
+    .btn-group {
       display: flex;
       gap: var(--space-sm);
     }
-    .coin-btn {
-      background: var(--gray-100);
-      color: var(--text-secondary);
+    .btn-sm {
+      background: var(--gray-soft);
+      color: var(--brand); /* 改为品牌色，更突出 */
       font-size: 14px;
-      font-weight: var(--font-weight-medium);
+      font-weight: var(--fw-bold);
       padding: 10px 22px;
       border-radius: var(--radius-btn);
-      box-shadow: var(--shadow-sm);
-      transition: var(--transition-fast);
+      box-shadow: var(--shadow-flat);
+      transition: var(--transition);
     }
-    .coin-btn:active {
-      background: var(--gray-200);
-      transform: scale(0.94);
+    .btn-sm:active {
+      background: var(--gray-mid);
     }
 
     /* 展开区域 */
@@ -283,171 +251,206 @@
       flex-wrap: wrap;
       gap: var(--space-sm);
       padding-top: var(--space-lg);
-      background: linear-gradient(to right, transparent, var(--gray-300), transparent) 0 0 / 100% 1px no-repeat;
+      background: linear-gradient(to right, transparent, var(--gray-border), transparent) 0 0 / 100% 1px no-repeat;
       animation: slideDown 0.2s ease;
     }
-    @keyframes slideDown {
-      0% { opacity: 0; transform: translateY(-8px); }
-      100% { opacity: 1; transform: translateY(0); }
+    .expand-section.hidden {
+      display: none;
     }
-    .hidden { display: none; }
-
-    /* 统计框 */
-    .stat-box {
-      background: var(--gray-100);
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .stat-item {
+      flex: 1 0 calc(25% - 8px);
+      background: var(--gray-soft);
       border-radius: var(--radius-element);
       padding: var(--space-md) var(--space-xs);
       text-align: center;
-      flex: 1 0 calc(25% - 8px);
-      box-shadow: var(--shadow-xs);
-      transition: var(--transition-fast);
+      box-shadow: var(--shadow-flat);
+      transition: var(--transition);
     }
-    .stat-box:active {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
+    .stat-item:active {
+      background: var(--gray-mid);
     }
     .stat-label {
       font-size: 12px;
-      font-weight: var(--font-weight-medium); /* 提高权重 */
+      font-weight: var(--fw-regular);
       color: var(--text-tertiary);
-      margin-bottom: var(--space-xs);
-      letter-spacing: var(--letter-spacing-wide);
       text-transform: uppercase;
+      margin-bottom: var(--space-xs);
+      letter-spacing: 0.5px;
     }
     .stat-value {
       font-size: 18px;
-      font-weight: var(--font-weight-bold);
-      color: var(--text-primary);
-      letter-spacing: var(--letter-spacing-tight);
+      font-weight: var(--fw-extrabold);
+      background: var(--brand-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
-    /* 公告卡片 */
+    /* 公告 */
     .announcement {
       display: flex;
       align-items: center;
       gap: var(--space-md);
       color: var(--text-primary);
-      font-weight: var(--font-weight-regular);
-      line-height: var(--line-height-normal);
     }
-    .announcement i {
-      color: var(--brand-color);
+    .announcement i:first-child {
+      color: var(--brand);
       font-size: 22px;
+      filter: drop-shadow(0 2px 4px rgba(10,102,224,0.2));
     }
     .announcement span {
-      font-weight: var(--font-weight-medium);
+      font-weight: var(--fw-bold);
       color: var(--text-primary);
-      letter-spacing: var(--letter-spacing-normal);
+    }
+
+    /* 社区数据网格 */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+    }
+    .community-item {
+      background: var(--gray-soft);
+      border-radius: var(--radius-element);
+      padding: var(--space-lg) var(--space-sm);
+      text-align: center;
+      box-shadow: var(--shadow-flat);
+      transition: var(--transition);
+    }
+    .community-item:active {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-elevated);
+      background: white;
+    }
+    .community-label {
+      font-size: 13px;
+      font-weight: var(--fw-regular);
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      margin-bottom: var(--space-xs);
+      letter-spacing: 0.5px;
+    }
+    .community-value {
+      font-size: 20px;
+      font-weight: var(--fw-extrabold);
+      background: var(--brand-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 2px 4px rgba(10,102,224,0.2));
     }
 
     /* 工具集网格 */
-    .tools-grid {
+    .grid-4 {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: var(--space-lg) var(--space-sm);
       margin-top: var(--space-sm);
     }
     .tool-item {
-      background: var(--gray-100);
+      background: var(--gray-soft);
       border-radius: var(--radius-element);
-      padding: var(--space-lg) var(--space-xs) var(--space-sm) var(--space-xs);
+      padding: var(--space-lg) var(--space-xs) var(--space-sm);
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: var(--space-xs);
-      box-shadow: var(--shadow-xs);
-      transition: var(--transition-fast);
+      box-shadow: var(--shadow-flat);
+      transition: var(--transition);
     }
     .tool-item:active {
-      background: var(--gray-200);
-      transform: scale(0.94);
-      box-shadow: var(--shadow-md);
+      background: white;
+      transform: scale(0.96);
     }
     .tool-item i {
-      font-size: 26px;
-      background: linear-gradient(145deg, #1D7DF0, #4B9EFF);
+      font-size: 28px;
+      background: var(--brand-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      filter: drop-shadow(0 4px 6px rgba(29,125,240,0.2));
+      filter: drop-shadow(0 6px 10px rgba(10,102,224,0.3));
     }
     .tool-item span {
       font-size: 11px;
-      font-weight: var(--font-weight-medium);
+      font-weight: var(--fw-bold);
       color: var(--text-secondary);
-      letter-spacing: var(--letter-spacing-normal);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
     }
 
-    /* 最新活动卡片 */
+    /* 最新活动 */
     .activity-content {
       display: flex;
       align-items: center;
       gap: var(--space-lg);
     }
-    .activity-badge {
+    .badge-large {
       background: var(--brand-gradient);
       color: white;
-      font-weight: var(--font-weight-medium);
-      padding: 8px 20px;
+      font-weight: var(--fw-bold);
+      padding: 8px 22px;
       border-radius: 40px;
       font-size: 14px;
       white-space: nowrap;
       box-shadow: var(--shadow-glow);
-      letter-spacing: var(--letter-spacing-normal);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
     }
     .activity-text {
-      font-weight: var(--font-weight-bold);
+      font-weight: var(--fw-extrabold);
+      font-size: 16px;
       color: var(--text-primary);
       display: flex;
       align-items: center;
       gap: var(--space-xs);
-      letter-spacing: var(--letter-spacing-tight);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.02);
     }
     .activity-text i {
-      color: var(--brand-color);
-      filter: drop-shadow(0 2px 4px rgba(29,125,240,0.3));
+      color: var(--brand);
+      filter: drop-shadow(0 2px 4px rgba(10,102,224,0.3));
     }
 
-    /* 便捷访问双按钮 */
+    /* 便捷双按钮 */
     .quick-row {
       display: flex;
       gap: var(--space-md);
     }
     .quick-btn {
       flex: 1;
-      background: var(--gray-100);
+      background: linear-gradient(145deg, var(--gray-soft), white); /* 增加立体感 */
       border-radius: var(--radius-btn);
       padding: 16px 0;
       font-size: 16px;
-      font-weight: var(--font-weight-bold);
-      color: var(--text-primary);
+      font-weight: var(--fw-extrabold);
+      color: var(--brand);
       display: flex;
       align-items: center;
       justify-content: center;
       gap: var(--space-sm);
-      box-shadow: var(--shadow-sm);
-      transition: var(--transition-fast);
+      box-shadow: var(--shadow-flat);
+      transition: var(--transition);
+      border: 1px solid rgba(10,102,224,0.1);
     }
     .quick-btn:active {
-      background: var(--gray-200);
-      transform: scale(0.95);
-      box-shadow: var(--shadow-md);
+      background: white;
+      transform: scale(0.96);
+      border-color: var(--brand);
     }
     .quick-btn i {
-      color: var(--brand-color);
+      color: var(--brand);
       font-size: 18px;
-      transition: var(--transition-fast);
-    }
-    .quick-btn:active i {
-      transform: scale(1.1);
+      filter: drop-shadow(0 2px 4px rgba(10,102,224,0.2));
     }
 
     /* 轮播卡片 */
     .carousel-card {
-      background: var(--card-color);
+      background: var(--card);
       border-radius: var(--radius-card);
       padding: var(--space-lg) var(--space-xl);
-      box-shadow: var(--shadow-lg);
+      box-shadow: var(--shadow-card);
     }
     .carousel-content {
       display: flex;
@@ -457,7 +460,7 @@
     }
     .carousel-text {
       font-size: 17px;
-      font-weight: var(--font-weight-bold);
+      font-weight: var(--fw-extrabold);
       color: var(--text-primary);
       flex: 1;
       white-space: nowrap;
@@ -466,28 +469,29 @@
       display: flex;
       align-items: center;
       gap: var(--space-sm);
-      letter-spacing: var(--letter-spacing-tight);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.02);
     }
     .carousel-text i {
-      color: var(--brand-color);
+      color: var(--brand);
+      filter: drop-shadow(0 2px 4px rgba(10,102,224,0.2));
     }
     .carousel-arrow {
-      width: 40px;
-      height: 40px;
-      background: var(--gray-100);
-      border-radius: var(--radius-icon);
+      width: 42px;
+      height: 42px;
+      background: var(--gray-soft);
+      border-radius: var(--radius-circle);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--gray-600);
+      color: var(--brand);
       font-size: 18px;
-      box-shadow: var(--shadow-xs);
-      transition: var(--transition-fast);
+      box-shadow: var(--shadow-flat);
+      transition: var(--transition);
     }
     .carousel-arrow:active {
-      background: var(--gray-200);
+      background: white;
       transform: scale(0.92);
-      box-shadow: var(--shadow-sm);
+      box-shadow: var(--shadow-elevated);
     }
     .carousel-indicators {
       display: flex;
@@ -495,371 +499,319 @@
       gap: var(--space-sm);
       margin-top: var(--space-lg);
     }
-    .indicator-dot {
+    .dot {
       width: 8px;
       height: 8px;
-      background: var(--gray-400);
+      background: var(--gray-icon);
       border-radius: 20px;
-      transition: all 0.3s ease;
+      transition: all 0.3s;
     }
-    .indicator-dot.active {
+    .dot.active {
       background: var(--brand-gradient);
-      width: 28px;
+      width: 32px;
+      box-shadow: var(--shadow-glow);
     }
 
     /* 代币方形卡片 */
-    .price-squares {
+    .flex-2 {
       display: flex;
       gap: var(--space-lg);
       margin-bottom: var(--space-xs);
     }
-    .price-square {
+    .token-card {
       flex: 1;
-      background: var(--card-color);
+      background: var(--card);
       border-radius: var(--radius-card);
-      padding: var(--space-xl) var(--space-md) var(--space-lg) var(--space-md);
-      box-shadow: var(--shadow-lg);
+      padding: var(--space-xl) var(--space-md) var(--space-lg);
+      box-shadow: var(--shadow-card);
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      transition: var(--transition-base);
+      transition: var(--transition);
+      border: 1px solid rgba(10,102,224,0.05);
     }
-    .price-square:active {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-xl);
+    .token-card:active {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-elevated);
+      border-color: rgba(10,102,224,0.2);
     }
-    .square-token-icon {
-      width: 60px;
-      height: 60px;
-      background: linear-gradient(145deg, #E6F0FF, #CCE4FF);
-      border-radius: var(--radius-icon);
+    .token-icon {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(145deg, #E0EBFF, #C2D9FF);
+      border-radius: var(--radius-circle);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
-      font-weight: var(--font-weight-bold);
-      color: var(--brand-color);
+      font-size: 26px;
+      font-weight: var(--fw-extrabold);
+      color: var(--brand);
       margin-bottom: var(--space-md);
-      box-shadow: var(--shadow-sm);
+      box-shadow: 0 8px 16px rgba(10,102,224,0.15);
     }
-    .square-token-name {
-      font-weight: var(--font-weight-regular);
+    .token-name {
+      font-weight: var(--fw-bold);
       font-size: 15px;
       color: var(--text-secondary);
       margin-bottom: var(--space-xs);
-      letter-spacing: var(--letter-spacing-normal);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
-    .square-price {
+    .token-price {
       font-size: 28px;
-      font-weight: var(--font-weight-extrabold);
-      background: linear-gradient(145deg, #1D7DF0, #4B9EFF);
+      font-weight: var(--fw-extrabold);
+      background: var(--brand-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
       margin-bottom: var(--space-sm);
-      letter-spacing: var(--letter-spacing-tight);
+      filter: drop-shadow(0 2px 4px rgba(10,102,224,0.2));
     }
-    .square-change {
-      font-weight: var(--font-weight-medium);
+    .token-change {
+      font-weight: var(--fw-bold);
       font-size: 16px;
       padding: 6px 18px;
       border-radius: 30px;
-      background: var(--gray-100);
-      box-shadow: var(--shadow-xs);
+      background: var(--gray-soft);
+      box-shadow: var(--shadow-flat);
       display: inline-block;
     }
-    .change-positive { 
-      background: linear-gradient(145deg, #2E9D6B, #3FB57E);
+    .change-positive {
+      background: linear-gradient(145deg, #0F9D58, #1DB954); /* 更饱和的绿 */
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    .change-negative { 
-      background: linear-gradient(145deg, #E65D4F, #F07A6A);
+    .change-negative {
+      background: linear-gradient(145deg, #DB4437, #F06A5A);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-    }
-
-    /* 社区数据 - 2x2网格 */
-    .community-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-md);
-    }
-    .community-item {
-      background: var(--gray-100);
-      border-radius: var(--radius-element);
-      padding: var(--space-lg) var(--space-sm);
-      text-align: center;
-      box-shadow: var(--shadow-xs);
-      transition: var(--transition-fast);
-    }
-    .community-item:active {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-    }
-    .community-label {
-      font-size: 13px;
-      font-weight: var(--font-weight-medium); /* 提高权重 */
-      color: var(--text-tertiary);
-      margin-bottom: var(--space-xs);
-      letter-spacing: var(--letter-spacing-wide);
-      text-transform: uppercase;
-    }
-    .community-value {
-      font-size: 20px;
-      font-weight: var(--font-weight-bold);
-      background: linear-gradient(145deg, #1D7DF0, #4B9EFF);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: var(--letter-spacing-tight);
-    }
-
-    /* 卡片标题 */
-    .card-header {
-      font-weight: var(--font-weight-bold);
-      font-size: 18px;
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: var(--space-sm);
-      margin-bottom: var(--space-lg);
-      letter-spacing: var(--letter-spacing-tight);
-    }
-    .card-header i {
-      color: var(--brand-color);
-      font-size: 20px;
     }
 
     /* 底部导航栏 */
-    .bottom-menu {
-      background: var(--card-color);
+    .bottom-nav {
+      background: var(--card);
       display: flex;
       justify-content: space-around;
       align-items: center;
-      padding: var(--space-sm) var(--space-sm) var(--space-lg) var(--space-sm);
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.02);
+      padding: var(--space-sm) var(--space-sm) var(--space-lg);
+      box-shadow: 0 -6px 20px rgba(0,20,40,0.06);
+      border-top: 1px solid rgba(10,102,224,0.05);
     }
-    .menu-item {
+    .nav-item {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: var(--space-xs);
       font-size: 11px;
-      font-weight: var(--font-weight-regular);
-      color: var(--gray-500);
+      font-weight: var(--fw-medium);
+      color: var(--gray-text-light);
       padding: var(--space-xs) var(--space-md);
       border-radius: 30px;
-      transition: var(--transition-fast);
       position: relative;
+      transition: var(--transition);
     }
-    .menu-item i {
+    .nav-item i {
       font-size: 22px;
-      color: var(--gray-500);
-      transition: var(--transition-fast);
+      color: var(--gray-text-light);
+      transition: var(--transition);
     }
-    .menu-item.active i,
-    .menu-item.active .menu-label {
-      color: var(--brand-color);
-      font-weight: var(--font-weight-medium);
+    .nav-item.active i,
+    .nav-item.active .nav-label {
+      color: var(--brand);
+      font-weight: var(--fw-bold);
+      filter: drop-shadow(0 2px 4px rgba(10,102,224,0.2));
     }
-    .menu-item:active {
-      background: var(--brand-light);
-      transform: scale(0.94);
-    }
-    .menu-item.active::after {
+    .nav-item.active::after {
       content: '';
       position: absolute;
       bottom: -6px;
-      width: 4px;
-      height: 4px;
+      width: 6px;
+      height: 6px;
       background: var(--brand-gradient);
-      border-radius: 2px;
-    }
-    .menu-label {
-      font-weight: var(--font-weight-regular);
-      transition: var(--transition-fast);
+      border-radius: 3px;
+      box-shadow: var(--shadow-glow);
     }
 
-    /* 微动效 */
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(29,125,240,0.4); }
-      70% { box-shadow: 0 0 0 6px rgba(29,125,240,0); }
-      100% { box-shadow: 0 0 0 0 rgba(29,125,240,0); }
-    }
-    .level-badge {
-      animation: pulse 2s infinite;
-    }
+    /* 辅助类 */
+    .mt-1 { margin-top: var(--space-xs); }
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
-  <!-- 中层：内容滚动区 -->
-  <div class="main-scroll">
-    <!-- 1. 顶部用户卡片（可展开） -->
-    <div class="card" id="userCard">
-      <div class="user-header-row">
-        <div class="user-info-clickable ripple-effect" id="expandTrigger">
-          <div class="h-icon">H</div>
+  <main class="app-main">
+    <!-- 1. 用户卡片 -->
+    <section class="card" id="userCard">
+      <div class="user-header">
+        <div class="user-info ripple" id="expandTrigger" role="button" tabindex="0" aria-label="展开个人信息">
+          <div class="avatar" aria-hidden="true">H</div>
           <span class="nickname">深海海豚君</span>
-          <span class="level-badge">金牌会员</span>
+          <span class="badge">金牌会员</span>
         </div>
       </div>
-      <!-- 充币/提币行 -->
       <div class="action-row">
-        <div class="action-buttons" id="actionButtons">
-          <span class="coin-btn ripple-effect">充币</span>
-          <span class="coin-btn ripple-effect">提币</span>
+        <div class="btn-group" id="actionButtons">
+          <span class="btn-sm ripple" role="button" tabindex="0">充币</span>
+          <span class="btn-sm ripple" role="button" tabindex="0">提币</span>
         </div>
       </div>
-      <!-- 展开区域（默认隐藏） -->
-      <div class="expand-section hidden" id="expandContent">
-        <div class="stat-box ripple-effect"><div class="stat-label">身价</div><div class="stat-value">12.5k</div></div>
-        <div class="stat-box ripple-effect"><div class="stat-label">资产</div><div class="stat-value">5.2k</div></div>
-        <div class="stat-box ripple-effect"><div class="stat-label">贡献度</div><div class="stat-value">3.4k</div></div>
-        <div class="stat-box ripple-effect"><div class="stat-label">周排名</div><div class="stat-value">#16</div></div>
+      <!-- 展开区域 -->
+      <div class="expand-section hidden" id="expandContent" aria-expanded="false">
+        <div class="stat-item ripple"><div class="stat-label">身价</div><div class="stat-value">12.5k</div></div>
+        <div class="stat-item ripple"><div class="stat-label">资产</div><div class="stat-value">5.2k</div></div>
+        <div class="stat-item ripple"><div class="stat-label">贡献度</div><div class="stat-value">3.4k</div></div>
+        <div class="stat-item ripple"><div class="stat-label">周排名</div><div class="stat-value">#16</div></div>
       </div>
-    </div>
+    </section>
 
-    <!-- 2. 公告资讯 -->
-    <div class="card">
+    <!-- 2. 公告 -->
+    <section class="card">
       <div class="announcement">
         <i class="fas fa-bullhorn"></i>
         <span>111111</span>
-        <i class="fas fa-circle" style="font-size: 6px; color: var(--gray-400); margin-left: auto;"></i>
+        <i class="fas fa-circle" style="font-size: 6px; color: var(--gray-icon); margin-left: auto;" aria-hidden="true"></i>
       </div>
-    </div>
+    </section>
 
-    <!-- 3. 社区数据 - 2x2网格 -->
-    <div class="card">
+    <!-- 3. 社区数据 -->
+    <section class="card">
       <div class="card-header">
         <i class="fas fa-chart-pie"></i> 社区数据
       </div>
-      <div class="community-grid">
-        <div class="community-item ripple-effect">
+      <div class="grid-2">
+        <div class="community-item ripple">
           <div class="community-label">H总质押</div>
           <div class="community-value">12.5M H</div>
         </div>
-        <div class="community-item ripple-effect">
+        <div class="community-item ripple">
           <div class="community-label">总交易量</div>
           <div class="community-value">$2.3B</div>
         </div>
-        <div class="community-item ripple-effect">
+        <div class="community-item ripple">
           <div class="community-label">国库余额</div>
           <div class="community-value">$1.8M</div>
         </div>
-        <div class="community-item ripple-effect">
+        <div class="community-item ripple">
           <div class="community-label">活跃人数</div>
           <div class="community-value">8.2k</div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- 4. 工具集 -->
-    <div class="card">
+    <!-- 4. 常用工具 -->
+    <section class="card">
       <div class="card-header">
         <i class="fas fa-tools"></i> 常用工具
       </div>
-      <div class="tools-grid">
-        <div class="tool-item ripple-effect"><i class="fas fa-calendar-check"></i><span>签到</span></div>
-        <div class="tool-item ripple-effect"><i class="fas fa-dice"></i><span>抽奖</span></div>
-        <div class="tool-item ripple-effect"><i class="fas fa-star"></i><span>积分</span></div>
-        <div class="tool-item ripple-effect"><i class="fas fa-gift"></i><span>红包</span></div>
-        <div class="tool-item ripple-effect"><i class="fas fa-search"></i><span>查询系统</span></div>
-        <div class="tool-item ripple-effect"><i class="fas fa-chart-line"></i><span>社区数据</span></div>
-        <div class="tool-item ripple-effect"><i class="fas fa-calculator"></i><span>计算器</span></div>
-        <div class="tool-item ripple-effect"><i class="fas fa-download"></i><span>下载中心</span></div>
+      <div class="grid-4">
+        <div class="tool-item ripple"><i class="fas fa-calendar-check"></i><span>签到</span></div>
+        <div class="tool-item ripple"><i class="fas fa-dice"></i><span>抽奖</span></div>
+        <div class="tool-item ripple"><i class="fas fa-star"></i><span>积分</span></div>
+        <div class="tool-item ripple"><i class="fas fa-gift"></i><span>红包</span></div>
+        <div class="tool-item ripple"><i class="fas fa-search"></i><span>查询系统</span></div>
+        <div class="tool-item ripple"><i class="fas fa-chart-line"></i><span>社区数据</span></div>
+        <div class="tool-item ripple"><i class="fas fa-calculator"></i><span>计算器</span></div>
+        <div class="tool-item ripple"><i class="fas fa-download"></i><span>下载中心</span></div>
       </div>
-    </div>
+    </section>
 
     <!-- 5. 最新活动 -->
-    <div class="card">
+    <section class="card">
       <div class="card-header">
         <i class="fas fa-fire"></i> 最新活动
       </div>
       <div class="activity-content">
-        <span class="activity-badge">OKX Boost</span>
+        <span class="badge-large">OKX Boost</span>
         <span class="activity-text"><i class="fas fa-rocket"></i>最佳策略获得空投</span>
       </div>
-    </div>
+    </section>
 
     <!-- 6. 便捷访问 -->
-    <div class="card" style="padding: var(--space-lg) var(--space-xl);">
+    <section class="card" style="padding: var(--space-lg) var(--space-xl);">
       <div class="quick-row">
-        <div class="quick-btn ripple-effect"><i class="fas fa-coins"></i> 购买H币</div>
-        <div class="quick-btn ripple-effect"><i class="fas fa-users"></i> 进入社区群</div>
+        <div class="quick-btn ripple"><i class="fas fa-coins"></i> 购买H币</div>
+        <div class="quick-btn ripple"><i class="fas fa-users"></i> 进入社区群</div>
       </div>
-    </div>
+    </section>
 
-    <!-- 7. 轮播：网格策略 -->
+    <!-- 7. 轮播 -->
     <div class="carousel-card">
       <div class="carousel-content">
-        <span class="carousel-arrow ripple-effect"><i class="fas fa-chevron-left"></i></span>
+        <span class="carousel-arrow ripple" role="button" tabindex="0" aria-label="上一个"><i class="fas fa-chevron-left"></i></span>
         <span class="carousel-text"><i class="fas fa-chart-line"></i>网格策略，行情涨跌都能赚</span>
-        <span class="carousel-arrow ripple-effect"><i class="fas fa-chevron-right"></i></span>
+        <span class="carousel-arrow ripple" role="button" tabindex="0" aria-label="下一个"><i class="fas fa-chevron-right"></i></span>
       </div>
       <div class="carousel-indicators">
-        <span class="indicator-dot active"></span>
-        <span class="indicator-dot"></span>
-        <span class="indicator-dot"></span>
+        <span class="dot active" aria-current="true"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
       </div>
     </div>
 
-    <!-- 8. 代币数据 - 方形卡片 -->
-    <div class="price-squares">
-      <div class="price-square ripple-effect">
-        <div class="square-token-icon">OKB</div>
-        <div class="square-token-name">OKB</div>
-        <div class="square-price">$45.23</div>
-        <span class="square-change change-positive">+2.1%</span>
+    <!-- 8. 代币数据 -->
+    <div class="flex-2">
+      <div class="token-card ripple">
+        <div class="token-icon">OKB</div>
+        <div class="token-name">OKB</div>
+        <div class="token-price">$45.23</div>
+        <span class="token-change change-positive">+2.1%</span>
       </div>
-      <div class="price-square ripple-effect">
-        <div class="square-token-icon">BTC</div>
-        <div class="square-token-name">Bitcoin</div>
-        <div class="square-price">$48,321</div>
-        <span class="square-change change-positive">+0.5%</span>
+      <div class="token-card ripple">
+        <div class="token-icon">BTC</div>
+        <div class="token-name">Bitcoin</div>
+        <div class="token-price">$48,321</div>
+        <span class="token-change change-positive">+0.5%</span>
       </div>
     </div>
 
     <!-- 底部留白 -->
-    <div style="height: var(--space-xs);"></div>
-  </div>
+    <div class="mt-1"></div>
+  </main>
 
-  <!-- 底层操作层：底部导航栏 -->
-  <div class="bottom-menu">
-    <div class="menu-item active ripple-effect">
+  <!-- 底部导航 -->
+  <nav class="bottom-nav">
+    <div class="nav-item active ripple" role="link" tabindex="0" aria-current="page">
       <i class="fas fa-home"></i>
-      <span class="menu-label">首页</span>
+      <span class="nav-label">首页</span>
     </div>
-    <div class="menu-item ripple-effect">
+    <div class="nav-item ripple" role="link" tabindex="0">
       <i class="fas fa-coins"></i>
-      <span class="menu-label">赚币</span>
+      <span class="nav-label">赚币</span>
     </div>
-    <div class="menu-item ripple-effect">
+    <div class="nav-item ripple" role="link" tabindex="0">
       <i class="fas fa-cube"></i>
-      <span class="menu-label">模型</span>
+      <span class="nav-label">模型</span>
     </div>
-    <div class="menu-item ripple-effect">
+    <div class="nav-item ripple" role="link" tabindex="0">
       <i class="fas fa-wallet"></i>
-      <span class="menu-label">钱包</span>
+      <span class="nav-label">钱包</span>
     </div>
-  </div>
+  </nav>
 
   <script>
     (function() {
+      'use strict';
       const expandTrigger = document.getElementById('expandTrigger');
       const expandContent = document.getElementById('expandContent');
       const actionButtons = document.getElementById('actionButtons');
 
       expandTrigger.addEventListener('click', function(e) {
         e.stopPropagation();
-        expandContent.classList.toggle('hidden');
+        const isHidden = expandContent.classList.toggle('hidden');
+        expandContent.setAttribute('aria-expanded', !isHidden);
       });
 
       actionButtons.addEventListener('click', function(e) {
         e.stopPropagation();
+      });
+
+      expandTrigger.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.click();
+        }
       });
     })();
   </script>
