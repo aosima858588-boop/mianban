@@ -1,2374 +1,731 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>海豚社区 · 旗舰版</title>
-    <!-- Font Awesome, Chart.js, Mermaid -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.8.0/dist/mermaid.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background-color: #f5f5f7;
-            min-height: 100vh;
-            padding: 18px 14px 24px 14px;
-            font-size: 16px;
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        .app-container {
-            max-width: 480px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        /* ===== 顶部轮播 ===== */
-        .top-carousel {
-            background: transparent;
-            border-radius: 40px;
-            margin-bottom: 28px;
-            padding: 28px 20px;
-            text-align: center;
-            border: 1px solid rgba(0,0,0,0.02);
-            box-shadow: 0 12px 24px -8px rgba(0,0,0,0.05);
-        }
-
-        .carousel-slide {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .slide-line1 {
-            font-size: 1.9rem;
-            font-weight: 500;
-            letter-spacing: 0.01em;
-            background: linear-gradient(135deg, #1e2b3a, #3f4e66);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .slide-line2 {
-            font-size: 2.4rem;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-            background: linear-gradient(45deg, #e67e22, #f1c40f);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 2px 8px rgba(230,126,34,0.15);
-        }
-
-        .slide-line3 {
-            font-size: 5.6rem;
-            font-weight: 900;
-            line-height: 1;
-            background: linear-gradient(135deg, #ff7b89, #4a90e2, #50e3c2);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: flowText 8s ease infinite;
-            filter: drop-shadow(0 6px 12px rgba(74,144,226,0.2));
-            margin: -4px 0;
-        }
-
-        .slide-line4 {
-            font-size: 1.8rem;
-            font-weight: 600;
-            letter-spacing: 0.02em;
-            background: linear-gradient(45deg, #2c5282, #4299e1);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            border-top: 2px solid rgba(74,144,226,0.2);
-            padding-top: 16px;
-            margin-top: 8px;
-            width: 100%;
-        }
-
-        @keyframes flowText {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .carousel-indicators {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 16px;
-        }
-
-        .indicator-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 20px;
-            background: #d0d7e2;
-            transition: 0.3s;
-        }
-
-        .indicator-dot.active {
-            width: 32px;
-            background: linear-gradient(90deg, #4a90e2, #f5a623);
-        }
-
-        /* ===== 用户面板 ===== */
-        .user-panel {
-            background-color: #f0f2f5;
-            border-radius: 36px;
-            padding: 20px 20px;
-            margin-bottom: 24px;
-            border: 1px solid rgba(255,255,255,0.9);
-            box-shadow: 0 8px 18px rgba(0,0,0,0.02);
-        }
-
-        .user-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .user-mini-logo {
-            background: #2c3e50;
-            color: white;
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 28px;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.08);
-        }
-
-        .user-details h4 {
-            font-size: 1.3rem;
-            font-weight: 600;
-            background: linear-gradient(145deg, #1f2a3a, #33455c);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: -0.01em;
-            margin-bottom: 2px;
-        }
-
-        .badge {
-            background: linear-gradient(145deg, #d4a853, #f5c542);
-            color: white;
-            font-size: 0.75rem;
-            font-weight: 600;
-            padding: 4px 12px;
-            border-radius: 40px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-            margin-left: 8px;
-        }
-
-        .id {
-            font-size: 0.9rem;
-            color: #4a5a70;
-            font-weight: 400;
-            letter-spacing: 0.01em;
-        }
-
-        .user-actions button {
-            background: white;
-            border: none;
-            font-size: 1.5rem;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            color: #2c3e50;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.03);
-            cursor: pointer;
-            border: 1px solid #eef2f6;
-            transition: all 0.2s;
-        }
-
-        /* 四数据卡片 */
-        .stats-dropdown {
-            display: none;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
-            margin-top: 22px;
-            background: white;
-            border-radius: 36px;
-            padding: 22px 18px;
-            border: 1px solid #eef2f6;
-            box-shadow: 0 12px 24px -8px rgba(0,0,0,0.05);
-        }
-
-        .stats-dropdown.show { display: grid; }
-
-        .stat-item {
-            background: #f8fafc;
-            border-radius: 28px;
-            padding: 16px 8px;
-            text-align: center;
-            border: 1px solid #edf2f7;
-        }
-
-        .stat-label {
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: #5a687a;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
-            margin-bottom: 4px;
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(145deg, #1f2a3a, #3f5068);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            line-height: 1.2;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        /* 导航菜单 */
-        .nav-menu-popup {
-            display: none;
-            position: absolute;
-            top: 75px;
-            right: 14px;
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(12px);
-            border-radius: 40px;
-            padding: 20px 16px;
-            box-shadow: 0 20px 35px -8px rgba(0,0,0,0.2);
-            z-index: 200;
-            width: 230px;
-            border: 1px solid rgba(255,255,255,0.8);
-        }
-
-        .nav-menu-popup.show { display: block; }
-
-        .nav-menu-popup button {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            width: 100%;
-            padding: 14px 14px;
-            border: none;
-            background: white;
-            border-radius: 32px;
-            margin-bottom: 6px;
-            font-size: 1rem;
-            font-weight: 500;
-            color: #1f2a3a;
-            transition: 0.15s;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-        }
-
-        .nav-menu-popup button i {
-            font-size: 1.2rem;
-            background: linear-gradient(145deg, #4a90e2, #f5a623);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .calendar-mini {
-            background: #f0f2f5;
-            border-radius: 28px;
-            padding: 14px 12px;
-            font-size: 0.85rem;
-            display: grid;
-            grid-template-columns: repeat(7,1fr);
-            gap: 6px;
-            margin: 12px 0;
-        }
-
-        .calendar-mini span {
-            text-align: center;
-            font-weight: 500;
-            padding: 6px 0;
-        }
-
-        .today {
-            background: linear-gradient(145deg, #4a90e2, #60a5fa);
-            color: white;
-            border-radius: 50%;
-            font-weight: 600;
-        }
-
-        /* ===== 核心按钮 ===== */
-        .core-tabs {
-            display: flex;
-            gap: 14px;
-            margin-bottom: 24px;
-            background: #f0f2f5;
-            padding: 8px;
-            border-radius: 60px;
-            border: 1px solid #eef2f6;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
-        }
-
-        .core-tab {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: transparent;
-            border: none;
-            padding: 14px 0;
-            border-radius: 50px;
-            font-size: 1.15rem;
-            font-weight: 600;
-            color: #4f5a6b;
-            transition: 0.2s;
-            border: 1px solid transparent;
-            cursor: pointer;
-        }
-
-        .core-tab.active {
-            background: white;
-            box-shadow: 0 8px 18px -6px rgba(0,0,0,0.1);
-            color: #1f2a3a;
-            border-color: white;
-        }
-
-        .core-tab i {
-            font-size: 1.2rem;
-            background: linear-gradient(145deg, #4a90e2, #f5a623);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        /* ===== 卡片组 ===== */
-        .cards-group { display: block; margin-bottom: 30px; }
-        .cards-group.hidden { display: none; }
-
-        .magic-card {
-            background: #f0f2f5;
-            border-radius: 40px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255,255,255,0.9);
-            position: relative;
-            z-index: 1;
-            box-shadow: 0 8px 20px -8px rgba(0,0,0,0.04);
-        }
-
-        .magic-card::after {
-            content: '';
-            position: absolute;
-            top: -1px; left: -1px; right: -1px; bottom: -1px;
-            background-size: 300% 300%;
-            border-radius: 42px;
-            z-index: -1;
-            animation: borderFlow 10s ease infinite;
-            pointer-events: none;
-        }
-
-        @keyframes borderFlow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* 板块微渐变 */
-        .boost-card::after {
-            background: linear-gradient(60deg, rgba(255,123,137,0.25), rgba(245,166,35,0.25), rgba(255,123,137,0.25), rgba(245,166,35,0.25));
-        }
-        .model-card::after {
-            background: linear-gradient(60deg, rgba(74,144,226,0.25), rgba(80,227,194,0.25), rgba(74,144,226,0.25), rgba(80,227,194,0.25));
-        }
-        .data-card::after {
-            background: linear-gradient(60deg, rgba(155,93,229,0.25), rgba(74,144,226,0.25), rgba(155,93,229,0.25), rgba(74,144,226,0.25));
-        }
-
-        .card-header {
-            padding: 22px 22px 14px 22px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 600;
-            font-size: 1.3rem;
-            cursor: pointer;
-            background: linear-gradient(145deg, #1e2b3a, #31445c);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: -0.01em;
-        }
-
-        .boost-card .card-header {
-            background: linear-gradient(145deg, #b2433a, #d45d4c);
-            -webkit-background-clip: text;
-            background-clip: text;
-        }
-        .model-card .card-header {
-            background: linear-gradient(145deg, #1f5f7a, #2b8c9e);
-            -webkit-background-clip: text;
-            background-clip: text;
-        }
-        .data-card .card-header {
-            background: linear-gradient(145deg, #4a3f7a, #6b5b9c);
-            -webkit-background-clip: text;
-            background-clip: text;
-        }
-
-        .card-header i {
-            background: white;
-            border-radius: 50%;
-            padding: 10px;
-            font-size: 1rem;
-            color: #2c3e50;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.02);
-        }
-
-        .card-content {
-            padding: 0 22px 22px 22px;
-            display: none;
-        }
-
-        .magic-card.expanded .card-content {
-            display: block;
-        }
-
-        /* ===== 统一滚动容器 ===== */
-        .scroll-content {
-            max-height: 70vh;
-            overflow-y: auto;
-            padding-right: 6px;
-            scrollbar-width: thin;
-            scrollbar-color: #cbd5e0 #f0f2f5;
-            color: #2e3e50;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
-
-        .scroll-content::-webkit-scrollbar {
-            width: 4px;
-        }
-        .scroll-content::-webkit-scrollbar-thumb {
-            background: #cbd5e0;
-            border-radius: 8px;
-        }
-
-        /* ===== Boost卡片内部样式 ===== */
-        .boost-badge {
-            background: rgba(0, 102, 255, 0.08);
-            color: #0066ff;
-            padding: 0.5rem 1.375rem;
-            border-radius: 2.5rem;
-            font-size: 0.8125rem;
-            font-weight: 600;
-            display: inline-block;
-            margin: 0.5rem 0 1.125rem;
-            border: 1.5px solid rgba(0, 102, 255, 0.2);
-            letter-spacing: 0.02em;
-            backdrop-filter: blur(4px);
-            box-shadow: 0 0.125rem 0.375rem rgba(0,102,255,0.05);
-        }
-        .content-section {
-            margin: 1.75rem 0 1.25rem;
-        }
-        .section-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #0b1a33;
-            display: flex;
-            align-items: center;
-            gap: 0.625rem;
-            margin-bottom: 1rem;
-            border-left: 0.3125rem solid #0066ff;
-            padding-left: 1.125rem;
-        }
-        .section-title i {
-            font-size: 1rem;
-            color: #0066ff;
-            background: rgba(0,102,255,0.1);
-            width: 2rem;
-            height: 2rem;
-            border-radius: 0.75rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .description {
-            color: #2e405b;
-            line-height: 1.7;
-            font-size: 1rem;
-            font-weight: 400;
-            margin-bottom: 1.25rem;
-            padding: 0 0.25rem;
-        }
-        .rules-list {
-            list-style: none;
-            padding: 0;
-        }
-        .rules-list li {
-            padding: 0.875rem 0;
-            border-bottom: 1px dashed rgba(0, 102, 255, 0.15);
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            color: #1f344b;
-            font-size: 0.9375rem;
-            line-height: 1.6;
-            transition: 0.2s;
-        }
-        .rules-list li i {
-            color: #0066ff;
-            width: 1.5rem;
-            font-size: 0.9375rem;
-            margin-top: 0.2rem;
-            flex-shrink: 0;
-        }
-        .rules-list li strong {
-            font-weight: 700;
-            color: #0b1a33;
-        }
-        .rewards {
-            background: rgba(255, 255, 255, 0.5);
-            backdrop-filter: blur(8px);
-            border-radius: 1.75rem;
-            padding: 1.25rem 1.5rem;
-            margin: 1.25rem 0;
-            border: 1px solid rgba(0, 102, 255, 0.15);
-            box-shadow: 0 0.5rem 1.125rem rgba(0, 102, 255, 0.05);
-        }
-        .reward-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.875rem 0;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
-            font-size: 0.9375rem;
-            color: #1f344b;
-            transition: 0.2s;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-        .reward-item:hover {
-            transform: translateX(0.3125rem);
-            color: #0b1a33;
-        }
-        .reward-item:last-child {
-            border-bottom: none;
-        }
-        .reward-value {
-            font-weight: 700;
-            color: #0066ff;
-            background: rgba(0,102,255,0.06);
-            padding: 0.25rem 1rem;
-            border-radius: 2.5rem;
-            font-size: 0.875rem;
-            border: 1px solid rgba(0,102,255,0.1);
-            white-space: nowrap;
-        }
-        .comment-item {
-            background: white;
-            border-radius: 1.5rem;
-            padding: 1.25rem;
-            margin: 1rem 0;
-            border: 1px solid rgba(0, 102, 255, 0.1);
-            box-shadow: 0 0.375rem 0.875rem rgba(0, 0, 0, 0.02);
-            transition: 0.2s;
-        }
-        .comment-header {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 0.625rem;
-            flex-wrap: wrap;
-        }
-        .comment-avatar {
-            font-size: 1.8rem;
-            color: #0066ff;
-            filter: drop-shadow(0 0.125rem 0.25rem rgba(0,102,255,0.2));
-            line-height: 1;
-        }
-        .comment-author {
-            font-weight: 700;
-            color: #0b1a33;
-            font-size: 1rem;
-        }
-        .comment-time {
-            font-size: 0.6875rem;
-            color: #6f8aac;
-            background: rgba(0,102,255,0.04);
-            padding: 0.25rem 0.875rem;
-            border-radius: 1.875rem;
-            margin-left: auto;
-            white-space: nowrap;
-        }
-        .comment-content {
-            color: #2e405b;
-            line-height: 1.6;
-            padding-left: 0.375rem;
-            font-size: 0.9375rem;
-        }
-        .comment-input-area {
-            display: flex;
-            gap: 0.875rem;
-            margin-top: 1.5rem;
-            flex-wrap: wrap;
-        }
-        .comment-input {
-            flex: 1 1 200px;
-            padding: 1rem 1.375rem;
-            border: 2px solid rgba(0, 102, 255, 0.2);
-            border-radius: 3rem;
-            font-size: 0.9375rem;
-            background: white;
-            font-family: 'Inter', sans-serif;
-            transition: 0.2s;
-            box-shadow: inset 0 0.125rem 0.375rem rgba(0,0,0,0.02);
-        }
-        .comment-input:focus {
-            outline: none;
-            border-color: #0066ff;
-            box-shadow: 0 0 0 0.25rem rgba(0,102,255,0.1);
-        }
-        .comment-send-btn {
-            background: linear-gradient(135deg, #0066ff, #409cff);
-            color: white;
-            border: none;
-            border-radius: 3rem;
-            padding: 0 2.375rem;
-            font-weight: 600;
-            font-size: 0.9375rem;
-            letter-spacing: 0.02em;
-            cursor: default;
-            opacity: 0.9;
-            box-shadow: 0 0.5rem 1.125rem rgba(0,102,255,0.2);
-            transition: 0.2s;
-            height: 3.5rem;
-            min-width: 6rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .card-actions {
-            margin-top: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            align-items: center;
-        }
-        .card-action-button {
-            padding: 1rem 2rem;
-            border-radius: 3rem;
-            font-weight: 700;
-            font-size: 1rem;
-            border: none;
-            background: linear-gradient(135deg, #0066ff, #2e8aff);
-            color: white;
-            width: fit-content;
-            min-width: 16rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
-            box-shadow: 0 1rem 1.75rem -0.5rem rgba(0,102,255,0.4);
-            transition: 0.2s;
-            cursor: default;
-            opacity: 0.95;
-            letter-spacing: 0.02em;
-        }
-        .card-action-button.secondary {
-            background: transparent;
-            border: 2px solid rgba(0,102,255,0.3);
-            color: #0066ff;
-            box-shadow: none;
-            backdrop-filter: blur(8px);
-        }
-        @media (max-width: 600px) {
-            .card-action-button { min-width: 100%; }
-            .comment-send-btn { width: 100%; }
-        }
-
-        /* ===== 联合曲线计算器紧凑排版样式 ===== */
-        .compact-calculator .badge-sub {
-            background: #d4e6f5;
-            color: #0b3b57;
-            padding: 6px 14px;
-            border-radius: 40px;
-            font-size: 0.85rem;
-            display: inline-block;
-            margin-bottom: 16px;
-        }
-        .compact-calculator .param-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 18px;
-        }
-        .compact-calculator .param-item {
-            background: white;
-            border-radius: 24px;
-            padding: 12px 14px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-            border: 1px solid #e6edf4;
-        }
-        .compact-calculator .param-item label {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #2f5f8a;
-            display: block;
-            margin-bottom: 4px;
-        }
-        .compact-calculator .param-item input {
-            width: 100%;
-            border: none;
-            background: #f0f7ff;
-            padding: 8px 12px;
-            border-radius: 30px;
-            font-size: 1rem;
-            font-weight: 600;
-            color: #0e3d5e;
-            border: 1px solid #cbe0f2;
-            outline: none;
-        }
-        .compact-calculator .param-item .reset-btn {
-            width: 100%;
-            background: transparent;
-            border: 1px solid #2f6b9c;
-            color: #1e5f88;
-            font-weight: 600;
-            padding: 8px 0;
-            border-radius: 40px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: 0.2s;
-            margin-top: 4px;
-        }
-        .compact-calculator .param-item .reset-btn:hover {
-            background: #2f6b9c;
-            color: white;
-        }
-        .compact-calculator .state-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            background: linear-gradient(115deg, #114769, #1a618b);
-            border-radius: 30px;
-            padding: 16px 14px;
-            margin-bottom: 20px;
-            color: white;
-            justify-content: space-around;
-        }
-        .compact-calculator .state-item {
-            text-align: center;
-            min-width: 70px;
-        }
-        .compact-calculator .state-item .label {
-            font-size: 0.7rem;
-            opacity: 0.8;
-            letter-spacing: 0.5px;
-        }
-        .compact-calculator .state-item .value {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-top: 2px;
-        }
-        .compact-calculator .buy-panel {
-            background: #ffffffd9;
-            border-radius: 36px;
-            padding: 20px 18px;
-            margin-bottom: 20px;
-            border: 1px solid white;
-        }
-        .compact-calculator .buy-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #103d5c;
-            margin-bottom: 14px;
-        }
-        .compact-calculator .buy-input-row {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-        .compact-calculator .buy-input-row .input-group {
-            flex: 3;
-            min-width: 180px;
-        }
-        .compact-calculator .buy-input-row .input-group label {
-            font-size: 0.8rem;
-            color: #205980;
-            margin-bottom: 2px;
-            display: block;
-        }
-        .compact-calculator .buy-input-row .input-group input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid #b7d9f0;
-            border-radius: 40px;
-            font-size: 1.1rem;
-            background: white;
-        }
-        .compact-calculator .buy-input-row .button-group {
-            flex: 2;
-            display: flex;
-            gap: 8px;
-        }
-        .compact-calculator .btn {
-            background: #186b9c;
-            border: none;
-            color: white;
-            font-weight: 600;
-            padding: 12px 0;
-            border-radius: 40px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            flex: 1;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-        .compact-calculator .btn-secondary {
-            background: #3c799b;
-        }
-        .compact-calculator .result-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-top: 16px;
-        }
-        .compact-calculator .result-card {
-            background: #eaf3fd;
-            border-radius: 24px;
-            padding: 12px 6px;
-            border-left: 4px solid #2e7eb0;
-            text-align: center;
-        }
-        .compact-calculator .result-card .label {
-            color: #1a5680;
-            font-size: 0.7rem;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-        .compact-calculator .result-card .number {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #103652;
-        }
-        .compact-calculator .history {
-            background: #f4f9fe;
-            border-radius: 30px;
-            padding: 14px;
-            max-height: 180px;
-            overflow-y: auto;
-        }
-        .compact-calculator .history table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.8rem;
-        }
-        .compact-calculator .history th {
-            background: #17577b;
-            color: white;
-            padding: 8px 2px;
-            font-weight: 600;
-            position: sticky;
-            top: 0;
-        }
-        .compact-calculator .history td {
-            padding: 8px 2px;
-            border-bottom: 1px solid #bfdcf5;
-            text-align: center;
-        }
-        .compact-calculator .footnote {
-            margin-top: 16px;
-            color: #2f6286;
-            font-size: 0.8rem;
-            text-align: center;
-            background: #e1f0fd;
-            padding: 10px;
-            border-radius: 40px;
-        }
-        @media (max-width: 480px) {
-            .compact-calculator .param-grid { grid-template-columns: 1fr; }
-            .compact-calculator .buy-input-row { flex-direction: column; }
-            .compact-calculator .buy-input-row .button-group { width: 100%; }
-            .compact-calculator .result-grid { grid-template-columns: 1fr 1fr; }
-        }
-
-        /* ===== 经济模型完整解析（移动端优化版） ===== */
-        .eco-detailed {
-            /* 继承滚动容器样式 */
-        }
-        .eco-detailed .slide-card {
-            background: white;
-            border-radius: 32px;
-            box-shadow: 0 20px 35px -8px rgba(0,20,30,0.15), 0 10px 15px -6px rgba(0,0,0,0.05);
-            padding: 30px 25px;
-            margin-bottom: 25px;
-            border: 1px solid rgba(255,255,255,0.6);
-            backdrop-filter: blur(2px);
-        }
-        .eco-detailed .slide-header {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 24px;
-            border-bottom: 3px solid #0b5e8a;
-            padding-bottom: 12px;
-        }
-        .eco-detailed .slide-header i {
-            font-size: 2rem;
-            color: #0f7bbf;
-            background: #e1f0fa;
-            padding: 10px;
-            border-radius: 20px;
-        }
-        .eco-detailed .slide-header h2 {
-            font-size: 1.6rem;
-            font-weight: 600;
-            letter-spacing: -0.01em;
-            color: #13294b;
-            margin: 0;
-        }
-        .eco-detailed .grid-2 {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-        .eco-detailed .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-        }
-        .eco-detailed .stat-badge {
-            background: linear-gradient(145deg, #f8fcff, #eef3f8);
-            border-radius: 24px;
-            padding: 18px 16px;
-            box-shadow: inset 0 2px 5px rgba(255,255,255,0.8), 0 8px 18px rgba(0,40,70,0.1);
-            border: 1px solid #dde9f2;
-        }
-        .eco-detailed .stat-badge .label {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-            color: #2c5779;
-            margin-bottom: 6px;
-        }
-        .eco-detailed .stat-badge .value {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #0a3147;
-            line-height: 1.2;
-        }
-        .eco-detailed .stat-badge .unit {
-            font-size: 0.9rem;
-            color: #5e7e9c;
-            margin-left: 4px;
-        }
-        .eco-detailed table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #f9fbfe;
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 6px 14px rgba(0,20,30,0.06);
-        }
-        .eco-detailed th {
-            background: #173e5c;
-            color: white;
-            font-weight: 600;
-            font-size: 0.9rem;
-            padding: 12px 8px;
-            text-align: center;
-        }
-        .eco-detailed td {
-            padding: 10px 8px;
-            text-align: center;
-            border-bottom: 1px solid #d4e1ec;
-            font-size: 0.9rem;
-            color: #1e3b54;
-        }
-        .eco-detailed tr:last-child td {
-            border-bottom: none;
-        }
-        .eco-detailed .chart-container {
-            background: #ffffffd9;
-            border-radius: 28px;
-            padding: 15px 10px 5px 10px;
-            box-shadow: 0 6px 18px #d9e2ed;
-        }
-        .eco-detailed .mermaid-wrapper {
-            background: #1e2b3a;
-            border-radius: 30px;
-            padding: 25px 15px;
-            display: flex;
-            justify-content: center;
-            color: white;
-        }
-        .eco-detailed .footnote {
-            margin-top: 20px;
-            font-size: 0.9rem;
-            color: #34658b;
-            background: #e3f0fc;
-            padding: 14px 20px;
-            border-radius: 40px;
-            border-left: 6px solid #0f7bbf;
-        }
-        .eco-detailed .badge-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 20px;
-        }
-        .eco-detailed .badge {
-            background: #0b5e8a;
-            color: white;
-            border-radius: 50px;
-            padding: 6px 16px;
-            font-weight: 600;
-            font-size: 0.85rem;
-        }
-        .eco-detailed .badge-light {
-            background: #d9ecfb;
-            color: #0b3b58;
-        }
-        .eco-detailed hr {
-            border: none;
-            height: 2px;
-            background: linear-gradient(90deg, #b3d6f0, transparent);
-            margin: 25px 0 15px;
-        }
-        .eco-detailed .price-tag {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(145deg, #176b9c, #0a4b73);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* 移动端优化：经济模型完整解析 */
-        @media (max-width: 600px) {
-            .eco-detailed .grid-2,
-            .eco-detailed .grid-3 {
-                grid-template-columns: 1fr;
-            }
-            .eco-detailed .slide-header h2 {
-                font-size: 1.4rem;
-            }
-            .eco-detailed .slide-card {
-                padding: 20px 16px;
-            }
-            .eco-detailed .stat-badge {
-                padding: 14px 12px;
-            }
-            .eco-detailed .stat-badge .value {
-                font-size: 1.5rem;
-            }
-            .eco-detailed .badge-group {
-                gap: 8px;
-            }
-            .eco-detailed .badge {
-                padding: 4px 12px;
-                font-size: 0.75rem;
-            }
-            .eco-detailed table {
-                display: block;
-                width: 100%;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-            .eco-detailed .chart-container canvas {
-                max-height: 180px !important;
-            }
-            .eco-detailed .stat-badge,
-            .eco-detailed .reward-item {
-                transition: none;
-            }
-            .eco-detailed .reward-item:hover {
-                transform: none;
-            }
-            .eco-detailed .mermaid-wrapper {
-                overflow-x: auto;
-            }
-            .eco-detailed .mermaid-wrapper pre {
-                min-width: 400px;
-            }
-            .eco-detailed .slide-card:first-child i.fa-whale {
-                font-size: 3rem !important;
-            }
-            .eco-detailed .slide-card:first-child div:first-child {
-                font-size: 0.9rem;
-            }
-            .eco-detailed .slide-card:first-child div:nth-child(2) {
-                font-size: 2rem !important;
-            }
-            .eco-detailed .slide-card:first-child div:nth-child(3) {
-                font-size: 1rem !important;
-            }
-        }
-
-        /* 左侧导航 */
-        .left-nav-fab {
-            position: fixed;
-            left: 8px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
-            border: 1px solid #f0f2f5;
-            z-index: 100;
-            font-size: 2rem;
-            color: #2c3e50;
-            cursor: pointer;
-        }
-
-        .sidebar-chat {
-            position: fixed;
-            left: -320px;
-            top: 0;
-            bottom: 0;
-            width: 280px;
-            background: #f0f2f5;
-            border-radius: 0 48px 48px 0;
-            padding: 32px 18px;
-            box-shadow: 4px 0 25px -8px rgba(0,0,0,0.15);
-            transition: left 0.25s ease;
-            z-index: 300;
-            border-right: 1px solid #fff;
-        }
-
-        .sidebar-chat.open { left: 0; }
-
-        .sidebar-header {
-            font-weight: 700;
-            margin-bottom: 24px;
-            font-size: 1.4rem;
-            background: linear-gradient(145deg, #1f2a3a, #31455b);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            padding-left: 6px;
-        }
-
-        .chat-list li {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 14px 14px;
-            background: white;
-            border-radius: 40px;
-            margin-bottom: 12px;
-            border: 1px solid #eef2f6;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.02);
-        }
-
-        .chat-avatar {
-            width: 48px; height: 48px;
-            border-radius: 50%;
-            background: #e6f0ff;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.6rem;
-        }
-
-        .chat-info {
-            flex: 1;
-        }
-
-        .chat-name {
-            font-weight: 600;
-            font-size: 1rem;
-            color: #1f2a3a;
-            margin-bottom: 2px;
-        }
-
-        .chat-msg {
-            font-size: 0.8rem;
-            color: #6f7c8f;
-        }
-
-        .unread {
-            background: #f05d5d;
-            color: white;
-            border-radius: 40px;
-            padding: 4px 12px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        /* 辅助元素 */
-        .chip {
-            background: white;
-            border-radius: 50px;
-            padding: 8px 18px;
-            font-size: 0.9rem;
-            border: 1px solid #eef2f6;
-            color: #2d3a4b;
-            font-weight: 500;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        }
-
-        .metric-box {
-            background: white;
-            border-radius: 28px;
-            padding: 16px;
-            border: 1px solid #eef2f6;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
-        }
-
-        .metric-box small {
-            font-size: 0.8rem;
-            color: #69778b;
-            font-weight: 500;
-            letter-spacing: 0.02em;
-        }
-
-        .metric-box strong {
-            font-size: 1.3rem;
-            font-weight: 700;
-            background: linear-gradient(145deg, #1f2a3a, #3a4b62);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .progress-bar {
-            height: 10px;
-            background: #e2e8f0;
-            border-radius: 20px;
-            overflow: hidden;
-            margin: 8px 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #4a90e2, #f5a623);
-            width: 0%;
-            border-radius: 20px;
-        }
-
-        button.small {
-            background: white;
-            border: 1px solid #eef2f6;
-            border-radius: 50px;
-            padding: 12px 20px;
-            font-weight: 600;
-            color: #1f2a3a;
-            font-size: 0.95rem;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
-            cursor: pointer;
-        }
-
-        input, textarea {
-            width: 100%;
-            padding: 16px 18px;
-            border-radius: 40px;
-            border: 1px solid #e0e6ed;
-            background: white;
-            font-size: 0.95rem;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
-        }
-
-        h4 {
-            background: linear-gradient(145deg, #1f2a3a, #31455b);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin: 18px 0 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-        .grid-4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        hr { border: none; border-top: 1px solid #e2e8f0; margin: 16px 0; }
-        .profit-up { color: #2ecc71; font-weight: 600; }
-        .profit-down { color: #e74c3c; font-weight: 600; }
-
-        .stats-summary .summary-item {
-            backdrop-filter: blur(4px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.02);
-        }
-        .calendar-cell .day-num {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #1f2a3a;
-        }
-        .calendar-cell .profit-value {
-            font-size: 0.7rem;
-            font-weight: 600;
-            margin-top: 2px;
-        }
-        .empty-cell {
-            background: transparent;
-            border: 1px dashed #d0d7e2;
-            opacity: 0.5;
-        }
-        .sparkline-canvas {
-            width: 100%;
-            height: 40px;
-            margin-top: 8px;
-        }
-        .copy-icon {
-            margin-left: 6px;
-            color: #4a90e2;
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>海豚社区 · 无边框空间感</title>
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Inter 字体 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <style>
+    /* ===== 无边框设计系统 ===== */
+    :root {
+      /* 背景层 - 极浅灰 */
+      --bg-color: #F5F7FA;
+      
+      /* 内容层 - 白色卡片 */
+      --card-color: #FFFFFF;
+      
+      /* 品牌主色 - 海洋蓝 */
+      --brand-color: #0066FF;
+      --brand-light: rgba(0, 102, 255, 0.08);
+      --brand-gradient: linear-gradient(135deg, #0066FF, #3399FF);
+      
+      /* 辅助灰色系 */
+      --gray-100: #F8F9FA;
+      --gray-200: #E9ECEF;
+      --gray-300: #DEE2E6;
+      --gray-400: #CED4DA;
+      --gray-500: #ADB5BD;
+      --gray-600: #6C757D;
+      --gray-700: #495057;
+      --gray-800: #343A40;
+      --gray-900: #212529;
+      
+      /* 功能色 */
+      --success: #34C759;
+      --danger: #FF3B30;
+      
+      /* 文字颜色 */
+      --text-primary: var(--gray-900);
+      --text-secondary: var(--gray-700);
+      --text-tertiary: var(--gray-600);
+      
+      /* 阴影 - 增强悬浮层次 (无边框) */
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.02);
+      --shadow-md: 0 8px 24px rgba(0,0,0,0.06);
+      --shadow-lg: 0 16px 32px -8px rgba(0,0,0,0.12);
+      --shadow-xl: 0 24px 48px -12px rgba(0, 102, 255, 0.12);
+      
+      /* 圆角 */
+      --radius-card: 32px;
+      --radius-element: 24px;
+      --radius-btn: 60px;
+      
+      /* 间距 */
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 20px;
+      --spacing-xxl: 24px;
+      
+      /* 过渡 */
+      --transition: all 0.2s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      max-width: 450px;
+      margin: 0 auto;
+      box-shadow: 0 0 40px rgba(0,0,0,0.02);
+    }
+
+    /* 滚动容器 - 内容层 */
+    .main-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-sm) var(--spacing-lg);
+      background: var(--bg-color);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xl);
+      scrollbar-width: thin;
+      scrollbar-color: var(--gray-400) var(--gray-200);
+    }
+    .main-scroll::-webkit-scrollbar {
+      width: 4px;
+    }
+    .main-scroll::-webkit-scrollbar-track {
+      background: var(--gray-200);
+    }
+    .main-scroll::-webkit-scrollbar-thumb {
+      background-color: var(--gray-400);
+      border-radius: 8px;
+    }
+
+    /* 卡片 - 纯白，无边框，强阴影 */
+    .card {
+      background: var(--card-color);
+      border-radius: var(--radius-card);
+      padding: var(--spacing-xl) var(--spacing-xl);
+      box-shadow: var(--shadow-lg);
+      transition: var(--transition);
+    }
+    .card:active {
+      transform: scale(0.998);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* 可点击元素 */
+    .clickable {
+      transition: var(--transition);
+      cursor: default;
+      -webkit-tap-highlight-color: var(--brand-light);
+    }
+    .clickable:active {
+      transform: scale(0.97);
+    }
+
+    /* 品牌色高亮 */
+    .brand-text {
+      color: var(--brand-color);
+      font-weight: 600;
+    }
+    .brand-bg {
+      background: var(--brand-gradient);
+      color: white;
+      box-shadow: 0 8px 20px rgba(0,102,255,0.25);
+    }
+
+    /* 顶部用户卡片 */
+    .user-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .user-info-clickable {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      flex: 1;
+      padding: var(--spacing-xs) 0;
+      border-radius: 50px;
+    }
+    .h-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--brand-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--brand-color);
+      box-shadow: var(--shadow-sm);
+    }
+    .nickname {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .level-badge {
+      background: var(--brand-gradient);
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 16px;
+      border-radius: 40px;
+      box-shadow: 0 6px 14px rgba(0,102,255,0.25);
+    }
+
+    /* 充币/提币按钮 - 第二行 */
+    .action-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: var(--spacing-md);
+    }
+    .action-buttons {
+      display: flex;
+      gap: var(--spacing-sm);
+    }
+    .coin-btn {
+      background: var(--gray-100);
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: var(--radius-btn);
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    .coin-btn:active {
+      background: var(--gray-200);
+      transform: scale(0.96);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* 展开区域 */
+    .expand-section {
+      margin-top: var(--spacing-lg);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-sm);
+      padding-top: var(--spacing-lg);
+      border-top: 1px solid transparent; /* 保留视觉分割线但不占边框空间，实际使用虚线更柔和 */
+      background: linear-gradient(to right, transparent, var(--gray-300), transparent) 0 0 / 100% 1px no-repeat;
+      animation: slideDown 0.2s ease;
+    }
+    @keyframes slideDown {
+      0% { opacity: 0; transform: translateY(-8px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .hidden { display: none; }
+
+    /* 统计框 - 无边框 */
+    .stat-box {
+      background: var(--gray-100);
+      border-radius: var(--radius-element);
+      padding: var(--spacing-md) var(--spacing-xs);
+      text-align: center;
+      flex: 1 0 calc(25% - 8px);
+      box-shadow: var(--shadow-sm);
+    }
+    .stat-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      margin-bottom: var(--spacing-xs);
+    }
+    .stat-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    /* 公告卡片 */
+    .announcement {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+    .announcement i {
+      color: var(--brand-color);
+      font-size: 22px;
+    }
+    .announcement span {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    /* 工具集网格 - 8个 */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--spacing-lg) var(--spacing-sm);
+      margin-top: var(--spacing-sm);
+    }
+    .tool-item {
+      background: var(--gray-100);
+      border-radius: 24px;
+      padding: var(--spacing-lg) var(--spacing-xs) var(--spacing-sm) var(--spacing-xs);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--spacing-xs);
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    .tool-item:active {
+      background: var(--gray-200);
+      transform: scale(0.96);
+      box-shadow: var(--shadow-sm);
+    }
+    .tool-item i {
+      font-size: 26px;
+      color: var(--brand-color);
+    }
+    .tool-item span {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    /* 最新活动卡片 */
+    .activity-content {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-lg);
+    }
+    .activity-badge {
+      background: var(--brand-gradient);
+      color: white;
+      font-weight: 600;
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-size: 14px;
+      white-space: nowrap;
+      box-shadow: 0 8px 18px rgba(0,102,255,0.25);
+    }
+    .activity-text {
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+    }
+    .activity-text i {
+      color: var(--brand-color);
+    }
+
+    /* 便捷访问双按钮 */
+    .quick-row {
+      display: flex;
+      gap: var(--spacing-md);
+    }
+    .quick-btn {
+      flex: 1;
+      background: var(--gray-100);
+      border-radius: var(--radius-btn);
+      padding: 16px 0;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-sm);
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    .quick-btn:active {
+      background: var(--gray-200);
+      transform: scale(0.97);
+      box-shadow: var(--shadow-sm);
+    }
+    .quick-btn i {
+      color: var(--brand-color);
+      font-size: 18px;
+    }
+
+    /* 轮播卡片 */
+    .carousel-card {
+      background: var(--card-color);
+      border-radius: var(--radius-card);
+      padding: var(--spacing-lg) var(--spacing-xl);
+      box-shadow: var(--shadow-lg);
+    }
+    .carousel-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--spacing-md);
+    }
+    .carousel-text {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-primary);
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+    .carousel-text i {
+      color: var(--brand-color);
+    }
+    .carousel-arrow {
+      width: 40px;
+      height: 40px;
+      background: var(--gray-100);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray-600);
+      font-size: 18px;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    .carousel-arrow:active {
+      background: var(--gray-200);
+      transform: scale(0.94);
+      box-shadow: var(--shadow-sm);
+    }
+    .carousel-indicators {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-sm);
+      margin-top: var(--spacing-lg);
+    }
+    .indicator-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--gray-400);
+      border-radius: 20px;
+      transition: all 0.2s;
+    }
+    .indicator-dot.active {
+      background: var(--brand-color);
+      width: 28px;
+    }
+
+    /* 代币方形卡片 - 2个并排 */
+    .price-squares {
+      display: flex;
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-xs);
+    }
+    .price-square {
+      flex: 1;
+      background: var(--card-color);
+      border-radius: var(--radius-card);
+      padding: var(--spacing-xl) var(--spacing-md) var(--spacing-lg) var(--spacing-md);
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .square-token-icon {
+      width: 60px;
+      height: 60px;
+      background: var(--brand-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--brand-color);
+      margin-bottom: var(--spacing-md);
+      box-shadow: var(--shadow-sm);
+    }
+    .square-token-name {
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-bottom: var(--spacing-xs);
+    }
+    .square-price {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: var(--spacing-sm);
+      letter-spacing: -0.5px;
+    }
+    .square-change {
+      font-weight: 600;
+      font-size: 16px;
+      padding: 6px 18px;
+      border-radius: 30px;
+      background: var(--gray-100);
+      box-shadow: var(--shadow-sm);
+    }
+    .change-positive { color: var(--success); }
+    .change-negative { color: var(--danger); }
+
+    /* 社区数据 - 2x2网格 */
+    .community-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-md);
+    }
+    .community-item {
+      background: var(--gray-100);
+      border-radius: var(--radius-element);
+      padding: var(--spacing-lg) var(--spacing-sm);
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+    .community-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      margin-bottom: var(--spacing-xs);
+    }
+    .community-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--brand-color);
+    }
+
+    /* 卡片标题 */
+    .card-header {
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-lg);
+    }
+    .card-header i {
+      color: var(--brand-color);
+      font-size: 20px;
+    }
+
+    /* 底部操作层 - 导航栏 (无边框) */
+    .bottom-menu {
+      background: var(--card-color);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: var(--spacing-sm) var(--spacing-sm) var(--spacing-lg) var(--spacing-sm);
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.04);
+    }
+    .menu-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--spacing-xs);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--gray-500);
+      padding: var(--spacing-xs) var(--spacing-md);
+      border-radius: 30px;
+      transition: var(--transition);
+    }
+    .menu-item i {
+      font-size: 22px;
+      color: var(--gray-500);
+    }
+    .menu-item.active i,
+    .menu-item.active .menu-label {
+      color: var(--brand-color);
+      font-weight: 600;
+    }
+    .menu-item:active {
+      background: var(--brand-light);
+      transform: scale(0.94);
+    }
+    .menu-label {
+      font-weight: 500;
+    }
+
+    /* 分割线 (无边框，用渐变实现) */
+    .divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gray-300), transparent);
+      margin: var(--spacing-md) 0;
+    }
+  </style>
 </head>
 <body>
-    <div class="app-container">
-        <!-- 顶部轮播 -->
-        <div class="top-carousel">
-            <div class="carousel-slide">
-                <div class="slide-line1">OKX Boost</div>
-                <div class="slide-line2">起飞，还是原地踏步</div>
-                <div class="slide-line3">H</div>
-                <div class="slide-line4">海豚社区招募计划</div>
-            </div>
-            <div class="carousel-indicators">
-                <span class="indicator-dot active"></span>
-            </div>
+  <!-- 中层：内容滚动区 -->
+  <div class="main-scroll">
+    <!-- 1. 顶部用户卡片（可展开） -->
+    <div class="card" id="userCard">
+      <div class="user-header-row">
+        <div class="user-info-clickable" id="expandTrigger">
+          <div class="h-icon">H</div>
+          <span class="nickname">深海海豚君</span>
+          <span class="level-badge">金牌会员</span>
         </div>
-
-        <!-- 用户信息面板 -->
-        <div class="user-panel">
-            <div class="user-row">
-                <div class="user-info">
-                    <div class="user-mini-logo">H</div>
-                    <div class="user-details">
-                        <h4>海豚用户212 <span class="badge">金牌会员</span></h4>
-                        <div class="id">ID: 991 · 持仓 2.4k H</div>
-                    </div>
-                </div>
-                <div class="user-actions">
-                    <button id="toggleStatsBtn"><i class="fa-solid fa-chart-simple"></i></button>
-                    <button id="toggleNavMenuBtn"><i class="fa-solid fa-bars-staggered"></i></button>
-                </div>
-            </div>
-            <!-- 四数据卡片 -->
-            <div class="stats-dropdown" id="statsDropdown">
-                <div class="stat-item"><div class="stat-label">身价</div><div class="stat-value" id="stat1">10</div></div>
-                <div class="stat-item"><div class="stat-label">资产</div><div class="stat-value" id="stat2">10</div></div>
-                <div class="stat-item"><div class="stat-label">贡献度</div><div class="stat-value" id="stat3">10</div></div>
-                <div class="stat-item"><div class="stat-label">周排名</div><div class="stat-value" id="stat4">10</div></div>
-            </div>
-            <!-- 导航菜单 -->
-            <div class="nav-menu-popup" id="navMenuPopup">
-                <button><i class="fa-regular fa-calendar"></i> 签到</button>
-                <div class="calendar-mini">
-                    <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
-                    <span>12</span><span>13</span><span>14</span><span class="today">15</span><span>16</span><span>17</span><span>18</span>
-                </div>
-                <button><i class="fa-solid fa-gift"></i> 抽奖</button>
-                <button><i class="fa-solid fa-arrow-up-right-from-square"></i> 官方论坛</button>
-                <button><i class="fa-solid fa-arrow-up-right-from-square"></i> 白皮书</button>
-            </div>
+      </div>
+      <!-- 充币/提币行 -->
+      <div class="action-row">
+        <div class="action-buttons" id="actionButtons">
+          <span class="coin-btn">充币</span>
+          <span class="coin-btn">提币</span>
         </div>
-
-        <!-- 核心按钮 -->
-        <div class="core-tabs">
-            <button class="core-tab active" id="tabBoost"><i class="fa-solid fa-rocket"></i> Boost</button>
-            <button class="core-tab" id="tabModel"><i class="fa-solid fa-chart-line"></i> 模型</button>
-            <button class="core-tab" id="tabData"><i class="fa-solid fa-database"></i> 数据</button>
-        </div>
-
-        <!-- Boost卡片组 (默认全部关闭) -->
-        <div id="boostGroup" class="cards-group">
-            <!-- 卡片1：Boost 专栏 -->
-            <div class="magic-card boost-card" id="cardBoost1">
-                <div class="card-header"><span>🚀 OKX Boost 专栏</span> <i class="fa-solid fa-chevron-down"></i></div>
-                <div class="card-content scroll-content">
-                    <span class="boost-badge">🔥 进行中</span>
-
-                    <div class="content-section">
-                        <div class="section-title"><i class="fas fa-info-circle"></i> 活动解析</div>
-                        <p class="description">OKX Boost 是 OKX Wallet 2025年9月份正式推出的链上创新项目参与平台，旨在为优质区块链项目与真实用户搭建高效桥梁。</p>
-                    </div>
-
-                    <div class="content-section">
-                        <div class="section-title"><i class="fas fa-list-check"></i> 三大核心模式</div>
-                        <ul class="rules-list">
-                            <li><i class="fas fa-rocket"></i> <strong>X Launch：</strong>基于 OKX DEX 交易活跃度，用户可瓜分新项目代币奖池，是“交易即贡献”的公平分配机制。</li>
-                            <li><i class="fas fa-gift"></i> <strong>Giveaway：</strong>完成关注社群、链上交互等简单任务，即可获得项目代币或白名单资格，适合 Web3 探索者。</li>
-                            <li><i class="fas fa-trophy"></i> <strong>交易赛：</strong>针对热门项目的限时交易竞赛，排行榜前列用户共享高额奖池。</li>
-                        </ul>
-                    </div>
-
-                    <div class="content-section">
-                        <div class="section-title"><i class="fas fa-scale-balanced"></i> 公平透明的参与逻辑</div>
-                        <p class="description">OKX Boost 引入 <strong>Boost 交易量</strong> 与 <strong>Boost 余额</strong> 两项核心指标——分别统计用户过去10天在 OKX DEX 的平均交易额与 OKX Wallet 中优质资产的日均持仓——共同决定活动资格与奖励权重。</p>
-                        <p class="description" style="margin-top: 8px;">所有奖励分发均在开源、去中心化的智能合约中自动执行，不受平台干预，确保每一份激励都流向真实参与者。</p>
-                    </div>
-
-                    <div class="content-section">
-                        <div class="section-title"><i class="fas fa-chart-line"></i> Boost数据说明</div>
-                        <p class="description">Boost 数据综合反映你过去 10 天在 OKX DEX 的交易活跃度 (Boost 交易量) 和在 OKX Wallet 的资产持仓 (Boost 余额)。这两个指标将用于 OKX Boost 各类活动，影响你的活动资格及奖励金额。</p>
-                        <ul class="rules-list">
-                            <li><i class="fas fa-chart-simple"></i> <strong>Boost交易量：</strong>十天内达到$500交易量即可领取空投奖励，量越多奖励越高（平均每天500U的交易量）。</li>
-                            <li><i class="fas fa-wallet"></i> <strong>Boost余额：</strong>本地址十天内有USDT或OKB，200U（这个很简单基本上都会通过）。</li>
-                        </ul>
-                    </div>
-
-                    <div class="content-section">
-                        <div class="section-title"><i class="fas fa-gift"></i> 奖励的新币 | 收益来源</div>
-                        <p class="description">代币发行方凭借良好的链上数据表现，入选OKX Boost作为上所前的预热活动，持续获得OKX生态关注，为代币增加曝光度，欧易增加交易量。参与者获得新币奖励，真正实现链上与中心化交易所的双重流动性与用户基础赋能。</p>
-                    </div>
-
-                    <div class="card-actions">
-                        <button class="card-action-button" disabled style="pointer-events: none;"><i class="fas fa-play-circle"></i> 参与Boost活动</button>
-                        <button class="card-action-button secondary" disabled style="pointer-events: none;"><i class="fas fa-share-alt"></i> 分享给好友</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 卡片2：规则与奖励 -->
-            <div class="magic-card boost-card" id="cardBoost2">
-                <div class="card-header"><span>📋 规则与奖励</span> <i class="fa-solid fa-chevron-down"></i></div>
-                <div class="card-content scroll-content">
-                    <span class="boost-badge" style="color:#10b981; border-color:#10b981;">📋 详细规则</span>
-
-                    <div class="content-section">
-                        <div class="section-title"><i class="fas fa-calculator"></i> Boost交易量规则</div>
-                        <p class="description">过去10天内用户在OKX DEX上的平均日交易额。统计范围为所有通过OKX DEX完成的交易对。交易额越高，活动资格等级越高，奖励权重越大。</p>
-                        <div class="rewards">
-                            <div class="reward-item"><span>🏅 基础档 ($500+)</span><span class="reward-value">空投资格</span></div>
-                            <div class="reward-item"><span>🥈 白银档 ($1000+)</span><span class="reward-value">奖励权重 x1.2</span></div>
-                            <div class="reward-item"><span>🥇 黄金档 ($5000+)</span><span class="reward-value">奖励权重 x1.8</span></div>
-                            <div class="reward-item"><span>💎 钻石档 ($10000+)</span><span class="reward-value">奖励权重 x3.0</span></div>
-                        </div>
-                    </div>
-
-                    <div class="content-section">
-                        <div class="section-title"><i class="fas fa-wallet"></i> Boost余额规则</div>
-                        <p class="description">过去10天内用户在OKX Wallet中持有的优质资产的日均持仓价值。优质资产包括USDT、USDC、OKB、BTC、ETH等。最低门槛200U，持仓越多奖励加成越高。</p>
-                        <div class="rewards">
-                            <div class="reward-item"><span>🌱 基础 ($200+)</span><span class="reward-value">资格通过</span></div>
-                            <div class="reward-item"><span>🌿 进阶 ($1000+)</span><span class="reward-value">奖励 +15%</span></div>
-                            <div class="reward-item"><span>🌳 资深 ($5000+)</span><span class="reward-value">奖励 +40%</span></div>
-                            <div class="reward-item"><span>🏝️ 巨鲸 ($20000+)</span><span class="reward-value">奖励 +100%</span></div>
-                        </div>
-                    </div>
-
-                    <div class="content-section">
-                        <div class="section-title"><i class="fas fa-medal"></i> 奖励分配机制</div>
-                        <p class="description">每个Boost活动根据参与者Boost交易量和Boost余额综合评分，按比例分配奖池。奖励以项目代币形式直接发放到参与钱包，完全智能合约执行，零手续费。</p>
-                    </div>
-
-                    <div class="card-actions">
-                        <button class="card-action-button" disabled style="pointer-events: none;"><i class="fas fa-calculator"></i> 模拟计算奖励</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 卡片3：策略解析 -->
-            <div class="magic-card boost-card" id="cardBoost3">
-                <div class="card-header"><span>🧠 社区策略解析</span> <i class="fa-solid fa-chevron-down"></i></div>
-                <div class="card-content scroll-content">
-                    <span class="boost-badge" style="color:#8b5cf6; border-color:#8b5cf6;">💡 策略分享</span>
-
-                    <div class="content-section">
-                        <div class="section-title"><i class="fas fa-bullseye"></i> 策略一：集中交易提升Boost交易量</div>
-                        <p class="description">社区成员可在特定时间段集中交易指定币对（如OKB/USDT、BTC/USDT），通过社群协作拉高日交易额，迅速达到$500门槛并冲刺更高档位，共同瓜分奖池。</p>
-                    </div>
-                    <div class="content-section">
-                        <div class="section-title"><i class="fas fa-people-arrows"></i> 策略二：联合持仓Boost余额</div>
-                        <p class="description">鼓励成员在OKX Wallet中持有USDT/OKB等资产，社区可组织联合持仓计划（例如多人凑单质押），降低个人门槛，同时获得更高的余额加成。</p>
-                    </div>
-                    <div class="content-section">
-                        <div class="section-title"><i class="fas fa-tasks"></i> 策略三：任务共享与白名单申请</div>
-                        <p class="description">社区实时整理Giveaway任务攻略，成员一键关注社群、完成链上交互，快速获得项目代币或白名单资格，大幅提升效率。</p>
-                    </div>
-                    <div class="content-section">
-                        <div class="section-title"><i class="fas fa-flag-checkered"></i> 策略四：交易竞赛协同作战</div>
-                        <p class="description">针对交易赛，社区内组建战队，分享K线技术、挂单策略、Gas优化技巧，提高整体排名，共享高额奖池。</p>
-                    </div>
-
-                    <div class="card-actions">
-                        <button class="card-action-button" disabled style="pointer-events: none;"><i class="fas fa-bullhorn"></i> 加入社区战队</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 卡片4：留言板 -->
-            <div class="magic-card boost-card" id="cardBoost4">
-                <div class="card-header"><span>💬 Boost留言板</span> <i class="fa-solid fa-chevron-down"></i></div>
-                <div class="card-content scroll-content">
-                    <span class="boost-badge">💬 20条留言</span>
-
-                    <div class="content-section">
-                        <div class="section-title"><i class="fas fa-clock"></i> 最新留言</div>
-                        <div class="comment-item">
-                            <div class="comment-header">
-                                <i class="fas fa-user-circle comment-avatar"></i>
-                                <span class="comment-author">海豚船长</span>
-                                <span class="comment-time">5分钟前</span>
-                            </div>
-                            <div class="comment-content">刚完成500U交易，收到Boost空投了！项目方直接发了2000个代币，真香！</div>
-                        </div>
-                        <div class="comment-item">
-                            <div class="comment-header">
-                                <i class="fas fa-user-circle comment-avatar"></i>
-                                <span class="comment-author">Web3探险家</span>
-                                <span class="comment-time">15分钟前</span>
-                            </div>
-                            <div class="comment-content">持仓了300U OKB，Boost余额轻松达标，坐等下一个Launch项目~</div>
-                        </div>
-                        <div class="comment-item">
-                            <div class="comment-header">
-                                <i class="fas fa-user-circle comment-avatar"></i>
-                                <span class="comment-author">交易员小新</span>
-                                <span class="comment-time">32分钟前</span>
-                            </div>
-                            <div class="comment-content">跟着战队冲交易赛，拿了排行榜第9，奖励3000U等值代币！</div>
-                        </div>
-                    </div>
-
-                    <div class="content-section">
-                        <div class="section-title"><i class="fas fa-pen"></i> 发表留言</div>
-                        <div class="comment-input-area">
-                            <input type="text" class="comment-input" placeholder="分享你的Boost经验..." value="示例留言" readonly>
-                            <button class="comment-send-btn" disabled style="pointer-events: none;"><i class="fas fa-paper-plane"></i> 发送</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 模型卡片组 (默认全部关闭) -->
-        <div id="modelGroup" class="cards-group hidden">
-            <div class="magic-card model-card" id="cardModel1">
-                <div class="card-header"><span>🐬 海豚模式</span> <i class="fa-solid fa-chevron-down"></i></div>
-                <div class="card-content scroll-content">
-                    <p>聚合流动性、智能路由、低滑点 · 集成模拟器</p>
-                </div>
-            </div>
-
-            <!-- 经济模型完整解析 (移动端优化) -->
-            <div class="magic-card model-card" id="cardModel2">
-                <div class="card-header"><span>📊 经济模型</span> <i class="fa-solid fa-chevron-down"></i></div>
-                <div class="card-content scroll-content eco-detailed">
-                    <!-- 封面卡片 -->
-                    <div class="slide-card" style="background: linear-gradient(125deg, #0a273b, #124a6e); color: white; border: none;">
-                        <div style="display: flex; align-items: center; justify-content: space-between;">
-                            <div>
-                                <div style="font-size: 1rem; font-weight: 300; letter-spacing: 3px; color: #a5d1ff;">🐬 海豚经济模型</div>
-                                <div style="font-size: 2.5rem; font-weight: 700; line-height: 1.1; margin: 15px 0 5px;">完整解析</div>
-                                <div style="font-size: 1.2rem; color: #c7e3ff;">基于联合曲线的飞轮效应验证</div>
-                                <div style="margin-top: 25px; display: flex; gap: 20px; flex-wrap:wrap;">
-                                    <span><i class="fas fa-chart-line"></i> 200次买入模拟</span>
-                                    <span><i class="fas fa-coins"></i> 国库·回购·税费</span>
-                                    <span><i class="fas fa-arrows-spin"></i> 飞轮闭环</span>
-                                </div>
-                            </div>
-                            <i class="fas fa-whale" style="font-size: 5rem; opacity: 0.3; color: white;"></i>
-                        </div>
-                    </div>
-
-                    <!-- 卡片1: 联合曲线 + 经济模型概览 -->
-                    <div class="slide-card">
-                        <div class="slide-header">
-                            <i class="fas fa-link"></i>
-                            <h2>联合曲线 · 定价根基</h2>
-                        </div>
-                        <div class="grid-2">
-                            <div>
-                                <p style="font-size: 1rem; line-height: 1.6; color: #1f3a57;"><span class="badge" style="background:#0f7bbf;">恒定乘积</span> <strong>x·y = k</strong> (Uniswap V2风格)</p>
-                                <p style="margin: 10px 0 15px; color: #274e6d;">价格由池子实时决定：<code>P = 池子USDT / 池子H</code>，买入推高价格，卖出拉低。智能合约自动执行，无主观干预。</p>
-                                <div class="stat-badge">
-                                    <div class="label">初始流动性池</div>
-                                    <div class="value"><span class="price-tag">1万 USDT</span> <span style="font-size:1.4rem;">+ 2亿 H</span></div>
-                                    <div>初始价格 <strong>0.00005 USDT</strong> / H</div>
-                                </div>
-                            </div>
-                            <div>
-                                <h3 style="color:#15425f; margin-bottom: 15px; font-size:1.2rem;"><i class="fas fa-table-list" style="margin-right: 10px;"></i>H代币 经济参数</h3>
-                                <table style="background: #eaf2fb;">
-                                    <tr><td>总发行量</td><td><strong>10亿 H</strong> (固定)</td></tr>
-                                    <tr><td>交易税费</td><td><strong>5%</strong> 全归国库</td></tr>
-                                    <tr><td>OKX返佣</td><td><strong>0.34%</strong> 交易额</td></tr>
-                                    <tr><td>发射方式</td><td>X Layer · LP锁死</td></tr>
-                                    <tr><td>社区首发</td><td>8亿 H (1万U)</td></tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 卡片2: 200次买入模拟 · 价格增长曲线 -->
-                    <div class="slide-card">
-                        <div class="slide-header">
-                            <i class="fas fa-calculator"></i>
-                            <h2>📈 200次买入模拟 (每次500 USDT) 价格演化</h2>
-                        </div>
-                        <div class="grid-2" style="gap: 20px;">
-                            <div class="chart-container">
-                                <canvas id="priceChart" style="width:100%; max-height:240px; height:220px;"></canvas>
-                                <p style="text-align:center; color:#0f4e77; margin-top: 8px;">累计买入 USDT → H 价格 (USDT)</p>
-                            </div>
-                            <div style="max-height: 260px; overflow-y: auto; border-radius: 24px;">
-                                <table>
-                                    <thead><tr><th>次数</th><th>累计买(U)</th><th>价格(U)</th><th>累计买H</th><th>占比</th></tr></thead>
-                                    <tbody id="priceTableBody">
-                                        <!-- 通过JS动态生成 -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="badge-group">
-                            <span class="badge">初始价 0.00005</span>
-                            <span class="badge badge-light">第200次后价格 ≈ 0.00605</span>
-                            <span class="badge badge-light">总涨幅 121倍</span>
-                            <span class="badge badge-light">总买入 10万U</span>
-                            <span class="badge badge-light">池子H剩余 1818万</span>
-                        </div>
-                        <div class="footnote">
-                            <i class="fas fa-check-circle" style="color:#07734b;"></i> 完全基于恒定乘积公式：x = 10000 + 累计买入, 价格 = x² / (2×10¹²) 。模拟数据与白皮书吻合。
-                        </div>
-                    </div>
-
-                    <!-- 卡片3: 国库收支 & 回购机制 -->
-                    <div class="slide-card">
-                        <div class="slide-header">
-                            <i class="fas fa-landmark"></i>
-                            <h2>国库积累 · 5%税费 + 0.34%返佣 · 回购销毁</h2>
-                        </div>
-                        <div class="grid-3">
-                            <div class="stat-badge">
-                                <div class="label"><i class="fas fa-receipt"></i> 交易税费 (5%)</div>
-                                <div class="value">10,000 <span class="unit">USDT</span></div>
-                                <div>基于20万交易量</div>
-                            </div>
-                            <div class="stat-badge">
-                                <div class="label"><i class="fas fa-percent"></i> OKX返佣 (0.34%)</div>
-                                <div class="value">680 <span class="unit">USDT</span></div>
-                                <div>20万交易量 * 0.34%</div>
-                            </div>
-                            <div class="stat-badge">
-                                <div class="label"><i class="fas fa-fire"></i> 首次回购销毁</div>
-                                <div class="value">300 <span class="unit">USDT</span></div>
-                                <div>按价格0.00605 销毁 ≈ 49,587 H</div>
-                            </div>
-                        </div>
-                        <hr>
-                        <div style="display: flex; gap: 20px; flex-wrap: wrap; align-items: center;">
-                            <div style="min-width: 160px;">
-                                <h4 style="font-size:1rem;">国库净余额</h4>
-                                <div style="font-size: 2.2rem; font-weight: 700; color: #124e77;">10,380 <small>USDT</small></div>
-                                <div style="color: #2f648b;">(税费+返佣-回购)</div>
-                            </div>
-                            <div style="flex:1; background: #daf0fe; padding: 16px; border-radius: 32px; font-size:0.9rem;">
-                                <span style="font-weight:600;">✍️ 回购合约逻辑：</span> 国库余额每超过1000 USDT，自动划拨300 USDT 回购H并销毁。通缩机制提升代币价值。
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 卡片4: 飞轮效应图解 -->
-                    <div class="slide-card">
-                        <div class="slide-header">
-                            <i class="fas fa-arrows-rotate"></i>
-                            <h2>价值双向飞轮 · 协调增益</h2>
-                        </div>
-                        <div class="mermaid-wrapper">
-                            <pre class="mermaid" style="background: transparent; width:100%;">
-                                graph TD
-                                    A[用户质押USDT] --> B[获得H代币]
-                                    B --> C[参与OKX Boost交易]
-                                    C --> D[产生交易量]
-                                    D --> E[5%税费归国库]
-                                    D --> F[0.34%返佣归国库]
-                                    E --> G[国库积累USDT]
-                                    F --> G
-                                    G --> H[回购销毁H]
-                                    H --> I[H价格上涨]
-                                    I --> A
-                                    B --> J[卖出H获利]
-                                    J --> A
-                                    J --> C
-                            </pre>
-                        </div>
-                        <p style="margin-top: 15px; background: #e7f2fa; padding: 12px; border-radius: 40px; text-align: center;">
-                            ⚡ 早期用户滋养社区，社区成长反哺用户。三方共赢：用户、社区、OKX。
-                        </p>
-                    </div>
-
-                    <!-- 卡片5: 资产分布 & 抛压分析 -->
-                    <div class="slide-card">
-                        <div class="slide-header">
-                            <i class="fas fa-pie-chart"></i>
-                            <h2>资产分布 · 抛压防火墙</h2>
-                        </div>
-                        <div class="grid-2">
-                            <div>
-                                <div style="max-width: 250px; margin: 0 auto;">
-                                    <canvas id="holdingChart" style="width:100%; height:180px;"></canvas>
-                                </div>
-                                <div style="margin-top: 20px; font-size:0.9rem;">
-                                    <div><span style="display:inline-block; width:10px; height:10px; background:#206a97; border-radius:99px;"></span> 社区国库多签: <strong>6.826亿 H</strong></div>
-                                    <div><span style="display:inline-block; width:10px; height:10px; background:#42a5c5; border-radius:99px;"></span> 社区成员持币: <strong>0.79亿 H</strong></div>
-                                    <div><span style="display:inline-block; width:10px; height:10px; background:#9fc5e8; border-radius:99px;"></span> Uniswap池: <strong>0.095亿 H</strong></div>
-                                    <div><span style="display:inline-block; width:10px; height:10px; background:#d2e5f7; border-radius:99px;"></span> 其他/预留: <strong>2.289亿 H</strong></div>
-                                </div>
-                            </div>
-                            <div>
-                                <h3 style="font-size:1.1rem;">🛡️ 抛压应对策略</h3>
-                                <ul style="list-style-type: none; font-size: 0.95rem; line-height: 2;">
-                                    <li><i class="fas fa-lock" style="color:#1a6b9f;"></i> 外部持币极少 (仅池内可售)</li>
-                                    <li><i class="fas fa-arrow-rotate-left" style="color:#1a6b9f;"></i> 国库 >1000U 自动回购销毁</li>
-                                    <li><i class="fas fa-clock" style="color:#1a6b9f;"></i> 每日质押支出仅4.3万H，库存可支撑24年</li>
-                                </ul>
-                                <div class="stat-badge" style="margin-top: 20px;">
-                                    <div class="label">每日收益支付 (按$0.0232价)</div>
-                                    <div class="value">43,103 H</div>
-                                    <div>3.79亿国库库存 ➔ 8792天</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 卡片6: 关键指标验证表 -->
-                    <div class="slide-card">
-                        <div class="slide-header">
-                            <i class="fas fa-clipboard-check"></i>
-                            <h2>模型验证 · 核心指标总览</h2>
-                        </div>
-                        <div class="grid-3">
-                            <div class="stat-badge"><span class="label">初始价格</span><span class="value">$0.00005</span></div>
-                            <div class="stat-badge"><span class="label">200次后价格</span><span class="value">$0.00605</span><span class="unit">(121倍)</span></div>
-                            <div class="stat-badge"><span class="label">累计买入H</span><span class="value">1.818亿</span><span class="unit">占总量18.2%</span></div>
-                            <div class="stat-badge"><span class="label">国库收入(税费+返佣)</span><span class="value">$10,680</span></div>
-                            <div class="stat-badge"><span class="label">首次销毁量(模拟)</span><span class="value">49,587 H</span></div>
-                            <div class="stat-badge"><span class="label">质押日利率</span><span class="value">0.5~1.2%</span></div>
-                        </div>
-                        <hr>
-                        <h3 style="color: #0a3f60; font-size:1.1rem;"><i class="fas fa-table"></i> 价格计算器·关键节点 (基于200次买入)</h3>
-                        <table style="margin-top: 15px;">
-                            <thead><tr><th>累计买入(U)</th><th>池子U</th><th>池子H(约)</th><th>价格(U)</th><th>买入H累计</th></tr></thead>
-                            <tbody>
-                                <tr><td>0</td><td>10,000</td><td>200,000,000</td><td>0.00005</td><td>0</td></tr>
-                                <tr><td>10,000</td><td>20,000</td><td>100,000,000</td><td>0.00020</td><td>100,000,000</td></tr>
-                                <tr><td>25,000</td><td>35,000</td><td>57,142,857</td><td>0.0006125</td><td>142,857,143</td></tr>
-                                <tr><td>50,000</td><td>60,000</td><td>33,333,333</td><td>0.00180</td><td>166,666,667</td></tr>
-                                <tr><td>75,000</td><td>85,000</td><td>23,529,412</td><td>0.00361</td><td>176,470,588</td></tr>
-                                <tr><td>100,000</td><td>110,000</td><td>18,181,818</td><td>0.00605</td><td>181,818,182</td></tr>
-                            </tbody>
-                        </table>
-                        <div class="footnote" style="margin-top: 15px;">
-                            <i class="fas fa-check-circle"></i> 联合曲线严格验证：任何时候价格 = 池子U/池子H，符合x*y=2e12常数。国库收入+回购+质押，飞轮已启动。
-                        </div>
-                    </div>
-
-                    <!-- 卡片7: 结论 -->
-                    <div class="slide-card" style="background: linear-gradient(115deg, #122b3f, #1e4a6e); color: white;">
-                        <div style="display: flex; align-items: center; gap: 30px; flex-wrap:wrap;">
-                            <i class="fas fa-dolphin" style="font-size: 4rem; opacity: 0.5;"></i>
-                            <div>
-                                <h2 style="color: white; font-size: 1.8rem;">✅ 模式可信 · 飞轮成型</h2>
-                                <p style="font-size: 1rem; max-width: 600px;">联合曲线公平定价，5%税费与返佣充实国库，回购销毁通缩，质押激励锁定。200次买入模拟展示价格有序增长，国库收入、抛压管理均符合设计。海豚模式具备正向循环的全部要件。</p>
-                                <div style="margin-top: 20px;">🐬 社区 · 用户 · OKX 三方共赢</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 数据来源脚注 -->
-                    <div style="text-align: center; color: #487396; padding: 15px; font-size:0.85rem;">
-                        <i class="fas fa-file-excel"></i> 基于《OKX Wallet DEX 交易数据验证》及200次买入模拟表格 · 数据驱动验证
-                    </div>
-                </div>
-            </div>
-
-            <!-- 联合曲线计算器 (重新排版版本) -->
-            <div class="magic-card model-card" id="cardModel3">
-                <div class="card-header"><span>🧮 联合曲线计算器</span> <i class="fa-solid fa-chevron-down"></i></div>
-                <div class="card-content scroll-content compact-calculator">
-                    <div class="badge-sub"><i class="fas fa-arrow-right"></i> 恒定乘积 x·y = k · 5%税费</div>
-
-                    <div class="param-grid">
-                        <div class="param-item">
-                            <label><i class="fas fa-water"></i> 初始池U (USDT)</label>
-                            <input type="number" id="initU" value="10000" step="100" min="1">
-                        </div>
-                        <div class="param-item">
-                            <label><i class="fas fa-coins"></i> 初始池H (H)</label>
-                            <input type="number" id="initH" value="200000000" step="1000000" min="1">
-                        </div>
-                        <div class="param-item">
-                            <label><i class="fas fa-vault"></i> 国库初始 (USDT)</label>
-                            <input type="number" id="initTreasury" value="0" step="10" min="0">
-                        </div>
-                        <div class="param-item">
-                            <button class="reset-btn" id="resetParamsBtn"><i class="fas fa-undo-alt"></i> 重置参数</button>
-                        </div>
-                    </div>
-
-                    <div class="state-row" id="statePanel">
-                        <div class="state-item"><span class="label">池U</span><span class="value" id="poolU">10,000</span></div>
-                        <div class="state-item"><span class="label">池H</span><span class="value" id="poolH">200M</span></div>
-                        <div class="state-item"><span class="label">价格</span><span class="value" id="currentPrice">0.00005</span></div>
-                        <div class="state-item"><span class="label">国库</span><span class="value" id="treasuryBal">0</span></div>
-                    </div>
-
-                    <div class="buy-panel">
-                        <div class="buy-title"><i class="fas fa-cart-arrow-down"></i> 模拟买入 (含5%税)</div>
-                        <div class="buy-input-row">
-                            <div class="input-group">
-                                <label>买入金额 (USDT)</label>
-                                <input type="number" id="buyAmount" value="500" step="10" min="1" placeholder="例如 500">
-                            </div>
-                            <div class="button-group">
-                                <button class="btn" id="buyBtn"><i class="fas fa-bolt"></i> 买入</button>
-                                <button class="btn btn-secondary" id="resetStateBtn"><i class="fas fa-rotate-left"></i> 重置</button>
-                            </div>
-                        </div>
-
-                        <div class="result-grid">
-                            <div class="result-card"><span class="label">净额(95%)</span><span class="number" id="netAmount">0</span></div>
-                            <div class="result-card"><span class="label">获得H</span><span class="number" id="hReceived">0</span></div>
-                            <div class="result-card"><span class="label">税费(5%)</span><span class="number" id="taxAmount">0</span></div>
-                            <div class="result-card"><span class="label">新价格</span><span class="number" id="newPrice">0.00005</span></div>
-                            <div class="result-card"><span class="label">新增国库</span><span class="number" id="taxToTreasury">0</span></div>
-                            <div class="result-card"><span class="label">总国库</span><span class="number" id="totalTreasury">0</span></div>
-                        </div>
-                    </div>
-
-                    <div class="history">
-                        <table>
-                            <thead><tr><th>#</th><th>买入(U)</th><th>价格</th><th>获得H</th><th>税费</th><th>池U后</th></tr></thead>
-                            <tbody id="historyBody">
-                                <tr><td colspan="6" style="text-align:center;">暂无交易</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="footnote">
-                        <i class="fas fa-check-circle" style="color:#167e56;"></i> 净额注入池，税费入国库，连续操作看飞轮
-                    </div>
-                </div>
-            </div>
-
-            <!-- 其余模型卡片 -->
-            <div class="magic-card model-card" id="cardModel4">
-                <div class="card-header"><span>⚖️ 横向对比</span> <i class="fa-solid fa-chevron-down"></i></div>
-                <div class="card-content scroll-content">
-                    <table><tr><th>模型</th><th>通胀率</th></tr><tr><td>海豚</td><td>2%</td></tr><tr><td>标准</td><td>5%</td></tr></table>
-                </div>
-            </div>
-            <div class="magic-card model-card" id="cardModel5">
-                <div class="card-header"><span>🏛️ 完整经济架构</span> <i class="fa-solid fa-chevron-down"></i></div>
-                <div class="card-content scroll-content">
-                    <p>双代币：H / veH · 质押收益表 · 飞轮画布 · 健康度98%</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- 数据卡片组 (默认全部关闭) -->
-        <div id="dataGroup" class="cards-group hidden">
-            <div class="magic-card data-card" id="cardData1">
-                <div class="card-header"><span>📊 社区数据总览 · 专业版</span> <i class="fa-solid fa-chevron-down"></i></div>
-                <div class="card-content scroll-content">
-                    <div class="grid-4" style="margin-bottom: 16px;">
-                        <div class="metric-box" style="text-align: center;"><small>H价格</small><div><strong>$0.024</strong></div><div style="font-size: 0.7rem; color: #2ecc71;">▲ 2.3%</div></div>
-                        <div class="metric-box" style="text-align: center;"><small>24h交易量</small><div><strong>$2.41M</strong></div><div style="font-size: 0.7rem; color: #2ecc71;">▲ 5.1%</div></div>
-                        <div class="metric-box" style="text-align: center;"><small>市值</small><div><strong>$24.8M</strong></div><div style="font-size: 0.7rem; color: #e74c3c;">▼ 0.7%</div></div>
-                        <div class="metric-box" style="text-align: center;"><small>质押总值</small><div><strong>$8.24M</strong></div><div style="font-size: 0.7rem; color: #2ecc71;">▲ 1.2%</div></div>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                        <div style="flex:1;"><canvas id="priceSparkline" style="width:100%; height:40px; background:white; border-radius:20px;"></canvas></div>
-                        <div style="background:white; border-radius:30px; padding:8px 16px; display:flex; align-items:center; gap:6px;"><span style="font-size:0.8rem;">0xabc...789</span><i class="fa-regular fa-copy copy-icon"></i></div>
-                    </div>
-                    <div class="grid-2" style="margin-bottom: 16px;">
-                        <div style="background:white; border-radius:28px; padding:16px;">
-                            <h4 style="margin:0 0 12px 0;">📊 持有分布</h4>
-                            <div><div style="display:flex; justify-content:space-between;"><span>前10名</span> <span>23%</span></div><div class="progress-bar"><div class="progress-fill" style="width:23%"></div></div></div>
-                            <div><div style="display:flex; justify-content:space-between;"><span>前100名</span> <span>58%</span></div><div class="progress-bar"><div class="progress-fill" style="width:58%"></div></div></div>
-                        </div>
-                        <div style="background:white; border-radius:28px; padding:16px;">
-                            <h4 style="margin:0 0 12px 0;">💰 收支趋势</h4>
-                            <div style="display:flex; justify-content:space-around;"><div><div style="font-size:1.2rem; font-weight:700; background:linear-gradient(145deg,#2ecc71,#27ae60); -webkit-background-clip:text; background-clip:text; color:transparent;">$1.24M</div><small>月收入</small></div><div><div style="font-size:1.2rem; font-weight:700; background:linear-gradient(145deg,#e74c3c,#c0392b); -webkit-background-clip:text; background-clip:text; color:transparent;">$0.89M</div><small>月支出</small></div></div>
-                            <div style="margin-top:10px;"><div style="display:flex; justify-content:space-between;"><span>净流入</span> <span class="profit-up">+0.35M</span></div><div class="progress-bar"><div class="progress-fill" style="width:67%"></div></div></div>
-                        </div>
-                    </div>
-                    <div style="background:white; border-radius:28px; padding:16px; margin-bottom:16px;">
-                        <div style="display:flex; justify-content:space-between;"><h4 style="margin:0;">🏦 财库储备</h4><span class="chip">协议健康度 98%</span></div>
-                        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;"><span class="chip">ETH: 45%</span><span class="chip">USDC: 30%</span><span class="chip">H: 20%</span><span class="chip">其他: 5%</span></div>
-                    </div>
-                    <div style="display:flex; gap:12px;"><button class="small" style="flex:1;"><i class="fa-regular fa-chart-line"></i> 详细分析</button><button class="small" style="flex:1; background:linear-gradient(145deg,#4a90e2,#60a5fa); color:white; border:none;"><i class="fa-regular fa-file-export"></i> 导出报告</button></div>
-                </div>
-            </div>
-            <div class="magic-card data-card" id="cardData2">
-                <div class="card-header"><span>📉 个人盈利分析 · 旗舰版</span> <i class="fa-solid fa-chevron-down"></i></div>
-                <div class="card-content scroll-content">
-                    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px;"><button class="chip" style="background:#4a90e2; color:white;">日</button><button class="chip">周</button><button class="chip">月</button><button class="chip">自定义</button></div>
-                    <div class="stats-summary" style="display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:16px;">
-                        <div class="summary-item" style="background:rgba(255,255,255,0.7); backdrop-filter:blur(4px); border-radius:24px; padding:12px 4px; text-align:center;"><div class="summary-label" style="font-size:0.7rem; color:#5f6c80;">累计收益</div><div class="summary-value" style="font-size:1.1rem; font-weight:700; background:linear-gradient(145deg,#1f2a3a,#3a4b62); -webkit-background-clip:text;">+1,256 H</div></div>
-                        <div class="summary-item" style="background:rgba(255,255,255,0.7); backdrop-filter:blur(4px); border-radius:24px; padding:12px 4px; text-align:center;"><div class="summary-label" style="font-size:0.7rem; color:#5f6c80;">收益率</div><div class="summary-value" style="font-size:1.1rem; font-weight:700; background:linear-gradient(145deg,#2ecc71,#27ae60); -webkit-background-clip:text;">+24.8%</div></div>
-                        <div class="summary-item" style="background:rgba(255,255,255,0.7); backdrop-filter:blur(4px); border-radius:24px; padding:12px 4px; text-align:center;"><div class="summary-label" style="font-size:0.7rem; color:#5f6c80;">胜率</div><div class="summary-value" style="font-size:1.1rem; font-weight:700; background:linear-gradient(145deg,#f39c12,#e67e22); -webkit-background-clip:text;">71%</div></div>
-                        <div class="summary-item" style="background:rgba(255,255,255,0.7); backdrop-filter:blur(4px); border-radius:24px; padding:12px 4px; text-align:center;"><div class="summary-label" style="font-size:0.7rem; color:#5f6c80;">最大单日</div><div class="summary-value" style="font-size:1.1rem; font-weight:700;"><span style="color:#2ecc71;">+21</span>/<span style="color:#e74c3c;">-6</span></div></div>
-                    </div>
-                    <div style="display:flex; justify-content:space-between;"><span style="font-size:0.9rem; color:#3f5068;">🏆 月度目标 5k H</span><span style="font-size:0.9rem; font-weight:600; background:linear-gradient(145deg,#1f2a3a,#3f5068); -webkit-background-clip:text;">1,256 / 5,000</span></div>
-                    <div class="progress-bar" style="margin-bottom:16px;"><div class="progress-fill" style="width:25%"></div></div>
-                    <canvas id="profitChart" style="width:100%; height:130px; background:white; border-radius:28px; margin:16px 0;"></canvas>
-                    <div style="display:flex; align-items:center; gap:12px; margin:16px 0;">
-                        <div style="flex:0 0 100px;"><canvas id="profitSourceChart" style="width:100px; height:100px;"></canvas></div>
-                        <div style="flex:1; background:white; border-radius:28px; padding:12px;">
-                            <div style="display:flex; justify-content:space-between;"><span>🚀 Boost理财</span><span class="profit-up">+342 H</span></div>
-                            <div style="display:flex; justify-content:space-between;"><span>💧 流动性池</span><span class="profit-down">-28 H</span></div>
-                            <div style="display:flex; justify-content:space-between;"><span>🔒 质押</span><span class="profit-up">+876 H</span></div>
-                            <div style="display:flex; justify-content:space-between; border-top:1px dashed #e0e6ed;"><span>其他</span><span class="profit-up">+66 H</span></div>
-                        </div>
-                    </div>
-                    <div style="background:linear-gradient(145deg,rgba(74,144,226,0.1),rgba(80,227,194,0.1)); border-radius:36px; padding:16px; margin:16px 0;"><span style="font-weight:600; background:linear-gradient(145deg,#1f2a3a,#3a4b62); -webkit-background-clip:text;">🔮 明日收益预测</span><span class="chip">基于AI模型</span><div><span style="font-size:2rem; font-weight:700; background:linear-gradient(145deg,#2ecc71,#27ae60); -webkit-background-clip:text;">+8~12 H</span> <span style="color:#5f6c80;">置信度85%</span></div></div>
-                    <h4>💹 当前资产分布</h4><div style="display:flex; gap:10px; flex-wrap:wrap;"><span class="chip">H: 45%</span><span class="chip">veH: 20%</span><span class="chip">ETH: 25%</span><span class="chip">USDC: 10%</span></div>
-                    <div style="display:flex; gap:12px; margin-top:24px;"><button class="small"><i class="fa-regular fa-chart-bar"></i> 详细报告</button><button class="small" style="background:linear-gradient(145deg,#4a90e2,#60a5fa); color:white;">导出数据</button></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 左侧导航 -->
-        <div class="left-nav-fab" id="sidebarToggle"><i class="fa-regular fa-comment-dots"></i></div>
-        <div class="sidebar-chat" id="sidebarChat">
-            <div class="sidebar-header"><i class="fa-regular fa-circle-user"></i> 群组聊天</div>
-            <ul class="chat-list">
-                <li><span class="chat-avatar">🐬</span><div class="chat-info"><div class="chat-name">海豚俱乐部</div><div class="chat-msg">今晚有活动</div></div><span class="unread">3</span></li>
-                <li><span class="chat-avatar">🐋</span><div class="chat-info"><div class="chat-name">巨鲸群</div><div class="chat-msg">讨论模型</div></div><span class="unread">1</span></li>
-                <li><span class="chat-avatar">⚡</span><div class="chat-info"><div class="chat-name">Boost冲锋</div><div class="chat-msg">火箭发射</div></div><span class="unread">5</span></li>
-            </ul>
-        </div>
+      </div>
+      <!-- 展开区域（默认隐藏） -->
+      <div class="expand-section hidden" id="expandContent">
+        <div class="stat-box"><div class="stat-label">身价</div><div class="stat-value">12.5k</div></div>
+        <div class="stat-box"><div class="stat-label">资产</div><div class="stat-value">5.2k</div></div>
+        <div class="stat-box"><div class="stat-label">贡献度</div><div class="stat-value">3.4k</div></div>
+        <div class="stat-box"><div class="stat-label">周排名</div><div class="stat-value">#16</div></div>
+      </div>
     </div>
 
-    <script>
-        (function() {
-            mermaid.initialize({ startOnLoad: true, theme: 'base' });
+    <!-- 2. 公告资讯 -->
+    <div class="card">
+      <div class="announcement">
+        <i class="fas fa-bullhorn"></i>
+        <span>111111</span>
+        <i class="fas fa-circle" style="font-size: 6px; color: var(--gray-400); margin-left: auto;"></i>
+      </div>
+    </div>
 
-            // 手风琴效果：点击卡片头时，同组内只能展开一个
-            function setupAccordion() {
-                document.querySelectorAll('.magic-card .card-header').forEach(header => {
-                    header.addEventListener('click', function(e) {
-                        const currentCard = this.closest('.magic-card');
-                        if (!currentCard) return;
+    <!-- 3. 社区数据 - 2x2网格 -->
+    <div class="card">
+      <div class="card-header">
+        <i class="fas fa-chart-pie"></i> 社区数据
+      </div>
+      <div class="community-grid">
+        <div class="community-item">
+          <div class="community-label">H总质押</div>
+          <div class="community-value">12.5M H</div>
+        </div>
+        <div class="community-item">
+          <div class="community-label">总交易量</div>
+          <div class="community-value">$2.3B</div>
+        </div>
+        <div class="community-item">
+          <div class="community-label">国库余额</div>
+          <div class="community-value">$1.8M</div>
+        </div>
+        <div class="community-item">
+          <div class="community-label">活跃人数</div>
+          <div class="community-value">8.2k</div>
+        </div>
+      </div>
+    </div>
 
-                        // 确定当前卡片所属的组
-                        const group = currentCard.closest('.cards-group');
-                        if (!group) return;
+    <!-- 4. 工具集 -->
+    <div class="card">
+      <div class="card-header">
+        <i class="fas fa-tools"></i> 常用工具
+      </div>
+      <div class="tools-grid">
+        <div class="tool-item"><i class="fas fa-calendar-check"></i><span>签到</span></div>
+        <div class="tool-item"><i class="fas fa-dice"></i><span>抽奖</span></div>
+        <div class="tool-item"><i class="fas fa-star"></i><span>积分</span></div>
+        <div class="tool-item"><i class="fas fa-gift"></i><span>红包</span></div>
+        <div class="tool-item"><i class="fas fa-search"></i><span>查询系统</span></div>
+        <div class="tool-item"><i class="fas fa-chart-line"></i><span>社区数据</span></div>
+        <div class="tool-item"><i class="fas fa-calculator"></i><span>计算器</span></div>
+        <div class="tool-item"><i class="fas fa-download"></i><span>下载中心</span></div>
+      </div>
+    </div>
 
-                        // 如果当前卡片已经展开，则折叠它（并且不展开其他）
-                        if (currentCard.classList.contains('expanded')) {
-                            currentCard.classList.remove('expanded');
-                            updateIcon(currentCard);
-                            return;
-                        }
+    <!-- 5. 最新活动 -->
+    <div class="card">
+      <div class="card-header">
+        <i class="fas fa-fire"></i> 最新活动
+      </div>
+      <div class="activity-content">
+        <span class="activity-badge">OKX Boost</span>
+        <span class="activity-text"><i class="fas fa-rocket"></i>最佳策略获得空投</span>
+      </div>
+    </div>
 
-                        // 否则，先折叠组内所有卡片
-                        group.querySelectorAll('.magic-card').forEach(card => {
-                            card.classList.remove('expanded');
-                            updateIcon(card);
-                        });
+    <!-- 6. 便捷访问 -->
+    <div class="card" style="padding: var(--spacing-lg) var(--spacing-xl);">
+      <div class="quick-row">
+        <div class="quick-btn"><i class="fas fa-coins"></i> 购买H币</div>
+        <div class="quick-btn"><i class="fas fa-users"></i> 进入社区群</div>
+      </div>
+    </div>
 
-                        // 展开当前卡片
-                        currentCard.classList.add('expanded');
-                        updateIcon(currentCard);
-                    });
-                });
-            }
+    <!-- 7. 轮播：网格策略 -->
+    <div class="carousel-card">
+      <div class="carousel-content">
+        <span class="carousel-arrow"><i class="fas fa-chevron-left"></i></span>
+        <span class="carousel-text"><i class="fas fa-chart-line"></i>网格策略，行情涨跌都能赚</span>
+        <span class="carousel-arrow"><i class="fas fa-chevron-right"></i></span>
+      </div>
+      <div class="carousel-indicators">
+        <span class="indicator-dot active"></span>
+        <span class="indicator-dot"></span>
+        <span class="indicator-dot"></span>
+      </div>
+    </div>
 
-            // 更新卡片图标的类：expanded时显示上箭头，否则下箭头
-            function updateIcon(card) {
-                const icon = card.querySelector('.card-header i');
-                if (!icon) return;
-                if (card.classList.contains('expanded')) {
-                    icon.classList.remove('fa-chevron-down');
-                    icon.classList.add('fa-chevron-up');
-                } else {
-                    icon.classList.remove('fa-chevron-up');
-                    icon.classList.add('fa-chevron-down');
-                }
-            }
+    <!-- 8. 代币数据 - 方形卡片 -->
+    <div class="price-squares">
+      <div class="price-square">
+        <div class="square-token-icon">OKB</div>
+        <div class="square-token-name">OKB</div>
+        <div class="square-price">$45.23</div>
+        <span class="square-change change-positive">+2.1%</span>
+      </div>
+      <div class="price-square">
+        <div class="square-token-icon">BTC</div>
+        <div class="square-token-name">Bitcoin</div>
+        <div class="square-price">$48,321</div>
+        <span class="square-change change-positive">+0.5%</span>
+      </div>
+    </div>
 
-            // 初始化所有卡片为折叠状态，并设置图标
-            function initCards() {
-                document.querySelectorAll('.magic-card').forEach(card => {
-                    card.classList.remove('expanded');
-                    updateIcon(card);
-                });
-            }
+    <!-- 底部留白 -->
+    <div style="height: var(--spacing-xs);"></div>
+  </div>
 
-            initCards();
-            setupAccordion();
+  <!-- 底层操作层：底部导航栏 (无边框) -->
+  <div class="bottom-menu">
+    <div class="menu-item active">
+      <i class="fas fa-home"></i>
+      <span class="menu-label">首页</span>
+    </div>
+    <div class="menu-item">
+      <i class="fas fa-coins"></i>
+      <span class="menu-label">赚币</span>
+    </div>
+    <div class="menu-item">
+      <i class="fas fa-cube"></i>
+      <span class="menu-label">模型</span>
+    </div>
+    <div class="menu-item">
+      <i class="fas fa-wallet"></i>
+      <span class="menu-label">钱包</span>
+    </div>
+  </div>
 
-            // 核心按钮切换
-            const tabBoost = document.getElementById('tabBoost');
-            const tabModel = document.getElementById('tabModel');
-            const tabData = document.getElementById('tabData');
-            const boostGroup = document.getElementById('boostGroup');
-            const modelGroup = document.getElementById('modelGroup');
-            const dataGroup = document.getElementById('dataGroup');
+  <script>
+    (function() {
+      const expandTrigger = document.getElementById('expandTrigger');
+      const expandContent = document.getElementById('expandContent');
+      const actionButtons = document.getElementById('actionButtons');
 
-            function setActiveTab(active) {
-                [tabBoost, tabModel, tabData].forEach(t => t.classList.remove('active'));
-                active.classList.add('active');
-                boostGroup.classList.add('hidden');
-                modelGroup.classList.add('hidden');
-                dataGroup.classList.add('hidden');
-                if (active === tabBoost) boostGroup.classList.remove('hidden');
-                if (active === tabModel) modelGroup.classList.remove('hidden');
-                if (active === tabData) dataGroup.classList.remove('hidden');
-                setTimeout(() => {
-                    if (window.bondingChart) window.bondingChart.resize();
-                    if (window.pieChart) window.pieChart.resize();
-                    if (window.profitChart) window.profitChart.resize();
-                    if (window.profitSourceChart) window.profitSourceChart.resize();
-                }, 80);
-            }
-            tabBoost.addEventListener('click', () => setActiveTab(tabBoost));
-            tabModel.addEventListener('click', () => setActiveTab(tabModel));
-            tabData.addEventListener('click', () => setActiveTab(tabData));
+      expandTrigger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        expandContent.classList.toggle('hidden');
+      });
 
-            // 用户面板数据卡片
-            const toggleStatsBtn = document.getElementById('toggleStatsBtn');
-            const statsDropdown = document.getElementById('statsDropdown');
-            toggleStatsBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                statsDropdown.classList.toggle('show');
-            });
-
-            // 导航菜单
-            const toggleNavMenuBtn = document.getElementById('toggleNavMenuBtn');
-            const navMenuPopup = document.getElementById('navMenuPopup');
-            toggleNavMenuBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                navMenuPopup.classList.toggle('show');
-            });
-            document.addEventListener('click', () => navMenuPopup.classList.remove('show'));
-
-            // 侧边栏
-            const sidebarToggle = document.getElementById('sidebarToggle');
-            const sidebarChat = document.getElementById('sidebarChat');
-            sidebarToggle.addEventListener('click', () => sidebarChat.classList.toggle('open'));
-            document.addEventListener('click', (e) => {
-                if (!sidebarChat.contains(e.target) && !sidebarToggle.contains(e.target)) {
-                    sidebarChat.classList.remove('open');
-                }
-            });
-
-            // 数据随机更新
-            function updateStats() {
-                document.getElementById('stat1').innerText = Math.floor(Math.random() * 50) + 5;
-                document.getElementById('stat2').innerText = Math.floor(Math.random() * 200) + 20;
-                document.getElementById('stat3').innerText = Math.floor(Math.random() * 100) + 10;
-                document.getElementById('stat4').innerText = Math.floor(Math.random() * 30) + 1;
-            }
-            setInterval(updateStats, 30000);
-
-            // ===== 联合曲线计算器逻辑 =====
-            const initUInput = document.getElementById('initU');
-            const initHInput = document.getElementById('initH');
-            const initTreasuryInput = document.getElementById('initTreasury');
-            const resetParamsBtn = document.getElementById('resetParamsBtn');
-            const resetStateBtn = document.getElementById('resetStateBtn');
-            const buyBtn = document.getElementById('buyBtn');
-            const buyAmountInput = document.getElementById('buyAmount');
-
-            const poolUSpan = document.getElementById('poolU');
-            const poolHSpan = document.getElementById('poolH');
-            const currentPriceSpan = document.getElementById('currentPrice');
-            const treasuryBalSpan = document.getElementById('treasuryBal');
-
-            const netAmountSpan = document.getElementById('netAmount');
-            const hReceivedSpan = document.getElementById('hReceived');
-            const taxAmountSpan = document.getElementById('taxAmount');
-            const newPriceSpan = document.getElementById('newPrice');
-            const taxToTreasurySpan = document.getElementById('taxToTreasury');
-            const totalTreasurySpan = document.getElementById('totalTreasury');
-            const historyBody = document.getElementById('historyBody');
-
-            let poolU = 10000;
-            let poolH = 200000000;
-            let treasury = 0;
-            const TAX_RATE = 0.05;
-            let history = [];
-
-            function formatNumber(num) {
-                if (num >= 1e9) return (num / 1e9).toFixed(2) + 'B';
-                if (num >= 1e6) return (num / 1e6).toFixed(2) + 'M';
-                if (num >= 1e3) return (num / 1e3).toFixed(1) + 'k';
-                return num.toFixed(2);
-            }
-            function formatPrice(price) {
-                if (price < 0.0001) return price.toFixed(8);
-                if (price < 0.01) return price.toFixed(6);
-                if (price < 1) return price.toFixed(4);
-                return price.toFixed(2);
-            }
-            function refreshUI() {
-                poolUSpan.innerText = poolU.toFixed(0);
-                poolHSpan.innerText = formatNumber(poolH);
-                currentPriceSpan.innerText = formatPrice(poolU / poolH);
-                treasuryBalSpan.innerText = treasury.toFixed(2);
-            }
-            function resetToInitial() {
-                poolU = parseFloat(initUInput.value) || 10000;
-                poolH = parseFloat(initHInput.value) || 200000000;
-                treasury = parseFloat(initTreasuryInput.value) || 0;
-                history = [];
-                refreshUI();
-                updateHistoryTable();
-                netAmountSpan.innerText = '0';
-                hReceivedSpan.innerText = '0';
-                taxAmountSpan.innerText = '0';
-                newPriceSpan.innerText = formatPrice(poolU / poolH);
-                taxToTreasurySpan.innerText = '0';
-                totalTreasurySpan.innerText = treasury.toFixed(2);
-            }
-            function updateHistoryTable() {
-                if (history.length === 0) {
-                    historyBody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#7f9eb5;">暂无交易</td></tr>';
-                    return;
-                }
-                let html = '';
-                const recent = history.slice(-10).reverse();
-                recent.forEach((item) => {
-                    html += `<tr>
-                        <td>${item.seq}</td>
-                        <td>$${item.amount}</td>
-                        <td>${formatPrice(item.price)}</td>
-                        <td>${formatNumber(item.hReceived)}</td>
-                        <td>$${item.tax.toFixed(2)}</td>
-                        <td>${item.poolU.toFixed(0)}</td>
-                    </tr>`;
-                });
-                historyBody.innerHTML = html;
-            }
-            function executeBuy() {
-                const buyAmount = parseFloat(buyAmountInput.value);
-                if (isNaN(buyAmount) || buyAmount <= 0) {
-                    alert('请输入有效的买入金额 (>0)');
-                    return;
-                }
-                const tax = buyAmount * TAX_RATE;
-                const net = buyAmount - tax;
-                if (net <= 0) {
-                    alert('净买入金额必须大于0');
-                    return;
-                }
-                const k = poolU * poolH;
-                const newU = poolU + net;
-                const newH = k / newU;
-                const hObtained = poolH - newH;
-                if (hObtained <= 0) {
-                    alert('买入后池子异常');
-                    return;
-                }
-                const oldPrice = poolU / poolH;
-                const newPrice = newU / newH;
-                history.push({
-                    seq: history.length + 1,
-                    amount: buyAmount,
-                    price: oldPrice,
-                    hReceived: hObtained,
-                    tax: tax,
-                    poolU: newU,
-                });
-                poolU = newU;
-                poolH = newH;
-                treasury += tax;
-                refreshUI();
-                netAmountSpan.innerText = net.toFixed(2);
-                hReceivedSpan.innerText = formatNumber(hObtained);
-                taxAmountSpan.innerText = tax.toFixed(2);
-                newPriceSpan.innerText = formatPrice(newPrice);
-                taxToTreasurySpan.innerText = '+' + tax.toFixed(2);
-                totalTreasurySpan.innerText = treasury.toFixed(2);
-                updateHistoryTable();
-            }
-
-            if (resetParamsBtn) resetParamsBtn.addEventListener('click', resetToInitial);
-            if (resetStateBtn) resetStateBtn.addEventListener('click', resetToInitial);
-            if (buyBtn) buyBtn.addEventListener('click', executeBuy);
-            if (buyAmountInput) buyAmountInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') executeBuy(); });
-
-            resetToInitial();
-
-            // ===== 经济模型完整解析图表 =====
-            const ctxPrice = document.getElementById('priceChart')?.getContext('2d');
-            if (ctxPrice) {
-                const k = 2e12;
-                const baseX = 10000;
-                const labels = [];
-                const prices = [];
-                for (let buy = 0; buy <= 100000; buy += 5000) {
-                    let x = baseX + buy;
-                    let price = (x * x) / k;
-                    labels.push(buy);
-                    prices.push(price);
-                }
-                window.priceChart = new Chart(ctxPrice, {
-                    type: 'line',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: 'H 价格 (USDT)',
-                            data: prices,
-                            borderColor: '#1e6b9f',
-                            backgroundColor: 'rgba(27, 111, 165, 0.1)',
-                            tension: 0.3,
-                            pointBackgroundColor: '#0a4e7a',
-                            pointBorderColor: 'white',
-                            borderWidth: 2,
-                            fill: true,
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => `$${ctx.raw.toFixed(6)}` } } },
-                        scales: { y: { ticks: { callback: (val) => '$' + val.toFixed(5) }, beginAtZero: true } }
-                    }
-                });
-            }
-
-            const tbody = document.getElementById('priceTableBody');
-            if (tbody) {
-                const rows = [];
-                for (let i = 0; i <= 200; i += 20) {
-                    let buy = i * 500;
-                    let x = 10000 + buy;
-                    let price = (x * x) / 2e12;
-                    let poolH = 2e12 / x;
-                    let boughtH = 200000000 - poolH;
-                    let percent = (boughtH / 1e9 * 100).toFixed(2);
-                    rows.push([i, buy, price, boughtH, percent]);
-                }
-                let lastBuy = 200 * 500;
-                let lastX = 10000 + lastBuy;
-                let lastPrice = (lastX * lastX) / 2e12;
-                let lastPoolH = 2e12 / lastX;
-                let lastBought = 200000000 - lastPoolH;
-                let lastPercent = (lastBought / 1e9 * 100).toFixed(2);
-                if (rows[rows.length-1][0] !== 200) {
-                    rows.push([200, lastBuy, lastPrice, lastBought, lastPercent]);
-                } else {
-                    rows[rows.length-1] = [200, lastBuy, lastPrice, lastBought, lastPercent];
-                }
-                tbody.innerHTML = rows.map(r => {
-                    let buy = r[1];
-                    let price = r[2];
-                    let boughtH = r[3];
-                    return `<tr><td>${r[0]}</td><td>${buy.toLocaleString()}</td><td>$${price.toFixed(6)}</td><td>${(boughtH/1e6).toFixed(2)}M</td><td>${r[4]}%</td></tr>`;
-                }).join('');
-            }
-
-            const ctxHolding = document.getElementById('holdingChart')?.getContext('2d');
-            if (ctxHolding) {
-                window.holdingChart = new Chart(ctxHolding, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['国库多签 (6.826亿)', '社区成员 (0.79亿)', 'Uniswap池 (0.095亿)', '其他预留 (2.289亿)'],
-                        datasets: [{
-                            data: [682.6, 79, 9.5, 228.9],
-                            backgroundColor: ['#206a97', '#42a5c5', '#9fc5e8', '#d2e5f7'],
-                            borderColor: 'white',
-                            borderWidth: 2,
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false } },
-                        cutout: '65%',
-                    }
-                });
-            }
-
-            // 原有图表（简略）
-            const ctx1 = document.getElementById('bondingChart')?.getContext('2d');
-            if (ctx1) {
-                window.bondingChart = new Chart(ctx1, {
-                    type: 'scatter',
-                    data: { datasets: [{
-                        label: '联合曲线',
-                        data: Array.from({ length: 30 }, (_, i) => ({ x: i+1, y: ((i+1)**2)/50 })),
-                        backgroundColor: '#4a90e2', pointRadius: 4,
-                    }] }
-                });
-            }
-            const ctxPie = document.getElementById('pieChart')?.getContext('2d');
-            if (ctxPie) {
-                window.pieChart = new Chart(ctxPie, {
-                    type: 'doughnut',
-                    data: { labels: ['国库','质押池','团队','社区'], datasets: [{ data: [42,28,18,12], backgroundColor: ['#ff7b89','#4a90e2','#50e3c2','#f5a623'] }] },
-                    options: { cutout: '70%', plugins: { legend: { display: false } } }
-                });
-            }
-            const ctxProfit = document.getElementById('profitChart')?.getContext('2d');
-            if (ctxProfit) {
-                window.profitChart = new Chart(ctxProfit, {
-                    type: 'line',
-                    data: { labels: ['周一','周二','周三','周四','周五','周六','周日'], datasets: [{ data: [12,-4,8,21,-6,15,7], borderColor: '#4a90e2', tension: 0.2 }] },
-                    options: { plugins: { legend: { display: false } } }
-                });
-            }
-            const ctxSource = document.getElementById('profitSourceChart')?.getContext('2d');
-            if (ctxSource) {
-                window.profitSourceChart = new Chart(ctxSource, {
-                    type: 'doughnut',
-                    data: { datasets: [{ data: [342,876,28,66], backgroundColor: ['#4a90e2','#50e3c2','#f5a623','#ff7b89'] }] },
-                    options: { cutout: '70%', plugins: { legend: { display: false } } }
-                });
-            }
-            const sparkCtx = document.getElementById('priceSparkline')?.getContext('2d');
-            if (sparkCtx) {
-                const width = sparkCtx.canvas.width;
-                const height = sparkCtx.canvas.height;
-                const prices = [0.021,0.022,0.024,0.023,0.025,0.024,0.026];
-                const max = Math.max(...prices), min = Math.min(...prices);
-                const xStep = width / (prices.length - 1);
-                sparkCtx.clearRect(0,0,width,height);
-                sparkCtx.beginPath();
-                sparkCtx.strokeStyle = '#4a90e2';
-                sparkCtx.lineWidth = 2;
-                for (let i=0;i<prices.length;i++) {
-                    const x = i*xStep;
-                    const y = height - ((prices[i]-min)/(max-min))*(height-4)-2;
-                    if (i===0) sparkCtx.moveTo(x,y); else sparkCtx.lineTo(x,y);
-                }
-                sparkCtx.stroke();
-                sparkCtx.fillStyle = '#4a90e2';
-                for (let i=0;i<prices.length;i++) {
-                    const x = i*xStep;
-                    const y = height - ((prices[i]-min)/(max-min))*(height-4)-2;
-                    sparkCtx.beginPath(); sparkCtx.arc(x,y,2,0,2*Math.PI); sparkCtx.fill();
-                }
-            }
-        })();
-    </script>
+      actionButtons.addEventListener('click', function(e) {
+        e.stopPropagation();
+      });
+    })();
+  </script>
 </body>
 </html>
