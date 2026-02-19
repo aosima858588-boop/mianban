@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>海豚社区 · 首页 · 整体美化</title>
+  <title>海豚社区 · 单页版</title>
   <!-- Font Awesome 6 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <!-- Inter 字体 -->
@@ -11,404 +11,117 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;1,14..32,400&display=swap" rel="stylesheet">
   <style>
-    /* ===== 设计系统 - 整体美化版 ===== */
+    /* ===== 设计系统 - 单页版 (字体亮度优化) ===== */
     :root {
-      /* 背景 - 纯白 + 更细腻的微纹理 */
       --bg-color: #FFFFFF;
-      --bg-texture: 
-        radial-gradient(circle at 10% 20%, rgba(0,0,0,0.003) 0%, transparent 30%),
-        radial-gradient(circle at 90% 70%, rgba(0,0,0,0.003) 0%, transparent 30%);
-      
-      /* 卡片背景 - 透明 */
+      --bg-texture: radial-gradient(circle at 10% 20%, rgba(0,0,0,0.003) 0%, transparent 30%),
+                    radial-gradient(circle at 90% 70%, rgba(0,0,0,0.003) 0%, transparent 30%);
       --card-bg: transparent;
-      
-      /* 内部元素背景 - 浅灰 */
       --inner-bg-start: #FAFCFE;
       --inner-bg-end: #F3F7FC;
-      
-      /* 主渐变 - 深灰蓝 */
-      --accent-start: #2A3848;
-      --accent-end: #3A4A5E;
+      --accent-start: #1E2A36;
+      --accent-end: #2D3A48;
       --accent-gradient: linear-gradient(145deg, var(--accent-start), var(--accent-end));
-      
-      /* 辅助色彩 - 更柔和高雅的色系 */
       --color-blue: #5B8ED9;
       --color-green: #3DA89B;
       --color-purple: #9B7CE0;
       --color-gold: #E6B067;
-      
       --icon-blue: linear-gradient(145deg, #5B8ED9, #7CA6E0);
       --icon-green: linear-gradient(145deg, #3DA89B, #5FB9AC);
       --icon-purple: linear-gradient(145deg, #9B7CE0, #B59CE8);
       --icon-gold: linear-gradient(145deg, #E6B067, #ECBE82);
-      
-      /* 灰色系统 */
       --gray-50: #FAFCFE;
       --gray-100: #F3F7FC;
       --gray-200: #E9EFF5;
       --gray-300: #DDE3EC;
       --gray-400: #C0CBD8;
       --gray-500: #9BAABC;
-      --gray-600: #6F7E93;
-      --gray-700: #4B5A6E;
-      --gray-800: #2A3848;
-      --gray-900: #0C1724;
-      
-      /* 文字颜色 */
+      --gray-600: #5C6B7F;   /* 辅助文字加深 */
+      --gray-700: #3A4A5E;   /* 次要文字加深 */
+      --gray-800: #1E2A36;   /* 加深 */
+      --gray-900: #0B1420;   /* 主文字加深 */
       --text-primary: var(--gray-900);
       --text-secondary: var(--gray-700);
       --text-tertiary: var(--gray-600);
-      --text-inverse: #FFFFFF;
-      
-      --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      
-      /* 字体微调 */
-      --font-weight-light: 400;
-      --font-weight-regular: 500;
-      --font-weight-medium: 600;
-      --font-weight-bold: 700;
-      --font-weight-extrabold: 800;
-      
-      --letter-spacing-tight: -0.02em;
-      --letter-spacing-normal: 0em;
-      --letter-spacing-wide: 0.03em;
-      
-      --line-height-tight: 1.2;
-      --line-height-normal: 1.6;
-      --line-height-loose: 1.8;
-      
-      /* 阴影系统 - 更柔和 */
       --shadow-xs: 0 2px 4px rgba(0,0,0,0.02);
       --shadow-sm: 0 4px 12px rgba(0,0,0,0.03);
       --shadow-md: 0 8px 24px rgba(0,0,0,0.04);
       --shadow-lg: 0 16px 32px -8px rgba(0,0,0,0.06);
-      
       --shadow-card: 
         0 2px 4px rgba(0,0,0,0.01),
         0 8px 16px -6px rgba(0,0,0,0.03),
         0 16px 28px -8px rgba(0,0,0,0.06),
         inset 0 1px 2px rgba(255,255,255,0.9);
-      
       --shadow-card-hover: 
         0 4px 8px rgba(0,0,0,0.02),
         0 12px 24px -8px rgba(0,0,0,0.06),
         0 24px 40px -12px rgba(0,0,0,0.1),
         inset 0 1px 2px rgba(255,255,255,0.9);
-      
       --shadow-inset: inset 0 2px 4px rgba(0,0,0,0.04);
       --shadow-raised: 
         0 1px 2px rgba(0,0,0,0.01),
         0 4px 8px rgba(0,0,0,0.02),
         inset 0 -1px 2px rgba(255,255,255,0.8),
         inset 0 1px 2px rgba(0,0,0,0.01);
-      
-      /* 圆角 */
       --radius-card: 36px;
       --radius-element: 28px;
       --radius-btn: 60px;
       --radius-icon: 50%;
-      
-      /* 间距 - 微调 */
-      --space-2xs: 2px;
       --space-xs: 6px;
       --space-sm: 10px;
       --space-md: 14px;
       --space-lg: 20px;
       --space-xl: 24px;
-      --space-2xl: 30px;
-      --space-3xl: 36px;
-      
-      /* 动画 - 更流畅 */
       --transition-fast: 0.2s cubic-bezier(0.2, 0, 0, 1);
       --transition-base: 0.3s cubic-bezier(0.2, 0, 0, 1);
       --transition-bounce: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-
-    * { 
-      margin: 0; 
-      padding: 0; 
-      box-sizing: border-box; 
-      font-family: var(--font-family); 
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-    
-    body { 
-      background-color: var(--bg-color); 
-      background-image: var(--bg-texture);
-      display: flex; 
-      flex-direction: column; 
-      height: 100vh; 
-      max-width: 450px; 
-      margin: 0 auto; 
-      position: relative;
-    }
-    
-    /* 添加背景光晕 */
-    body::before {
-      content: '';
-      position: absolute;
-      top: -20%;
-      left: -20%;
-      width: 140%;
-      height: 140%;
-      background: radial-gradient(circle at 30% 40%, rgba(91,142,217,0.03) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 0;
-    }
-    
-    .main-scroll { 
-      flex: 1; 
-      overflow-y: auto; 
-      padding: var(--space-lg) var(--space-lg) var(--space-sm); 
-      background: transparent; 
-      display: flex; 
-      flex-direction: column; 
-      gap: var(--space-lg); 
-      animation: fadeIn 0.4s ease; 
-      position: relative;
-      z-index: 1;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    body { background-color: var(--bg-color); background-image: var(--bg-texture); display: flex; flex-direction: column; height: 100vh; max-width: 450px; margin: 0 auto; position: relative; }
+    body::before { content: ''; position: absolute; top: -20%; left: -20%; width: 140%; height: 140%; background: radial-gradient(circle at 30% 40%, rgba(91,142,217,0.03) 0%, transparent 50%); pointer-events: none; z-index: 0; }
+    .main-scroll { flex: 1; overflow-y: auto; padding: var(--space-lg) var(--space-lg) var(--space-sm); background: transparent; display: flex; flex-direction: column; gap: var(--space-lg); position: relative; z-index: 1; animation: fadeIn 0.4s ease; }
     .main-scroll::-webkit-scrollbar { width: 4px; }
     .main-scroll::-webkit-scrollbar-track { background: var(--gray-200); border-radius: 8px; }
     .main-scroll::-webkit-scrollbar-thumb { background-color: var(--gray-400); border-radius: 8px; }
     @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
-
-    /* 卡片 - 完全透明，阴影更细腻 */
-    .card { 
-      background: transparent; 
-      border-radius: var(--radius-card); 
-      padding: var(--space-xl) var(--space-xl); 
-      box-shadow: var(--shadow-card); 
-      transition: var(--transition-base); 
-      border: none; 
-      transform: translateY(0); 
-      position: relative;
-      isolation: isolate;
-    }
-    .card::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      border-radius: inherit;
-      pointer-events: none;
-      box-shadow: inset 0 1px 2px rgba(255,255,255,0.8), inset 0 -1px 2px rgba(0,0,0,0.01);
-    }
+    .card { background: transparent; border-radius: var(--radius-card); padding: var(--space-xl) var(--space-xl); box-shadow: var(--shadow-card); transition: var(--transition-base); position: relative; isolation: isolate; }
+    .card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: inherit; pointer-events: none; box-shadow: inset 0 1px 2px rgba(255,255,255,0.8), inset 0 -1px 2px rgba(0,0,0,0.01); }
     .card:hover { transform: translateY(-2px); box-shadow: var(--shadow-card-hover); }
     .card:active { transform: translateY(1px); box-shadow: 0 2px 4px rgba(0,0,0,0.01), inset 0 1px 2px rgba(0,0,0,0.01); }
-
-    /* 波纹点击效果 - 优化 */
     .ripple-effect { position: relative; overflow: hidden; cursor: default; -webkit-tap-highlight-color: transparent; }
-    .ripple-effect::after { 
-      content: ''; 
-      position: absolute; 
-      top: 50%; 
-      left: 50%; 
-      width: 0; 
-      height: 0; 
-      border-radius: 50%; 
-      background: currentColor; 
-      opacity: 0.08; 
-      transform: translate(-50%, -50%); 
-      transition: width 0.4s cubic-bezier(0.2, 0.9, 0.3, 1), height 0.4s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.4s ease-out; 
-      pointer-events: none; 
-      z-index: 1; 
-    }
-    .ripple-effect:active::after { 
-      width: 200px; 
-      height: 200px; 
-      opacity: 0; 
-    }
-    .clickable, .user-info-clickable, .coin-btn, .quick-btn, .tool-item, .carousel-arrow, .menu-item { 
-      transition: var(--transition-fast); 
-      cursor: default; 
-      -webkit-tap-highlight-color: transparent; 
-      position: relative; 
-      overflow: hidden; 
-    }
-    .clickable:active, .user-info-clickable:active, .coin-btn:active, .quick-btn:active, .tool-item:active, .carousel-arrow:active, .menu-item:active { 
-      transform: scale(0.96); 
-    }
-
-    /* 焦点样式 */
-    .coin-btn:focus-visible, .tool-item:focus-visible, .quick-btn:focus-visible, .menu-item:focus-visible, .carousel-arrow:focus-visible, .community-item:focus-visible, .stat-box:focus-visible, .token-mini-card:focus-visible { 
-      outline: 2px solid var(--gray-800); 
-      outline-offset: 3px; 
-    }
-
-    /* 渐变文字 */
-    .gradient-text {
-      background: var(--accent-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      display: inline-block;
-    }
-
-    /* 顶部用户卡片 */
+    .ripple-effect::after { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; border-radius: 50%; background: currentColor; opacity: 0.08; transform: translate(-50%, -50%); transition: width 0.4s cubic-bezier(0.2,0.9,0.3,1), height 0.4s cubic-bezier(0.2,0.9,0.3,1), opacity 0.4s ease-out; pointer-events: none; z-index: 1; }
+    .ripple-effect:active::after { width: 200px; height: 200px; opacity: 0; }
+    .clickable, .user-info-clickable, .coin-btn, .quick-btn, .tool-item, .carousel-arrow, .menu-item { transition: var(--transition-fast); cursor: default; -webkit-tap-highlight-color: transparent; position: relative; overflow: hidden; }
+    .clickable:active, .user-info-clickable:active, .coin-btn:active, .quick-btn:active, .tool-item:active, .carousel-arrow:active, .menu-item:active { transform: scale(0.96); }
+    .coin-btn:focus-visible, .tool-item:focus-visible, .quick-btn:focus-visible, .menu-item:focus-visible, .carousel-arrow:focus-visible, .community-item:focus-visible, .stat-box:focus-visible, .token-mini-card:focus-visible { outline: 2px solid var(--gray-800); outline-offset: 3px; }
+    .gradient-text { background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: inline-block; }
     .user-header-row { display: flex; align-items: center; justify-content: space-between; }
     .user-info-clickable { display: flex; align-items: center; gap: var(--space-sm); flex: 1; padding: var(--space-xs) 0; border-radius: 50px; min-height: 48px; }
-    .h-icon { 
-      width: 54px; 
-      height: 54px; 
-      background: linear-gradient(145deg, #FFFFFF, var(--gray-100)); 
-      border-radius: var(--radius-icon); 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      font-size: 28px; 
-      font-weight: var(--font-weight-bold); 
-      background: var(--accent-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      box-shadow: var(--shadow-raised); 
-      transition: var(--transition-base); 
-    }
+    .h-icon { width: 54px; height: 54px; background: linear-gradient(145deg, #FFFFFF, var(--gray-100)); border-radius: var(--radius-icon); display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 800; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; box-shadow: var(--shadow-raised); transition: var(--transition-base); }
     .h-icon:active { transform: scale(0.94); box-shadow: var(--shadow-inset); }
-    .nickname { 
-      font-size: 18px; 
-      font-weight: var(--font-weight-bold); 
-      color: var(--text-primary); 
-      letter-spacing: var(--letter-spacing-tight); 
-      line-height: var(--line-height-tight); 
-    }
-    .level-badge { 
-      background: var(--accent-gradient); 
-      color: white; 
-      font-size: 13px; 
-      font-weight: var(--font-weight-medium); 
-      padding: 6px 16px; 
-      border-radius: 40px; 
-      box-shadow: 0 6px 14px rgba(42,56,72,0.15), inset 0 1px 2px rgba(255,255,255,0.2); 
-      letter-spacing: var(--letter-spacing-wide); 
-      line-height: 1.2; 
-    }
-
+    .nickname { font-size: 18px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; line-height: 1.2; }
+    .level-badge { background: var(--accent-gradient); color: white; font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 40px; box-shadow: 0 6px 14px rgba(30,42,54,0.15), inset 0 1px 2px rgba(255,255,255,0.2); letter-spacing: 0.03em; line-height: 1.2; }
     .action-row { display: flex; justify-content: flex-end; margin-top: var(--space-md); }
     .action-buttons { display: flex; gap: var(--space-sm); }
-    .coin-btn { 
-      background: var(--accent-gradient); 
-      color: white; 
-      font-size: 14px; 
-      font-weight: var(--font-weight-bold); 
-      padding: 10px 22px; 
-      border-radius: var(--radius-btn); 
-      box-shadow: 0 4px 8px rgba(42,56,72,0.2), 0 8px 16px rgba(42,56,72,0.1), inset 0 1px 2px rgba(255,255,255,0.2); 
-      transition: var(--transition-fast); 
-      border: none; 
-      display: inline-flex; 
-      align-items: center; 
-      justify-content: center; 
-      gap: 6px; 
-      min-width: 80px; 
-      min-height: 44px; 
-      letter-spacing: var(--letter-spacing-wide); 
-    }
+    .coin-btn { background: var(--accent-gradient); color: white; font-size: 14px; font-weight: 700; padding: 10px 22px; border-radius: var(--radius-btn); box-shadow: 0 4px 8px rgba(30,42,54,0.2), 0 8px 16px rgba(30,42,54,0.1), inset 0 1px 2px rgba(255,255,255,0.2); transition: var(--transition-fast); border: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 80px; min-height: 44px; letter-spacing: 0.03em; }
     .coin-btn i { font-size: 14px; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.2)); }
     .coin-btn:active { transform: scale(0.94); box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); }
-
-    .expand-section { 
-      margin-top: var(--space-lg); 
-      display: flex; 
-      flex-wrap: wrap; 
-      gap: var(--space-sm); 
-      padding-top: var(--space-lg); 
-      border-top: 1px solid var(--gray-200); 
-      animation: slideDown 0.2s ease; 
-    }
+    .expand-section { margin-top: var(--space-lg); display: flex; flex-wrap: wrap; gap: var(--space-sm); padding-top: var(--space-lg); border-top: 1px solid var(--gray-200); animation: slideDown 0.2s ease; }
     @keyframes slideDown { 0% { opacity: 0; transform: translateY(-8px); } 100% { opacity: 1; transform: translateY(0); } }
     .hidden { display: none; }
-
-    /* 统计框 - 数值渐变 */
-    .stat-box { 
-      background: linear-gradient(145deg, var(--gray-50), var(--gray-100)); 
-      border-radius: var(--radius-element); 
-      padding: var(--space-md) var(--space-xs); 
-      text-align: center; 
-      flex: 1 0 calc(25% - 8px); 
-      box-shadow: var(--shadow-raised); 
-      transition: var(--transition-fast); 
-      border: none; 
-      min-height: 70px; 
-    }
+    .stat-box { background: linear-gradient(145deg, var(--gray-50), var(--gray-100)); border-radius: var(--radius-element); padding: var(--space-md) var(--space-xs); text-align: center; flex: 1 0 calc(25% - 8px); box-shadow: var(--shadow-raised); transition: var(--transition-fast); border: none; min-height: 70px; }
     .stat-box:active { transform: translateY(-2px); box-shadow: var(--shadow-sm), inset 0 1px 2px rgba(255,255,255,0.8); }
-    .stat-label { 
-      font-size: 12px; 
-      font-weight: var(--font-weight-medium); 
-      color: var(--text-tertiary); 
-      margin-bottom: var(--space-xs); 
-      letter-spacing: var(--letter-spacing-wide); 
-      text-transform: uppercase; 
-      line-height: var(--line-height-tight); 
-    }
-    .stat-value { 
-      font-size: 20px; 
-      font-weight: var(--font-weight-extrabold); 
-      background: var(--accent-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: var(--letter-spacing-tight); 
-      font-variant-numeric: tabular-nums; 
-      line-height: var(--line-height-tight); 
-      text-shadow: 0 1px 2px rgba(0,0,0,0.02);
-    }
-
-    .announcement { 
-      display: flex; 
-      align-items: center; 
-      gap: var(--space-md); 
-      color: var(--text-primary); 
-      font-weight: var(--font-weight-regular); 
-      line-height: var(--line-height-normal); 
-    }
-    .announcement i { 
-      background: linear-gradient(145deg, var(--color-blue), var(--color-purple));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      font-size: 22px; 
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05)); 
-    }
-    .announcement span { font-weight: var(--font-weight-medium); color: var(--text-primary); letter-spacing: var(--letter-spacing-normal); }
-
-    /* 工具集网格 - 图标悬浮动效 */
-    .tools-grid { 
-      display: grid; 
-      grid-template-columns: repeat(4, 1fr); 
-      gap: var(--space-lg) var(--space-sm); 
-      margin-top: var(--space-xs); 
-    }
-    .tool-item { 
-      background: linear-gradient(145deg, var(--gray-50), var(--gray-100)); 
-      border-radius: var(--radius-element); 
-      padding: var(--space-lg) var(--space-xs) var(--space-sm) var(--space-xs); 
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      gap: var(--space-xs); 
-      box-shadow: var(--shadow-raised); 
-      transition: var(--transition-fast); 
-      border: none; 
-      min-height: 80px; 
-    }
-    .tool-item:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-sm);
-    }
+    .stat-label { font-size: 12px; font-weight: 600; color: var(--text-tertiary); margin-bottom: var(--space-xs); letter-spacing: 0.03em; text-transform: uppercase; line-height: 1.2; }
+    .stat-value { font-size: 20px; font-weight: 800; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; line-height: 1.2; text-shadow: 0 1px 2px rgba(0,0,0,0.02); }
+    .announcement { display: flex; align-items: center; gap: var(--space-md); color: var(--text-primary); font-weight: 500; line-height: 1.6; }
+    .announcement i { background: linear-gradient(145deg, var(--color-blue), var(--color-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 22px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05)); }
+    .announcement span { font-weight: 600; color: var(--text-primary); letter-spacing: 0em; }
+    .tools-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-lg) var(--space-sm); margin-top: var(--space-xs); }
+    .tool-item { background: linear-gradient(145deg, var(--gray-50), var(--gray-100)); border-radius: var(--radius-element); padding: var(--space-lg) var(--space-xs) var(--space-sm) var(--space-xs); display: flex; flex-direction: column; align-items: center; gap: var(--space-xs); box-shadow: var(--shadow-raised); transition: var(--transition-fast); border: none; min-height: 80px; }
+    .tool-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
     .tool-item:active { background: var(--gray-200); transform: scale(0.94); box-shadow: var(--shadow-inset); }
-    .tool-item i { 
-      font-size: 28px; 
-      transition: transform var(--transition-bounce);
-    }
-    .tool-item:hover i {
-      transform: scale(1.1);
-    }
-    /* 工具图标多彩渐变 */
+    .tool-item i { font-size: 28px; transition: transform var(--transition-bounce); }
+    .tool-item:hover i { transform: scale(1.1); }
     .tool-item:nth-child(1) i { background: var(--icon-blue); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .tool-item:nth-child(2) i { background: var(--icon-purple); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .tool-item:nth-child(3) i { background: var(--icon-gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
@@ -417,558 +130,412 @@
     .tool-item:nth-child(6) i { background: var(--icon-purple); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .tool-item:nth-child(7) i { background: var(--icon-gold); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
     .tool-item:nth-child(8) i { background: var(--icon-green); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .tool-item span { 
-      font-size: 12px; 
-      font-weight: var(--font-weight-medium); 
-      color: var(--text-secondary); 
-      letter-spacing: var(--letter-spacing-normal); 
-      line-height: var(--line-height-tight); 
-    }
-
-    /* 数据仪表盘 */
-    .dashboard-grid { 
-      display: grid; 
-      grid-template-columns: 1fr 1fr; 
-      gap: var(--space-md); 
-      margin-top: var(--space-xs); 
-    }
-    .community-item { 
-      background: linear-gradient(145deg, var(--gray-50), var(--gray-100)); 
-      border-radius: var(--radius-element); 
-      padding: var(--space-lg) var(--space-sm); 
-      text-align: center; 
-      box-shadow: var(--shadow-raised); 
-      transition: var(--transition-fast); 
-      border: none; 
-      min-height: 90px; 
-      display: flex; 
-      flex-direction: column; 
-      justify-content: center; 
-    }
+    .tool-item span { font-size: 12px; font-weight: 600; color: var(--text-secondary); letter-spacing: 0em; line-height: 1.2; }
+    .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); margin-top: var(--space-xs); }
+    .community-item { background: linear-gradient(145deg, var(--gray-50), var(--gray-100)); border-radius: var(--radius-element); padding: var(--space-lg) var(--space-sm); text-align: center; box-shadow: var(--shadow-raised); transition: var(--transition-fast); border: none; min-height: 90px; display: flex; flex-direction: column; justify-content: center; }
     .community-item:active { transform: translateY(-2px); box-shadow: var(--shadow-sm), inset 0 1px 2px rgba(255,255,255,0.8); }
-    .community-label { 
-      font-size: 13px; 
-      font-weight: var(--font-weight-medium); 
-      color: var(--text-tertiary); 
-      margin-bottom: var(--space-xs); 
-      letter-spacing: var(--letter-spacing-wide); 
-      text-transform: uppercase; 
-      line-height: var(--line-height-tight); 
-    }
-    .community-value { 
-      font-size: 22px; 
-      font-weight: var(--font-weight-extrabold); 
-      background: var(--accent-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      letter-spacing: var(--letter-spacing-tight); 
-      font-variant-numeric: tabular-nums; 
-      line-height: var(--line-height-tight); 
-      text-shadow: 0 1px 2px rgba(42,56,72,0.1);
-    }
-
-    .token-mini-card { 
-      border-radius: var(--radius-element); 
-      padding: var(--space-lg) var(--space-sm); 
-      text-align: center; 
-      box-shadow: var(--shadow-raised); 
-      transition: var(--transition-fast); 
-      border: none; 
-      min-height: 90px; 
-      display: flex; 
-      flex-direction: column; 
-      justify-content: center; 
-      position: relative;
-      overflow: hidden;
-    }
-    .token-mini-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: inherit;
-      filter: blur(8px);
-      opacity: 0.3;
-      z-index: -1;
-    }
-    .token-mini-card:first-of-type { 
-      background: linear-gradient(145deg, rgba(91,142,217,0.08), rgba(91,142,217,0.02)); 
-    }
-    .token-mini-card:last-of-type { 
-      background: linear-gradient(145deg, rgba(61,168,155,0.08), rgba(61,168,155,0.02)); 
-    }
+    .community-label { font-size: 13px; font-weight: 600; color: var(--text-tertiary); margin-bottom: var(--space-xs); letter-spacing: 0.03em; text-transform: uppercase; line-height: 1.2; }
+    .community-value { font-size: 22px; font-weight: 800; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; line-height: 1.2; text-shadow: 0 1px 2px rgba(30,42,54,0.1); }
+    .token-mini-card { border-radius: var(--radius-element); padding: var(--space-lg) var(--space-sm); text-align: center; box-shadow: var(--shadow-raised); transition: var(--transition-fast); border: none; min-height: 90px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
+    .token-mini-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: inherit; filter: blur(8px); opacity: 0.3; z-index: -1; }
+    .token-mini-card:first-of-type { background: linear-gradient(145deg, rgba(91,142,217,0.08), rgba(91,142,217,0.02)); }
+    .token-mini-card:last-of-type { background: linear-gradient(145deg, rgba(61,168,155,0.08), rgba(61,168,155,0.02)); }
     .token-mini-card:active { transform: translateY(-2px); box-shadow: var(--shadow-sm), inset 0 1px 2px rgba(255,255,255,0.8); }
-    .token-mini-symbol { 
-      font-size: 16px; 
-      font-weight: var(--font-weight-bold); 
-      background: var(--accent-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: var(--space-xs); 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      gap: 4px; 
-      letter-spacing: var(--letter-spacing-normal); 
-    }
+    .token-mini-symbol { font-size: 16px; font-weight: 700; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: var(--space-xs); display: flex; align-items: center; justify-content: center; gap: 4px; letter-spacing: 0em; }
     .token-mini-symbol i { font-size: 13px; background: none; color: inherit; -webkit-text-fill-color: currentColor; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.05)); }
-    .token-mini-price { 
-      font-size: 20px; 
-      font-weight: var(--font-weight-extrabold); 
-      background: var(--accent-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      font-variant-numeric: tabular-nums; 
-      letter-spacing: var(--letter-spacing-tight); 
-      line-height: var(--line-height-tight); 
-    }
-    .token-mini-change { 
-      font-size: 14px; 
-      font-weight: var(--font-weight-medium); 
-      margin-top: 2px; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      gap: 2px; 
-      line-height: var(--line-height-tight); 
-    }
+    .token-mini-price { font-size: 20px; font-weight: 800; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; line-height: 1.2; }
+    .token-mini-change { font-size: 14px; font-weight: 600; margin-top: 2px; display: flex; align-items: center; justify-content: center; gap: 2px; line-height: 1.2; }
     .token-mini-change i { font-size: 11px; }
     .token-mini-change.positive { color: var(--color-green); }
     .token-mini-change.negative { color: var(--danger); }
-
-    /* 最新活动 */
-    .activity-content { 
-      display: flex; 
-      align-items: center; 
-      gap: var(--space-lg); 
-    }
-    .activity-badge { 
-      background: linear-gradient(145deg, var(--color-blue), var(--color-purple)); 
-      color: white; 
-      font-weight: var(--font-weight-medium); 
-      padding: 8px 20px; 
-      border-radius: 40px; 
-      font-size: 14px; 
-      white-space: nowrap; 
-      box-shadow: 0 4px 8px rgba(91,142,217,0.15), 0 8px 16px rgba(91,142,217,0.1), inset 0 1px 2px rgba(255,255,255,0.2); 
-      min-height: 44px; 
-      display: flex; 
-      align-items: center; 
-      letter-spacing: var(--letter-spacing-wide); 
-      line-height: 1.2; 
-    }
-    .activity-text { 
-      font-weight: var(--font-weight-bold); 
-      color: var(--text-primary); 
-      display: flex; 
-      align-items: center; 
-      gap: var(--space-xs); 
-      letter-spacing: var(--letter-spacing-tight); 
-      cursor: default; 
-      min-height: 44px; 
-      line-height: var(--line-height-tight); 
-    }
-    .activity-text i { 
-      background: linear-gradient(145deg, var(--color-blue), var(--color-purple));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05)); 
-    }
-
-    /* 便捷访问双按钮 */
+    .activity-content { display: flex; align-items: center; gap: var(--space-lg); }
+    .activity-badge { background: linear-gradient(145deg, var(--color-blue), var(--color-purple)); color: white; font-weight: 600; padding: 8px 20px; border-radius: 40px; font-size: 14px; white-space: nowrap; box-shadow: 0 4px 8px rgba(91,142,217,0.15), 0 8px 16px rgba(91,142,217,0.1), inset 0 1px 2px rgba(255,255,255,0.2); min-height: 44px; display: flex; align-items: center; letter-spacing: 0.03em; line-height: 1.2; }
+    .activity-text { font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: var(--space-xs); letter-spacing: -0.02em; cursor: default; min-height: 44px; line-height: 1.2; }
+    .activity-text i { background: linear-gradient(145deg, var(--color-blue), var(--color-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05)); }
     .quick-row { display: flex; gap: var(--space-md); }
-    .quick-btn { 
-      flex: 1; 
-      background: linear-gradient(145deg, var(--gray-50), var(--gray-100)); 
-      border-radius: var(--radius-btn); 
-      padding: 16px 0; 
-      font-size: 16px; 
-      font-weight: var(--font-weight-bold); 
-      color: var(--text-primary); 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      gap: var(--space-sm); 
-      box-shadow: var(--shadow-raised); 
-      transition: var(--transition-fast); 
-      border: none; 
-      min-height: 56px; 
-      letter-spacing: var(--letter-spacing-normal); 
-      line-height: 1.2; 
-    }
-    .quick-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-sm);
-    }
+    .quick-btn { flex: 1; background: linear-gradient(145deg, var(--gray-50), var(--gray-100)); border-radius: var(--radius-btn); padding: 16px 0; font-size: 16px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; justify-content: center; gap: var(--space-sm); box-shadow: var(--shadow-raised); transition: var(--transition-fast); border: none; min-height: 56px; letter-spacing: 0em; line-height: 1.2; }
+    .quick-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
     .quick-btn:active { background: var(--gray-200); transform: scale(0.95); box-shadow: var(--shadow-inset); }
-    .quick-btn:first-of-type i { 
-      background: linear-gradient(145deg, var(--color-blue), var(--color-green));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      font-size: 18px; 
-      transition: transform var(--transition-bounce);
-    }
-    .quick-btn:last-of-type i { 
-      background: linear-gradient(145deg, var(--color-purple), var(--color-gold));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      font-size: 18px; 
-      transition: transform var(--transition-bounce);
-    }
+    .quick-btn:first-of-type i { background: linear-gradient(145deg, var(--color-blue), var(--color-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 18px; transition: transform var(--transition-bounce); }
+    .quick-btn:last-of-type i { background: linear-gradient(145deg, var(--color-purple), var(--color-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 18px; transition: transform var(--transition-bounce); }
     .quick-btn:hover i { transform: scale(1.15); }
     .quick-btn:active i { transform: scale(1.1); }
-
-    /* 轮播卡片 */
-    .carousel-card { 
-      background: transparent; 
-      border-radius: var(--radius-card); 
-      padding: var(--space-lg) var(--space-xl); 
-      box-shadow: var(--shadow-card); 
-      transition: var(--transition-base); 
-      position: relative;
-    }
-    .carousel-card::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      border-radius: inherit;
-      pointer-events: none;
-      box-shadow: inset 0 1px 2px rgba(255,255,255,0.8), inset 0 -1px 2px rgba(0,0,0,0.01);
-    }
+    .carousel-card { background: transparent; border-radius: var(--radius-card); padding: var(--space-lg) var(--space-xl); box-shadow: var(--shadow-card); transition: var(--transition-base); position: relative; }
+    .carousel-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: inherit; pointer-events: none; box-shadow: inset 0 1px 2px rgba(255,255,255,0.8), inset 0 -1px 2px rgba(0,0,0,0.01); }
     .carousel-card:active { transform: translateY(1px); box-shadow: 0 2px 4px rgba(0,0,0,0.01), inset 0 1px 2px rgba(0,0,0,0.01); }
-    .carousel-content { 
-      display: flex; 
-      align-items: center; 
-      justify-content: space-between; 
-      gap: var(--space-md); 
-    }
-    .carousel-text { 
-      font-size: 17px; 
-      font-weight: var(--font-weight-bold); 
-      color: var(--text-primary); 
-      flex: 1; 
-      white-space: nowrap; 
-      overflow: hidden; 
-      text-overflow: ellipsis; 
-      display: flex; 
-      align-items: center; 
-      gap: var(--space-sm); 
-      letter-spacing: var(--letter-spacing-tight); 
-      min-height: 44px; 
-      line-height: var(--line-height-tight); 
-    }
-    .carousel-text i { 
-      background: linear-gradient(145deg, var(--color-blue), var(--color-purple));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05)); 
-    }
-    .carousel-arrow { 
-      width: 40px; 
-      height: 40px; 
-      background: linear-gradient(145deg, var(--gray-50), var(--gray-100)); 
-      border-radius: var(--radius-icon); 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      font-size: 18px; 
-      box-shadow: var(--shadow-raised); 
-      transition: var(--transition-fast); 
-      border: none; 
-    }
+    .carousel-content { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); }
+    .carousel-text { font-size: 17px; font-weight: 700; color: var(--text-primary); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: var(--space-sm); letter-spacing: -0.02em; min-height: 44px; line-height: 1.2; }
+    .carousel-text i { background: linear-gradient(145deg, var(--color-blue), var(--color-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05)); }
+    .carousel-arrow { width: 40px; height: 40px; background: linear-gradient(145deg, var(--gray-50), var(--gray-100)); border-radius: var(--radius-icon); display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: var(--shadow-raised); transition: var(--transition-fast); border: none; }
     .carousel-arrow i { color: var(--gray-600); }
     .carousel-arrow:active { background: var(--gray-200); transform: scale(0.92); box-shadow: var(--shadow-inset); }
-    .carousel-indicators { 
-      display: flex; 
-      justify-content: center; 
-      gap: var(--space-sm); 
-      margin-top: var(--space-lg); 
-    }
-    .indicator-dot { 
-      width: 8px; 
-      height: 8px; 
-      background: var(--gray-400); 
-      border-radius: 20px; 
-      transition: all 0.3s var(--transition-bounce); 
-      box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
-    }
-    .indicator-dot.active { 
-      background: linear-gradient(90deg, var(--color-blue), var(--color-purple), var(--color-green));
-      width: 28px; 
-    }
-
-    /* 卡片标题 */
-    .card-header { 
-      font-weight: var(--font-weight-extrabold); 
-      font-size: 20px; 
-      background: var(--accent-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      display: flex; 
-      align-items: center; 
-      gap: var(--space-sm); 
-      margin-bottom: var(--space-md); 
-      letter-spacing: var(--letter-spacing-tight); 
-      line-height: var(--line-height-tight); 
-    }
-    .card-header i { 
-      background: linear-gradient(145deg, var(--color-blue), var(--color-purple));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      font-size: 22px; 
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
-    }
-
-    /* 底部导航栏 - 优化 */
-    .bottom-menu { 
-      background: rgba(255,255,255,0.8);
-      backdrop-filter: blur(10px);
-      display: flex; 
-      justify-content: space-around; 
-      align-items: center; 
-      padding: var(--space-sm) var(--space-sm) var(--space-lg); 
-      box-shadow: 0 -2px 8px rgba(0,0,0,0.02), inset 0 1px 2px rgba(255,255,255,0.8); 
-      border-top: 1px solid rgba(200,200,220,0.2);
-    }
-    .menu-item { 
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      gap: var(--space-xs); 
-      font-size: 11px; 
-      font-weight: var(--font-weight-regular); 
-      color: var(--gray-500); 
-      padding: var(--space-xs) var(--space-md); 
-      border-radius: 30px; 
-      transition: var(--transition-fast); 
-      position: relative; 
-      min-height: 44px; 
-      min-width: 60px; 
-      line-height: 1.2; 
-    }
-    .menu-item i { 
-      font-size: 22px; 
-      color: var(--gray-500); 
-      transition: var(--transition-fast); 
-    }
-    .menu-item.active i, .menu-item.active .menu-label { 
-      background: linear-gradient(145deg, var(--color-blue), var(--color-purple));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      font-weight: var(--font-weight-medium); 
-    }
-    .menu-item:active { 
-      background: rgba(91,142,217,0.05); 
-      transform: scale(0.94); 
-    }
-    .menu-item.active::after { 
-      content: ''; 
-      position: absolute; 
-      bottom: -6px; 
-      width: 5px; 
-      height: 5px; 
-      background: linear-gradient(90deg, var(--color-blue), var(--color-purple));
-      border-radius: 50%; 
-      transition: all 0.2s ease;
-    }
-    .menu-label { 
-      font-weight: var(--font-weight-regular); 
-      letter-spacing: var(--letter-spacing-normal); 
-    }
-
-    /* 响应式微调 */
-    @media (max-width: 360px) {
-      .card { padding: var(--space-lg); }
-      .stat-value { font-size: 18px; }
-      .community-value { font-size: 20px; }
-      .token-mini-price { font-size: 18px; }
-      .card-header { font-size: 18px; }
-      .card-header i { font-size: 20px; }
-    }
+    .carousel-indicators { display: flex; justify-content: center; gap: var(--space-sm); margin-top: var(--space-lg); }
+    .indicator-dot { width: 8px; height: 8px; background: var(--gray-400); border-radius: 20px; transition: all 0.3s var(--transition-bounce); box-shadow: inset 0 1px 2px rgba(0,0,0,0.05); }
+    .indicator-dot.active { background: linear-gradient(90deg, var(--color-blue), var(--color-purple), var(--color-green)); width: 28px; }
+    .card-header { font-weight: 800; font-size: 20px; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: flex; align-items: center; gap: var(--space-sm); margin-bottom: var(--space-md); letter-spacing: -0.02em; line-height: 1.2; }
+    .card-header i { background: linear-gradient(145deg, var(--color-blue), var(--color-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 22px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05)); }
+    .bottom-menu { background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); display: flex; justify-content: space-around; align-items: center; padding: var(--space-sm) var(--space-sm) var(--space-lg); box-shadow: 0 -2px 8px rgba(0,0,0,0.02), inset 0 1px 2px rgba(255,255,255,0.8); border-top: 1px solid rgba(200,200,220,0.2); }
+    .menu-item { display: flex; flex-direction: column; align-items: center; gap: var(--space-xs); font-size: 11px; font-weight: 500; color: var(--gray-500); padding: var(--space-xs) var(--space-md); border-radius: 30px; transition: var(--transition-fast); position: relative; min-height: 44px; min-width: 60px; line-height: 1.2; }
+    .menu-item i { font-size: 22px; color: var(--gray-500); transition: var(--transition-fast); }
+    .menu-item.active i, .menu-item.active .menu-label { background: linear-gradient(145deg, var(--color-blue), var(--color-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 600; }
+    .menu-item:active { background: rgba(91,142,217,0.05); transform: scale(0.94); }
+    .menu-item.active::after { content: ''; position: absolute; bottom: -6px; width: 5px; height: 5px; background: linear-gradient(90deg, var(--color-blue), var(--color-purple)); border-radius: 50%; transition: all 0.2s ease; }
+    .menu-label { font-weight: 500; letter-spacing: 0em; }
+    /* 面板切换相关 */
+    .panel { display: none; }
+    .panel.active-panel { display: block; }
+    .back-btn { display: inline-flex; align-items: center; gap: 6px; background: var(--gray-100); border-radius: 40px; padding: 8px 16px; font-size: 14px; font-weight: 600; color: var(--text-primary); box-shadow: var(--shadow-raised); transition: var(--transition-fast); border: none; cursor: default; margin-bottom: 16px; }
+    .back-btn i { background: linear-gradient(145deg, var(--color-blue), var(--color-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-size: 16px; }
+    .back-btn:active { transform: scale(0.96); box-shadow: var(--shadow-inset); }
+    @media (max-width: 360px) { .card { padding: var(--space-lg); } .stat-value { font-size: 18px; } .community-value { font-size: 20px; } .token-mini-price { font-size: 18px; } .card-header { font-size: 18px; } .card-header i { font-size: 20px; } }
   </style>
 </head>
 <body>
   <div class="main-scroll">
-    <!-- 顶部用户卡片 -->
-    <div class="card" id="userCard">
-      <div class="user-header-row">
-        <div class="user-info-clickable ripple-effect" id="expandTrigger">
-          <div class="h-icon">H</div>
-          <span class="nickname">深海海豚君</span>
-          <span class="level-badge">金牌会员</span>
+    <!-- 首页面板 (默认显示) -->
+    <div id="panel-home" class="panel active-panel">
+      <!-- 顶部用户卡片 -->
+      <div class="card" id="userCard">
+        <div class="user-header-row">
+          <div class="user-info-clickable ripple-effect" id="expandTrigger">
+            <div class="h-icon">H</div>
+            <span class="nickname">深海海豚君</span>
+            <span class="level-badge">金牌会员</span>
+          </div>
+        </div>
+        <div class="action-row">
+          <div class="action-buttons" id="actionButtons">
+            <span class="coin-btn ripple-effect" onclick="showPanel('chongbi')"><i class="fas fa-arrow-down"></i> 充币</span>
+            <span class="coin-btn ripple-effect" onclick="showPanel('tibi')"><i class="fas fa-arrow-up"></i> 提币</span>
+          </div>
+        </div>
+        <div class="expand-section hidden" id="expandContent">
+          <div class="stat-box ripple-effect"><div class="stat-label">身价</div><div class="stat-value">12.5k</div></div>
+          <div class="stat-box ripple-effect"><div class="stat-label">资产</div><div class="stat-value">5.2k</div></div>
+          <div class="stat-box ripple-effect"><div class="stat-label">贡献度</div><div class="stat-value">3.4k</div></div>
+          <div class="stat-box ripple-effect"><div class="stat-label">周排名</div><div class="stat-value">#16</div></div>
         </div>
       </div>
-      <div class="action-row">
-        <div class="action-buttons" id="actionButtons">
-          <span class="coin-btn ripple-effect" onclick="location.href='chongbi.html'"><i class="fas fa-arrow-down"></i> 充币</span>
-          <span class="coin-btn ripple-effect" onclick="location.href='tibi.html'"><i class="fas fa-arrow-up"></i> 提币</span>
+
+      <!-- 公告 -->
+      <div class="card">
+        <div class="announcement">
+          <i class="fas fa-bullhorn"></i>
+          <span>111111</span>
+          <i class="fas fa-circle" style="font-size: 6px; color: var(--gray-400); margin-left: auto;"></i>
         </div>
       </div>
-      <div class="expand-section hidden" id="expandContent">
-        <div class="stat-box ripple-effect"><div class="stat-label">身价</div><div class="stat-value">12.5k</div></div>
-        <div class="stat-box ripple-effect"><div class="stat-label">资产</div><div class="stat-value">5.2k</div></div>
-        <div class="stat-box ripple-effect"><div class="stat-label">贡献度</div><div class="stat-value">3.4k</div></div>
-        <div class="stat-box ripple-effect"><div class="stat-label">周排名</div><div class="stat-value">#16</div></div>
+
+      <!-- 工具集 -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-tools"></i> 常用工具
+        </div>
+        <div class="tools-grid">
+          <div class="tool-item ripple-effect" onclick="showPanel('qiandao')"><i class="fas fa-calendar-check"></i><span>签到</span></div>
+          <div class="tool-item ripple-effect" onclick="showPanel('choujiang')"><i class="fas fa-dice"></i><span>抽奖</span></div>
+          <div class="tool-item ripple-effect" onclick="showPanel('jifen')"><i class="fas fa-star"></i><span>积分</span></div>
+          <div class="tool-item ripple-effect" onclick="showPanel('hongbao')"><i class="fas fa-gift"></i><span>红包</span></div>
+          <div class="tool-item ripple-effect" onclick="showPanel('chaxun')"><i class="fas fa-search"></i><span>查询系统</span></div>
+          <div class="tool-item ripple-effect" onclick="showPanel('shequ_shuju')"><i class="fas fa-chart-line"></i><span>社区数据</span></div>
+          <div class="tool-item ripple-effect" onclick="showPanel('jisuanqi')"><i class="fas fa-calculator"></i><span>计算器</span></div>
+          <div class="tool-item ripple-effect" onclick="showPanel('xiazai')"><i class="fas fa-download"></i><span>下载中心</span></div>
+        </div>
+      </div>
+
+      <!-- 数据仪表盘 -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-chart-pie"></i> 数据仪表盘
+        </div>
+        <div class="dashboard-grid">
+          <div class="community-item ripple-effect" onclick="showPanel('shequ_shuju')">
+            <div class="community-label">H总质押</div>
+            <div class="community-value">12.5M H</div>
+          </div>
+          <div class="community-item ripple-effect" onclick="showPanel('shequ_shuju')">
+            <div class="community-label">总交易量</div>
+            <div class="community-value">$2.3B</div>
+          </div>
+          <div class="community-item ripple-effect" onclick="showPanel('shequ_shuju')">
+            <div class="community-label">国库余额</div>
+            <div class="community-value">$1.8M</div>
+          </div>
+          <div class="community-item ripple-effect" onclick="showPanel('shequ_shuju')">
+            <div class="community-label">活跃人数</div>
+            <div class="community-value">8.2k</div>
+          </div>
+          <div class="token-mini-card ripple-effect" onclick="showPanel('okb')">
+            <div class="token-mini-symbol"><i class="fas fa-coins"></i> OKB</div>
+            <div class="token-mini-price">$45.23</div>
+            <div class="token-mini-change positive"><i class="fas fa-arrow-up"></i> 2.1%</div>
+          </div>
+          <div class="token-mini-card ripple-effect" onclick="showPanel('btc')">
+            <div class="token-mini-symbol"><i class="fab fa-bitcoin"></i> BTC</div>
+            <div class="token-mini-price">$48,321</div>
+            <div class="token-mini-change positive"><i class="fas fa-arrow-up"></i> 0.5%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 最新活动 -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-fire"></i> 最新活动
+        </div>
+        <div class="activity-content">
+          <span class="activity-badge">OKX Boost</span>
+          <span class="activity-text" onclick="showPanel('huodong')"><i class="fas fa-rocket"></i>最佳策略获得空投</span>
+        </div>
+      </div>
+
+      <!-- 便捷访问 -->
+      <div class="card" style="padding: var(--space-lg) var(--space-xl);">
+        <div class="quick-row">
+          <div class="quick-btn ripple-effect" onclick="showPanel('goumai_hbi')"><i class="fas fa-coins"></i> 购买H币</div>
+          <div class="quick-btn ripple-effect" onclick="showPanel('sheququn')"><i class="fas fa-users"></i> 进入社区群</div>
+        </div>
+      </div>
+
+      <!-- 轮播 -->
+      <div class="carousel-card" onclick="showPanel('wangge_celue')">
+        <div class="carousel-content">
+          <span class="carousel-arrow ripple-effect"><i class="fas fa-chevron-left"></i></span>
+          <span class="carousel-text"><i class="fas fa-chart-line"></i>网格策略，行情涨跌都能赚</span>
+          <span class="carousel-arrow ripple-effect"><i class="fas fa-chevron-right"></i></span>
+        </div>
+        <div class="carousel-indicators">
+          <span class="indicator-dot active"></span>
+          <span class="indicator-dot"></span>
+          <span class="indicator-dot"></span>
+        </div>
       </div>
     </div>
 
-    <!-- 公告 -->
-    <div class="card">
-      <div class="announcement">
-        <i class="fas fa-bullhorn"></i>
-        <span>111111</span>
-        <i class="fas fa-circle" style="font-size: 6px; color: var(--gray-400); margin-left: auto;"></i>
-      </div>
-    </div>
-
-    <!-- 工具集 -->
-    <div class="card">
-      <div class="card-header">
-        <i class="fas fa-tools"></i> 常用工具
-      </div>
-      <div class="tools-grid">
-        <div class="tool-item ripple-effect" onclick="location.href='qiandao.html'"><i class="fas fa-calendar-check"></i><span>签到</span></div>
-        <div class="tool-item ripple-effect" onclick="location.href='choujiang.html'"><i class="fas fa-dice"></i><span>抽奖</span></div>
-        <div class="tool-item ripple-effect" onclick="location.href='jifen.html'"><i class="fas fa-star"></i><span>积分</span></div>
-        <div class="tool-item ripple-effect" onclick="location.href='hongbao.html'"><i class="fas fa-gift"></i><span>红包</span></div>
-        <div class="tool-item ripple-effect" onclick="location.href='chaxun.html'"><i class="fas fa-search"></i><span>查询系统</span></div>
-        <div class="tool-item ripple-effect" onclick="location.href='shequ_shuju.html'"><i class="fas fa-chart-line"></i><span>社区数据</span></div>
-        <div class="tool-item ripple-effect" onclick="location.href='jisuanqi.html'"><i class="fas fa-calculator"></i><span>计算器</span></div>
-        <div class="tool-item ripple-effect" onclick="location.href='xiazai.html'"><i class="fas fa-download"></i><span>下载中心</span></div>
-      </div>
-    </div>
-
-    <!-- 数据仪表盘 -->
-    <div class="card">
-      <div class="card-header">
-        <i class="fas fa-chart-pie"></i> 数据仪表盘
-      </div>
-      <div class="dashboard-grid">
-        <div class="community-item ripple-effect" onclick="location.href='shequ_shuju.html'">
-          <div class="community-label">H总质押</div>
-          <div class="community-value">12.5M H</div>
-        </div>
-        <div class="community-item ripple-effect" onclick="location.href='shequ_shuju.html'">
-          <div class="community-label">总交易量</div>
-          <div class="community-value">$2.3B</div>
-        </div>
-        <div class="community-item ripple-effect" onclick="location.href='shequ_shuju.html'">
-          <div class="community-label">国库余额</div>
-          <div class="community-value">$1.8M</div>
-        </div>
-        <div class="community-item ripple-effect" onclick="location.href='shequ_shuju.html'">
-          <div class="community-label">活跃人数</div>
-          <div class="community-value">8.2k</div>
-        </div>
-        <div class="token-mini-card ripple-effect" onclick="location.href='okb.html'">
-          <div class="token-mini-symbol"><i class="fas fa-coins"></i> OKB</div>
-          <div class="token-mini-price">$45.23</div>
-          <div class="token-mini-change positive"><i class="fas fa-arrow-up"></i> 2.1%</div>
-        </div>
-        <div class="token-mini-card ripple-effect" onclick="location.href='btc.html'">
-          <div class="token-mini-symbol"><i class="fab fa-bitcoin"></i> BTC</div>
-          <div class="token-mini-price">$48,321</div>
-          <div class="token-mini-change positive"><i class="fas fa-arrow-up"></i> 0.5%</div>
+    <!-- 以下是所有二级面板 (每个面板顶部有返回按钮) -->
+    <!-- 签到面板 -->
+    <div id="panel-qiandao" class="panel">
+      <div class="back-btn ripple-effect" onclick="showPanel('home')"><i class="fas fa-arrow-left"></i> 返回首页</div>
+      <div class="card">
+        <div class="card-header"><i class="fas fa-calendar-check"></i> 签到</div>
+        <div style="color: var(--text-secondary); line-height: 1.6;">
+          <p>📅 今日已签到，连续签到7天</p>
+          <p>🎁 明日签到奖励：20积分</p>
         </div>
       </div>
     </div>
-
-    <!-- 最新活动 -->
-    <div class="card">
-      <div class="card-header">
-        <i class="fas fa-fire"></i> 最新活动
-      </div>
-      <div class="activity-content">
-        <span class="activity-badge">OKX Boost</span>
-        <span class="activity-text" onclick="location.href='huodong.html'"><i class="fas fa-rocket"></i>最佳策略获得空投</span>
+    <!-- 抽奖面板 -->
+    <div id="panel-choujiang" class="panel">
+      <div class="back-btn ripple-effect" onclick="showPanel('home')"><i class="fas fa-arrow-left"></i> 返回首页</div>
+      <div class="card">
+        <div class="card-header"><i class="fas fa-dice"></i> 抽奖</div>
+        <p style="color: var(--text-secondary);">今日抽奖次数：2次</p>
       </div>
     </div>
-
-    <!-- 便捷访问 -->
-    <div class="card" style="padding: var(--space-lg) var(--space-xl);">
-      <div class="quick-row">
-        <div class="quick-btn ripple-effect" onclick="location.href='goumai_hbi.html'"><i class="fas fa-coins"></i> 购买H币</div>
-        <div class="quick-btn ripple-effect" onclick="location.href='sheququn.html'"><i class="fas fa-users"></i> 进入社区群</div>
+    <!-- 积分面板 -->
+    <div id="panel-jifen" class="panel">
+      <div class="back-btn ripple-effect" onclick="showPanel('home')"><i class="fas fa-arrow-left"></i> 返回首页</div>
+      <div class="card">
+        <div class="card-header"><i class="fas fa-star"></i> 积分</div>
+        <p style="color: var(--text-secondary);">当前积分：3,421</p>
       </div>
     </div>
-
-    <!-- 轮播 -->
-    <div class="carousel-card" onclick="location.href='wangge_celue.html'">
-      <div class="carousel-content">
-        <span class="carousel-arrow ripple-effect"><i class="fas fa-chevron-left"></i></span>
-        <span class="carousel-text"><i class="fas fa-chart-line"></i>网格策略，行情涨跌都能赚</span>
-        <span class="carousel-arrow ripple-effect"><i class="fas fa-chevron-right"></i></span>
+    <!-- 红包面板 -->
+    <div id="panel-hongbao" class="panel">
+      <div class="back-btn ripple-effect" onclick="showPanel('home')"><i class="fas fa-arrow-left"></i> 返回首页</div>
+      <div class="card">
+        <div class="card-header"><i class="fas fa-gift"></i> 红包</div>
+        <p style="color: var(--text-secondary);">红包余额：88.8 USDT</p>
       </div>
-      <div class="carousel-indicators">
-        <span class="indicator-dot active"></span>
-        <span class="indicator-dot"></span>
-        <span class="indicator-dot"></span>
+    </div>
+    <!-- 查询系统面板 -->
+    <div id="panel-chaxun" class="panel">
+      <div class="back-btn ripple-effect" onclick="showPanel('home')"><i class="fas fa-arrow-left"></i> 返回首页</div>
+      <div class="card">
+        <div class="card-header"><i class="fas fa-search"></i> 查询系统</div>
+        <p style="color: var(--text-secondary); margin-bottom: var(--space-sm);">输入交易哈希查询：</p>
+        <input type="text" placeholder="例如：0x123..." style="width:100%; padding:10px; border-radius:20px; border:1px solid var(--gray-300);">
+      </div>
+    </div>
+    <!-- 社区数据面板 -->
+    <div id="panel-shequ_shuju" class="panel">
+      <div class="back-btn ripple-effect" onclick="showPanel('home')"><i class="fas fa-arrow-left"></i> 返回首页</div>
+      <div class="card">
+        <div class="card-header"><i class="fas fa-chart-line"></i> 社区数据</div>
+        <div class="dashboard-grid">
+          <div class="community-item"><div class="community-label">H总质押</div><div class="community-value">12.5M H</div></div>
+          <div class="community-item"><div class="community-label">总交易量</div><div class="community-value">$2.3B</div></div>
+          <div class="community-item"><div class="community-label">国库余额</div><div class="community-value">$1.8M</div></div>
+          <div class="community-item"><div class="community-label">活跃人数</div><div class="community-value">8.2k</div></div>
+        </div>
+      </div>
+    </div>
+    <!-- 计算器面板 -->
+    <div id="panel-jisuanqi" class="panel">
+      <div class="back-btn ripple-effect" onclick="showPanel('home')"><i class="fas fa-arrow-left"></i> 返回首页</div>
+      <div class="card">
+        <div class="card-header"><i class="fas fa-calculator"></i> 计算器</div>
+        <p style="color: var(--text-secondary);">投资计算器（开发中）</p>
+      </div>
+    </div>
+    <!-- 下载中心面板 -->
+    <div id="panel-xiazai" class="panel">
+      <div class="back-btn ripple-effect" onclick="showPanel('home')"><i class="fas fa-arrow-left"></i> 返回首页</div>
+      <div class="card">
+        <div class="card-header"><i class="fas fa-download"></i> 下载中心</div>
+        <p style="color: var(--text-secondary);">最新版本 v2.3.0</p>
+      </div>
+    </div>
+    <!-- 最新活动面板 -->
+    <div id="panel-huodong" class="panel">
+      <div class="back-btn ripple-effect" onclick="showPanel('home')"><i class="fas fa-arrow-left"></i> 返回首页</div>
+      <div class="card">
+        <div class="card-header"><i class="fas fa-fire"></i> 最新活动</div>
+        <p style="color: var(--text-secondary);">OKX Boost 活动详情：最佳策略获得空投，快来参与！</p>
+      </div>
+    </div>
+    <!-- 购买H币面板 -->
+    <div id="panel-goumai_hbi" class="panel">
+      <div class="back-btn ripple-effect" onclick="showPanel('home')"><i class="fas fa-arrow-left"></i> 返回首页</div>
+      <div class="card">
+        <div class="card-header"><i class="fas fa-coins"></i> 购买H币</div>
+        <p style="color: var(--text-secondary);">当前H币价格：$0.12</p>
+      </div>
+    </div>
+    <!-- 进入社区群面板 -->
+    <div id="panel-sheququn" class="panel">
+      <div class="back-btn ripple-effect" onclick="showPanel('home')"><i class="fas fa-arrow-left"></i> 返回首页</div>
+      <div class="card">
+        <div class="card-header"><i class="fas fa-users"></i> 进入社区群</div>
+        <p style="color: var(--text-secondary); margin-bottom: var(--space-sm);">扫码加入微信群：</p>
+        <div style="width:150px; height:150px; background:var(--gray-200); margin:0 auto;"></div>
+      </div>
+    </div>
+    <!-- 网格策略面板 -->
+    <div id="panel-wangge_celue" class="panel">
+      <div class="back-btn ripple-effect" onclick="showPanel('home')"><i class="fas fa-arrow-left"></i> 返回首页</div>
+      <div class="card">
+        <div class="card-header"><i class="fas fa-chart-line"></i> 网格策略</div>
+        <p style="color: var(--text-secondary);">年化收益：15-25%</p>
+      </div>
+    </div>
+    <!-- OKB详情面板 -->
+    <div id="panel-okb" class="panel">
+      <div class="back-btn ripple-effect" onclick="showPanel('home')"><i class="fas fa-arrow-left"></i> 返回首页</div>
+      <div class="card">
+        <div class="card-header"><i class="fas fa-coins"></i> OKB 详情</div>
+        <p style="color: var(--text-secondary);">价格：$45.23</p>
+        <p style="color: var(--text-secondary);">24h涨跌：+2.1%</p>
+      </div>
+    </div>
+    <!-- BTC详情面板 -->
+    <div id="panel-btc" class="panel">
+      <div class="back-btn ripple-effect" onclick="showPanel('home')"><i class="fas fa-arrow-left"></i> 返回首页</div>
+      <div class="card">
+        <div class="card-header"><i class="fab fa-bitcoin"></i> BTC 详情</div>
+        <p style="color: var(--text-secondary);">价格：$48,321</p>
+        <p style="color: var(--text-secondary);">24h涨跌：+0.5%</p>
+      </div>
+    </div>
+    <!-- 赚币面板 -->
+    <div id="panel-zhuanbi" class="panel">
+      <div class="back-btn ripple-effect" onclick="showPanel('home')"><i class="fas fa-arrow-left"></i> 返回首页</div>
+      <div class="card">
+        <div class="card-header"><i class="fas fa-coins"></i> 赚币</div>
+        <p style="color: var(--text-secondary);">理财列表（开发中）</p>
+      </div>
+    </div>
+    <!-- 模型面板 -->
+    <div id="panel-moxing" class="panel">
+      <div class="back-btn ripple-effect" onclick="showPanel('home')"><i class="fas fa-arrow-left"></i> 返回首页</div>
+      <div class="card">
+        <div class="card-header"><i class="fas fa-cube"></i> 模型</div>
+        <p style="color: var(--text-secondary);">AI模型训练进度</p>
+      </div>
+    </div>
+    <!-- 钱包面板 -->
+    <div id="panel-qianbao" class="panel">
+      <div class="back-btn ripple-effect" onclick="showPanel('home')"><i class="fas fa-arrow-left"></i> 返回首页</div>
+      <div class="card">
+        <div class="card-header"><i class="fas fa-wallet"></i> 钱包</div>
+        <p style="color: var(--text-secondary);">总资产：$1,234.56</p>
+      </div>
+    </div>
+    <!-- 充币面板 -->
+    <div id="panel-chongbi" class="panel">
+      <div class="back-btn ripple-effect" onclick="showPanel('home')"><i class="fas fa-arrow-left"></i> 返回首页</div>
+      <div class="card">
+        <div class="card-header"><i class="fas fa-arrow-down"></i> 充币</div>
+        <p style="color: var(--text-secondary);">充值地址：0x1234...5678</p>
+      </div>
+    </div>
+    <!-- 提币面板 -->
+    <div id="panel-tibi" class="panel">
+      <div class="back-btn ripple-effect" onclick="showPanel('home')"><i class="fas fa-arrow-left"></i> 返回首页</div>
+      <div class="card">
+        <div class="card-header"><i class="fas fa-arrow-up"></i> 提币</div>
+        <p style="color: var(--text-secondary);">请输入提币地址和数量</p>
       </div>
     </div>
 
     <div style="height: var(--space-xs);"></div>
   </div>
 
-  <!-- 底部导航栏 -->
+  <!-- 底部导航栏（始终显示） -->
   <div class="bottom-menu">
-    <div class="menu-item active ripple-effect" onclick="location.href='index.html'">
+    <div class="menu-item active" onclick="showPanel('home')" id="menu-home">
       <i class="fas fa-home"></i>
       <span class="menu-label">首页</span>
     </div>
-    <div class="menu-item ripple-effect" onclick="location.href='zhuanbi.html'">
+    <div class="menu-item" onclick="showPanel('zhuanbi')" id="menu-zhuanbi">
       <i class="fas fa-coins"></i>
       <span class="menu-label">赚币</span>
     </div>
-    <div class="menu-item ripple-effect" onclick="location.href='moxing.html'">
+    <div class="menu-item" onclick="showPanel('moxing')" id="menu-moxing">
       <i class="fas fa-cube"></i>
       <span class="menu-label">模型</span>
     </div>
-    <div class="menu-item ripple-effect" onclick="location.href='qianbao.html'">
+    <div class="menu-item" onclick="showPanel('qianbao')" id="menu-qianbao">
       <i class="fas fa-wallet"></i>
       <span class="menu-label">钱包</span>
     </div>
   </div>
 
   <script>
+    function showPanel(panelId) {
+      // 隐藏所有面板
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active-panel'));
+      // 显示对应面板
+      const panel = document.getElementById('panel-' + panelId);
+      if (panel) panel.classList.add('active-panel');
+      
+      // 更新底部菜单激活状态
+      document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+      if (panelId === 'home') {
+        document.getElementById('menu-home').classList.add('active');
+      } else if (panelId === 'zhuanbi') {
+        document.getElementById('menu-zhuanbi').classList.add('active');
+      } else if (panelId === 'moxing') {
+        document.getElementById('menu-moxing').classList.add('active');
+      } else if (panelId === 'qianbao') {
+        document.getElementById('menu-qianbao').classList.add('active');
+      } else {
+        // 非首页、赚币、模型、钱包时，保持首页激活（可选）
+        document.getElementById('menu-home').classList.add('active');
+      }
+    }
+
+    // 处理顶部展开/收起
     (function() {
       const expandTrigger = document.getElementById('expandTrigger');
       const expandContent = document.getElementById('expandContent');
       const actionButtons = document.getElementById('actionButtons');
-
       expandTrigger.addEventListener('click', function(e) {
         e.stopPropagation();
         expandContent.classList.toggle('hidden');
       });
-
       actionButtons.addEventListener('click', function(e) {
         e.stopPropagation();
-      });
-
-      const path = window.location.pathname.split('/').pop() || 'index.html';
-      const menuItems = document.querySelectorAll('.menu-item');
-      menuItems.forEach(item => {
-        const onclick = item.getAttribute('onclick');
-        if (onclick) {
-          const match = onclick.match(/'([^']+)'/);
-          if (match && match[1] === path) {
-            item.classList.add('active');
-          }
-        }
       });
     })();
   </script>
