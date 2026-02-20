@@ -1082,79 +1082,78 @@
                 </div>
                 <div class="drawer-content" id="content-card3">
                     <!-- 模拟交易完整内容（移植自模拟交易.html，ID加前缀 sim_） -->
-                    <div class="sim-panel">
-                        <div class="flex-between" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                            <h3 style="margin:0; font-weight:600;">📊 实时持仓状态</h3>
-                            <button class="sim-btn-secondary" id="sim_resetBtn" style="width: auto; padding: 8px 20px;">⟲ 重置初始值</button>
-                        </div>
-                        <div class="sim-stats-grid" id="sim_stateGrid"></div>
-                    </div>
+                  <div class="sim-panel">
+        <div class="flex-between" style="margin-bottom: 16px;">
+            <h3 style="margin:0; font-weight:600;">📊 实时持仓状态</h3>
+            <button class="sim-btn-secondary" id="sim_resetBtn" style="width: auto; padding: 8px 20px;">⟲ 重置初始值</button>
+        </div>
+        <div class="stats-grid" id="sim_stateGrid"></div>
+    </div>
 
-                    <div class="sim-flex-row">
-                        <!-- 买入卡 -->
-                        <div class="sim-action-card">
-                            <div class="sim-action-title">📥 买入 (外部) <span>税5% U</span></div>
-                            <div class="sim-input-group">
-                                <label>投入 USDT</label>
-                                <input type="number" id="sim_buyAmount" placeholder="如 1000" min="0.1" step="0.1" value="1000">
-                            </div>
-                            <button class="sim-btn" id="sim_buyBtn">执行买入 → 外部持币</button>
-                            <div class="sim-info-badge" id="sim_buyPreview">外部获得 ≈ ? H</div>
-                            <div class="sim-mechanism-note">
-                                <strong>📌 买入机制</strong><br>
-                                1️⃣ 投入 U → 扣除 5% 税 (入国库U)<br>
-                                2️⃣ 剩余 U 加入 LP 池 (uLp 增加)<br>
-                                3️⃣ 根据恒定乘积 x·y = k，H 数量减少 (hLp = k / 新uLp)<br>
-                                4️⃣ 减少的 H 归外部持币 (external 增加)<br>
-                                5️⃣ 价格更新: 新价格 = 新uLp / 新hLp (价格上升)
-                            </div>
-                        </div>
-
-                        <!-- 质押/赎回卡 -->
-                        <div class="sim-action-card">
-                            <div class="sim-action-title">🔒 外部质押操作 <span>阶梯日息</span></div>
-                            <div class="sim-rate-table">
-                                <div class="sim-rate-item"><span class="sim-rate-days">1-7d</span><br><span class="sim-rate-percent">0.5%</span></div>
-                                <div class="sim-rate-item"><span class="sim-rate-days">8-15d</span><br><span class="sim-rate-percent">0.6%</span></div>
-                                <div class="sim-rate-item"><span class="sim-rate-days">16-30d</span><br><span class="sim-rate-percent">0.8%</span></div>
-                                <div class="sim-rate-item"><span class="sim-rate-days">31-60d</span><br><span class="sim-rate-percent">1.0%</span></div>
-                                <div class="sim-rate-item"><span class="sim-rate-days">≥61d</span><br><span class="sim-rate-percent">1.2%</span></div>
-                            </div>
-                            <div class="sim-input-group">
-                                <label>质押/赎回数量 (H)</label>
-                                <input type="number" id="sim_stakeAmount" placeholder="例 50000" min="1" step="1" value="50000">
-                            </div>
-                            <div class="sim-input-group">
-                                <label>质押天数 (用于利息计算)</label>
-                                <input type="number" id="sim_stakeDays" placeholder="天数" min="1" value="30">
-                            </div>
-                            <button class="sim-btn" id="sim_stakeBtn">🔐 锁定本金 (外部→质押池)</button>
-                            <button class="sim-btn sim-btn-success" id="sim_redeemBtn">💰 赎回本息 (本金+利息 → 外部)</button>
-                            <div class="sim-info-badge" id="sim_stakePreview">预期利息 ≈ 0 H</div>
-                        </div>
-
-                        <!-- 卖出卡 -->
-                        <div class="sim-action-card">
-                            <div class="sim-action-title">📤 外部卖出 <span>税5% U</span></div>
-                            <div class="sim-input-group">
-                                <label>卖出数量 (从外部持币)</label>
-                                <input type="number" id="sim_sellAmount" placeholder="如 50000" min="1" step="1" value="50000">
-                            </div>
-                            <button class="sim-btn" id="sim_sellBtn">执行卖出 (外部→USDT)</button>
-                            <div class="sim-info-badge" id="sim_sellPreview">外部可获得 ≈ ? USDT</div>
-                            <div class="sim-last-sell" id="sim_lastSellResult">暂无卖出记录</div>
-                            <div class="sim-profit-estimate" id="sim_profitEstimate">
-                                当前价格：？USDT<br>
-                                基于质押参数估算：若赎回本息并全部卖出，可得 ? USDT，其中利息价值 ? USDT
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="sim-highlight">
-                        ⚡ <strong>操作规则</strong>：买入/质押/赎回/卖出均针对外部持币；赎回时本金和利息均从质押池支出；卖出时，税收按获得USDT的5%计算，从USDT中扣除，国库U增加。总供应恒为10亿。
-                    </div>
-                </div>
+    <div class="sim-flex-row">
+        <!-- 买入卡 -->
+        <div class="sim-action-card">
+            <div class="sim-action-title">📥 买入 (外部) <span>税5% U</span></div>
+            <div class="sim-input-group">
+                <label>投入 USDT</label>
+                <input type="number" id="sim_buyAmount" placeholder="如 1000" min="0.1" step="0.1" value="1000">
             </div>
+            <button class="sim-btn" id="sim_buyBtn">执行买入 → 外部持币</button>
+            <div class="sim-info-badge" id="sim_buyPreview">外部获得 ≈ ? H</div>
+            <div class="sim-mechanism-note">
+                <strong>📌 买入机制</strong><br>
+                1️⃣ 投入U扣5%税(入国库)<br>
+                2️⃣ 剩余U加入LP池<br>
+                3️⃣ 恒定乘积 x·y=k，H减少<br>
+                4️⃣ 减少的H归外部持币<br>
+                5️⃣ 价格上升
+            </div>
+        </div>
+
+        <!-- 质押/赎回卡 -->
+        <div class="sim-action-card">
+            <div class="sim-action-title">🔒 外部质押操作 <span>阶梯日息</span></div>
+            <div class="sim-rate-table">
+                <div class="sim-rate-item"><span class="sim-rate-days">1-7d</span><br><span class="sim-rate-percent">0.5%</span></div>
+                <div class="sim-rate-item"><span class="sim-rate-days">8-15d</span><br><span class="sim-rate-percent">0.6%</span></div>
+                <div class="sim-rate-item"><span class="sim-rate-days">16-30d</span><br><span class="sim-rate-percent">0.8%</span></div>
+                <div class="sim-rate-item"><span class="sim-rate-days">31-60d</span><br><span class="sim-rate-percent">1.0%</span></div>
+                <div class="sim-rate-item"><span class="sim-rate-days">≥61d</span><br><span class="sim-rate-percent">1.2%</span></div>
+            </div>
+            <div class="sim-input-group">
+                <label>质押/赎回数量 (H)</label>
+                <input type="number" id="sim_stakeAmount" placeholder="例 50000" min="1" step="1" value="50000">
+            </div>
+            <div class="sim-input-group">
+                <label>质押天数 (用于利息计算)</label>
+                <input type="number" id="sim_stakeDays" placeholder="天数" min="1" value="30">
+            </div>
+            <button class="sim-btn" id="sim_stakeBtn">🔐 锁定本金 (外部→质押池)</button>
+            <button class="sim-btn sim-btn-success" id="sim_redeemBtn">💰 赎回本息 (本金+利息 → 外部)</button>
+            <div class="sim-info-badge" id="sim_stakePreview">预期利息 ≈ 0 H</div>
+        </div>
+
+        <!-- 卖出卡 -->
+        <div class="sim-action-card">
+            <div class="sim-action-title">📤 外部卖出 <span>税5% U</span></div>
+            <div class="sim-input-group">
+                <label>卖出数量 (从外部持币)</label>
+                <input type="number" id="sim_sellAmount" placeholder="如 50000" min="1" step="1" value="50000">
+            </div>
+            <button class="sim-btn" id="sim_sellBtn">执行卖出 (外部→USDT)</button>
+            <div class="sim-info-badge" id="sim_sellPreview">外部可获得 ≈ ? USDT</div>
+            <div class="sim-last-sell" id="sim_lastSellResult">暂无卖出记录</div>
+            <div class="sim-profit-estimate" id="sim_profitEstimate">
+                当前价格：？USDT<br>
+                基于质押参数估算：若赎回本息并全部卖出，可得 ? USDT，其中利息价值 ? USDT
+            </div>
+        </div>
+    </div>
+
+    <div class="sim-highlight">
+        ⚡ <strong>操作规则</strong>：买入/质押/赎回/卖出均针对外部持币；赎回时本金和利息均从质押池支出；卖出时，税收按获得USDT的5%计算，从USDT中扣除，国库U增加。总供应恒为10亿。
+    </div>
+</div>
 
             <!-- 卡片4：KOL评价海豚模式 -->
             <div class="drawer-card" id="card4">
@@ -2105,221 +2104,229 @@
             // ========== 模拟交易脚本 ==========
             // 初始状态 (与模拟交易.html一致)
             const SIM_INIT = {
-                hLp: 17351600,
-                uLp: 109836.60,
-                community: 682648400,
-                stakePool: 300000000,
-                treasuryH: 0,
-                treasuryU: 0,
-                external: 0,
-                externalPayout: 0
-            };
-            let simState = JSON.parse(JSON.stringify(SIM_INIT));
-            let simLastSell = null;
+             hLp: 17351600,
+    uLp: 109836.60,
+    community: 682648400,
+    stakePool: 300000000,
+    treasuryH: 0,
+    treasuryU: 0,
+    external: 0,
+    externalPayout: 0
+};
 
-            function simComputeDerived() {
-                const h = simState.hLp;
-                const u = simState.uLp;
-                const k = h * u;
-                const price = u / h;
-                const totalSupply = simState.community + simState.stakePool + simState.hLp + simState.treasuryH + simState.external;
-                const marketCap = price * totalSupply;
-                return { k, price, totalSupply, marketCap };
+let simState = JSON.parse(JSON.stringify(SIM_INIT));
+let simLastSell = null;
+
+function simComputeDerived() {
+    const h = simState.hLp;
+    const u = simState.uLp;
+    const k = h * u;
+    const price = u / h;
+    const totalSupply = simState.community + simState.stakePool + simState.hLp + simState.treasuryH + simState.external;
+    const marketCap = price * totalSupply;
+    return { k, price, totalSupply, marketCap };
+}
+
+function simCalculateInterest(principal, days) {
+    if (principal <= 0 || days <= 0) return 0;
+    let remaining = days;
+    let total = 0;
+    const stages = [
+        { start: 1, end: 7, rate: 0.005 },
+        { start: 8, end: 15, rate: 0.006 },
+        { start: 16, end: 30, rate: 0.008 },
+        { start: 31, end: 60, rate: 0.010 },
+        { start: 61, end: Infinity, rate: 0.012 }
+    ];
+    for (let s of stages) {
+        if (remaining <= 0) break;
+        let stageDays = 0;
+        if (s.end === Infinity) {
+            stageDays = remaining;
+        } else {
+            stageDays = Math.min(remaining, s.end - s.start + 1);
+        }
+        if (stageDays > 0) {
+            total += principal * s.rate * stageDays;
+            remaining -= stageDays;
+        }
+    }
+    return total;
+}
+
+function simRefreshUI() {
+    const d = simComputeDerived();
+
+    const grid = document.getElementById('sim_stateGrid');
+    grid.innerHTML = `
+        <div class="stat-card"><div class="stat-label">H 价格</div><div class="stat-value">${d.price.toFixed(6)}<span class="stat-unit">USDT</span></div><div class="stat-trend">k = ${d.k.toExponential(4)}</div></div>
+        <div class="stat-card"><div class="stat-label">LP 池 H</div><div class="stat-value">${simState.hLp.toLocaleString()}<span class="stat-unit">H</span></div><div class="stat-trend">USDT: ${simState.uLp.toFixed(2)}</div></div>
+        <div class="stat-card"><div class="stat-label">社区持币</div><div class="stat-value">${simState.community.toLocaleString()}<span class="stat-unit">H</span></div><div class="stat-trend">仅展示</div></div>
+        <div class="stat-card"><div class="stat-label">外部持币</div><div class="stat-value">${simState.external.toLocaleString()}<span class="stat-unit">H</span></div><div class="stat-trend">可操作</div></div>
+        <div class="stat-card"><div class="stat-label">质押池</div><div class="stat-value">${simState.stakePool.toLocaleString()}<span class="stat-unit">H</span></div><div class="stat-trend">锁定中</div></div>
+        <div class="stat-card"><div class="stat-label">国库H</div><div class="stat-value">${simState.treasuryH.toLocaleString()}<span class="stat-unit">H</span></div><div class="stat-trend">仅收税</div></div>
+        <div class="stat-card"><div class="stat-label">国库 U</div><div class="stat-value">${simState.treasuryU.toFixed(2)}<span class="stat-unit">USDT</span></div><div class="stat-trend">买入+卖出税</div></div>
+        <div class="stat-card"><div class="stat-label">累计支出</div><div class="stat-value">${simState.externalPayout.toLocaleString()}<span class="stat-unit">H</span></div><div class="stat-trend">从质押池支付</div></div>
+        <div class="stat-card"><div class="stat-label">总市值</div><div class="stat-value">${d.marketCap.toFixed(0)}<span class="stat-unit">USDT</span></div><div class="stat-trend">总供应 1B H</div></div>
+    `;
+
+    // 买入预览
+    const buyU = parseFloat(document.getElementById('sim_buyAmount').value) || 0;
+    if (buyU > 0) {
+        const tax = buyU * 0.05;
+        const netU = buyU * 0.95;
+        const newU = simState.uLp + netU;
+        const newH = (simState.hLp * simState.uLp) / newU;
+        const getH = simState.hLp - newH;
+        document.getElementById('sim_buyPreview').innerText = `外部获得 ≈ ${getH.toFixed(0)} H (税 ${tax.toFixed(2)} U)`;
+    } else {
+        document.getElementById('sim_buyPreview').innerText = `外部获得 ≈ ? H`;
+    }
+
+    // 质押预览
+    const stakeH = parseFloat(document.getElementById('sim_stakeAmount').value) || 0;
+    const days = parseInt(document.getElementById('sim_stakeDays').value) || 0;
+    let interest = 0;
+    if (stakeH > 0 && days > 0) {
+        interest = simCalculateInterest(stakeH, days);
+        document.getElementById('sim_stakePreview').innerHTML = `预期利息 ≈ ${interest.toFixed(0)} H`;
+    } else {
+        document.getElementById('sim_stakePreview').innerHTML = `预期利息 ≈ 0 H`;
+    }
+
+    // 卖出预览 & 盈利估算
+    const sellH = parseFloat(document.getElementById('sim_sellAmount').value) || 0;
+    let sellPreviewText = '外部可获得 ≈ ? USDT';
+    let profitText = '';
+
+    if (sellH > 0) {
+        if (sellH > simState.external) {
+            sellPreviewText = `外部余额不足`;
+        } else {
+            const k = simState.hLp * simState.uLp;
+            const newH = simState.hLp + sellH;
+            const newU = k / newH;
+            const grossU = simState.uLp - newU;
+            const taxU = grossU * 0.05;
+            const netU = grossU - taxU;
+            const newPrice = newU / newH;
+            sellPreviewText = `外部可获得 ≈ ${netU.toFixed(2)} USDT (税 ${taxU.toFixed(2)} U)`;
+
+            if (stakeH > 0 && days > 0) {
+                const totalH = stakeH + interest;
+                const totalUsdt = totalH * newPrice;
+                const interestUsdt = interest * newPrice;
+                profitText = `卖出后价格：${newPrice.toFixed(6)} USDT<br>基于质押参数估算：若赎回本息 (${totalH.toFixed(0)} H) 并全部卖出，可得 ≈ ${totalUsdt.toFixed(2)} USDT，其中利息价值 ≈ ${interestUsdt.toFixed(2)} USDT (耗时 ${days} 天)`;
+            } else {
+                profitText = `卖出后价格：${newPrice.toFixed(6)} USDT<br>（请在质押卡输入本金和天数以查看盈利估算）`;
             }
+        }
+    } else {
+        if (stakeH > 0 && days > 0) {
+            const totalH = stakeH + interest;
+            const totalUsdt = totalH * d.price;
+            const interestUsdt = interest * d.price;
+            profitText = `当前价格：${d.price.toFixed(6)} USDT<br>基于质押参数估算：若赎回本息 (${totalH.toFixed(0)} H) 并全部卖出，可得 ≈ ${totalUsdt.toFixed(2)} USDT，其中利息价值 ≈ ${interestUsdt.toFixed(2)} USDT (耗时 ${days} 天)`;
+        } else {
+            profitText = `当前价格：${d.price.toFixed(6)} USDT<br>（请在质押卡输入本金和天数以查看盈利估算）`;
+        }
+    }
 
-            function simCalculateInterest(principal, days) {
-                if (principal <= 0 || days <= 0) return 0;
-                let remaining = days;
-                let total = 0;
-                const stages = [
-                    { start: 1, end: 7, rate: 0.005 },
-                    { start: 8, end: 15, rate: 0.006 },
-                    { start: 16, end: 30, rate: 0.008 },
-                    { start: 31, end: 60, rate: 0.010 },
-                    { start: 61, end: Infinity, rate: 0.012 }
-                ];
-                for (let s of stages) {
-                    if (remaining <= 0) break;
-                    let stageDays = 0;
-                    if (s.end === Infinity) {
-                        stageDays = remaining;
-                    } else {
-                        stageDays = Math.min(remaining, s.end - s.start + 1);
-                    }
-                    if (stageDays > 0) {
-                        total += principal * s.rate * stageDays;
-                        remaining -= stageDays;
-                    }
-                }
-                return total;
-            }
+    document.getElementById('sim_sellPreview').innerText = sellPreviewText;
+    document.getElementById('sim_profitEstimate').innerHTML = profitText;
 
-            function simRefreshUI() {
-                const d = simComputeDerived();
-                const grid = document.getElementById('sim_stateGrid');
-                grid.innerHTML = `
-                    <div class="sim-stat-card"><div class="sim-stat-label">H 价格</div><div class="sim-stat-value">${d.price.toFixed(6)}<span class="sim-stat-unit">USDT</span></div></div>
-                    <div class="sim-stat-card"><div class="sim-stat-label">LP 池 H</div><div class="sim-stat-value">${simState.hLp.toLocaleString()}<span class="sim-stat-unit">H</span></div></div>
-                    <div class="sim-stat-card"><div class="sim-stat-label">LP 池 U</div><div class="sim-stat-value">${simState.uLp.toFixed(2)}<span class="sim-stat-unit">USDT</span></div></div>
-                    <div class="sim-stat-card"><div class="sim-stat-label">外部持币</div><div class="sim-stat-value">${simState.external.toLocaleString()}<span class="sim-stat-unit">H</span></div></div>
-                    <div class="sim-stat-card"><div class="sim-stat-label">质押池</div><div class="sim-stat-value">${simState.stakePool.toLocaleString()}<span class="sim-stat-unit">H</span></div></div>
-                    <div class="sim-stat-card"><div class="sim-stat-label">国库U</div><div class="sim-stat-value">${simState.treasuryU.toFixed(2)}<span class="sim-stat-unit">USDT</span></div></div>
-                    <div class="sim-stat-card"><div class="sim-stat-label">累计支出</div><div class="sim-stat-value">${simState.externalPayout.toLocaleString()}<span class="sim-stat-unit">H</span></div></div>
-                    <div class="sim-stat-card"><div class="sim-stat-label">总市值</div><div class="sim-stat-value">${d.marketCap.toFixed(0)}<span class="sim-stat-unit">USDT</span></div></div>
-                `;
+    if (simLastSell) {
+        document.getElementById('sim_lastSellResult').innerHTML = `
+            <strong>上次卖出</strong>: ${simLastSell.amount.toLocaleString()} H → 获得 ${simLastSell.netU.toFixed(2)} USDT (税 ${simLastSell.taxU.toFixed(2)} U)<br>
+            新价格: ${simLastSell.newPrice.toFixed(6)} USDT
+        `;
+    } else {
+        document.getElementById('sim_lastSellResult').innerHTML = '暂无卖出记录';
+    }
+}
 
-                // 买入预览
-                const buyU = parseFloat(document.getElementById('sim_buyAmount').value) || 0;
-                if (buyU > 0) {
-                    const tax = buyU * 0.05;
-                    const netU = buyU * 0.95;
-                    const newU = simState.uLp + netU;
-                    const newH = (simState.hLp * simState.uLp) / newU;
-                    const getH = simState.hLp - newH;
-                    document.getElementById('sim_buyPreview').innerText = `外部获得 ≈ ${getH.toFixed(0)} H (税 ${tax.toFixed(2)} U)`;
-                } else {
-                    document.getElementById('sim_buyPreview').innerText = `外部获得 ≈ ? H`;
-                }
+function simHandleBuy() {
+    const buyU = parseFloat(document.getElementById('sim_buyAmount').value);
+    if (isNaN(buyU) || buyU <= 0) { alert('请输入有效金额'); return; }
+    const taxU = buyU * 0.05;
+    const netU = buyU * 0.95;
+    const k = simState.hLp * simState.uLp;
+    const newU = simState.uLp + netU;
+    const newH = k / newU;
+    const obtainedH = simState.hLp - newH;
+    if (obtainedH <= 0) { alert('买入量过小或流动性异常'); return; }
+    simState.uLp = newU;
+    simState.hLp = newH;
+    simState.external += obtainedH;
+    simState.treasuryU += taxU;
+    simRefreshUI();
+}
 
-                // 质押预览
-                const stakeH = parseFloat(document.getElementById('sim_stakeAmount').value) || 0;
-                const days = parseInt(document.getElementById('sim_stakeDays').value) || 0;
-                let interest = 0;
-                if (stakeH > 0 && days > 0) {
-                    interest = simCalculateInterest(stakeH, days);
-                    document.getElementById('sim_stakePreview').innerHTML = `预期利息 ≈ ${interest.toFixed(0)} H`;
-                } else {
-                    document.getElementById('sim_stakePreview').innerHTML = `预期利息 ≈ 0 H`;
-                }
+function simHandleSell() {
+    const sellH = parseFloat(document.getElementById('sim_sellAmount').value);
+    if (isNaN(sellH) || sellH <= 0) { alert('请输入有效卖出数量'); return; }
+    if (sellH > simState.external) { alert('外部持币余额不足'); return; }
+    const k = simState.hLp * simState.uLp;
+    const newH = simState.hLp + sellH;
+    const newU = k / newH;
+    const grossU = simState.uLp - newU;
+    const taxU = grossU * 0.05;
+    const netU = grossU - taxU;
+    const newPrice = newU / newH;
+    if (grossU <= 0) { alert('卖出导致流动性异常'); return; }
+    simLastSell = { amount: sellH, grossU, taxU, netU, newPrice };
+    simState.hLp = newH;
+    simState.uLp = newU;
+    simState.external -= sellH;
+    simState.treasuryU += taxU;
+    simRefreshUI();
+}
 
-                // 卖出预览
-                const sellH = parseFloat(document.getElementById('sim_sellAmount').value) || 0;
-                let sellPreviewText = '外部可获得 ≈ ? USDT';
-                let profitText = '';
-                if (sellH > 0) {
-                    if (sellH > simState.external) {
-                        sellPreviewText = `外部余额不足`;
-                    } else {
-                        const k = simState.hLp * simState.uLp;
-                        const newH = simState.hLp + sellH;
-                        const newU = k / newH;
-                        const grossU = simState.uLp - newU;
-                        const taxU = grossU * 0.05;
-                        const netU = grossU - taxU;
-                        const newPrice = newU / newH;
-                        sellPreviewText = `外部可获得 ≈ ${netU.toFixed(2)} USDT (税 ${taxU.toFixed(2)} U)`;
+function simHandleStake() {
+    const stakeH = parseFloat(document.getElementById('sim_stakeAmount').value);
+    const days = parseInt(document.getElementById('sim_stakeDays').value);
+    if (isNaN(stakeH) || stakeH <= 0 || isNaN(days) || days < 1) { alert('输入有效数量和天数'); return; }
+    if (stakeH > simState.external) { alert('外部持币余额不足'); return; }
+    simState.external -= stakeH;
+    simState.stakePool += stakeH;
+    simRefreshUI();
+}
 
-                        if (stakeH > 0 && days > 0) {
-                            const totalH = stakeH + interest;
-                            const totalUsdt = totalH * newPrice;
-                            const interestUsdt = interest * newPrice;
-                            profitText = `卖出后价格：${newPrice.toFixed(6)} USDT<br>基于质押参数估算：若赎回本息 (${totalH.toFixed(0)} H) 并全部卖出，可得 ≈ ${totalUsdt.toFixed(2)} USDT，其中利息价值 ≈ ${interestUsdt.toFixed(2)} USDT (耗时 ${days} 天)`;
-                        } else {
-                            profitText = `卖出后价格：${newPrice.toFixed(6)} USDT<br>（请在质押卡输入本金和天数以查看盈利估算）`;
-                        }
-                    }
-                } else {
-                    if (stakeH > 0 && days > 0) {
-                        const totalH = stakeH + interest;
-                        const totalUsdt = totalH * d.price;
-                        const interestUsdt = interest * d.price;
-                        profitText = `当前价格：${d.price.toFixed(6)} USDT<br>基于质押参数估算：若赎回本息 (${totalH.toFixed(0)} H) 并全部卖出，可得 ≈ ${totalUsdt.toFixed(2)} USDT，其中利息价值 ≈ ${interestUsdt.toFixed(2)} USDT (耗时 ${days} 天)`;
-                    } else {
-                        profitText = `当前价格：${d.price.toFixed(6)} USDT<br>（请在质押卡输入本金和天数以查看盈利估算）`;
-                    }
-                }
-                document.getElementById('sim_sellPreview').innerText = sellPreviewText;
-                document.getElementById('sim_profitEstimate').innerHTML = profitText;
+function simHandleRedeem() {
+    const stakeH = parseFloat(document.getElementById('sim_stakeAmount').value);
+    const days = parseInt(document.getElementById('sim_stakeDays').value);
+    if (isNaN(stakeH) || stakeH <= 0 || isNaN(days) || days < 1) { alert('输入有效数量和天数'); return; }
+    const interest = simCalculateInterest(stakeH, days);
+    const total = stakeH + interest;
+    if (total > simState.stakePool) {
+        alert(`质押池不足！当前质押池 = ${simState.stakePool.toLocaleString()} H，需要支付本息合计 ${total.toFixed(0)} H`);
+        return;
+    }
+    simState.stakePool -= total;
+    simState.external += total;
+    simState.externalPayout += interest;
+    simRefreshUI();
+}
 
-                if (simLastSell) {
-                    document.getElementById('sim_lastSellResult').innerHTML = `
-                        <strong>上次卖出</strong>: ${simLastSell.amount.toLocaleString()} H → 获得 ${simLastSell.netU.toFixed(2)} USDT (税 ${simLastSell.taxU.toFixed(2)} U)<br>
-                        新价格: ${simLastSell.newPrice.toFixed(6)} USDT
-                    `;
-                } else {
-                    document.getElementById('sim_lastSellResult').innerHTML = '暂无卖出记录';
-                }
-            }
+function simReset() {
+    simState = JSON.parse(JSON.stringify(SIM_INIT));
+    simLastSell = null;
+    simRefreshUI();
+}
 
-            function simHandleBuy() {
-                const buyU = parseFloat(document.getElementById('sim_buyAmount').value);
-                if (isNaN(buyU) || buyU <= 0) { alert('请输入有效金额'); return; }
-                const taxU = buyU * 0.05;
-                const netU = buyU * 0.95;
-                const k = simState.hLp * simState.uLp;
-                const newU = simState.uLp + netU;
-                const newH = k / newU;
-                const obtainedH = simState.hLp - newH;
-                if (obtainedH <= 0) { alert('买入量过小或流动性异常'); return; }
-                simState.uLp = newU;
-                simState.hLp = newH;
-                simState.external += obtainedH;
-                simState.treasuryU += taxU;
-                simRefreshUI();
-            }
+// 绑定事件
+document.getElementById('sim_buyBtn').addEventListener('click', simHandleBuy);
+document.getElementById('sim_sellBtn').addEventListener('click', simHandleSell);
+document.getElementById('sim_stakeBtn').addEventListener('click', simHandleStake);
+document.getElementById('sim_redeemBtn').addEventListener('click', simHandleRedeem);
+document.getElementById('sim_resetBtn').addEventListener('click', simReset);
 
-            function simHandleSell() {
-                const sellH = parseFloat(document.getElementById('sim_sellAmount').value);
-                if (isNaN(sellH) || sellH <= 0) { alert('请输入有效卖出数量'); return; }
-                if (sellH > simState.external) { alert('外部持币余额不足'); return; }
-                const k = simState.hLp * simState.uLp;
-                const newH = simState.hLp + sellH;
-                const newU = k / newH;
-                const grossU = simState.uLp - newU;
-                const taxU = grossU * 0.05;
-                const netU = grossU - taxU;
-                const newPrice = newU / newH;
-                if (grossU <= 0) { alert('卖出导致流动性异常'); return; }
-                simLastSell = { amount: sellH, grossU, taxU, netU, newPrice };
-                simState.hLp = newH;
-                simState.uLp = newU;
-                simState.external -= sellH;
-                simState.treasuryU += taxU;
-                simRefreshUI();
-            }
+['sim_buyAmount','sim_stakeAmount','sim_stakeDays','sim_sellAmount'].forEach(id => {
+    document.getElementById(id).addEventListener('input', simRefreshUI);
+});
 
-            function simHandleStake() {
-                const stakeH = parseFloat(document.getElementById('sim_stakeAmount').value);
-                const days = parseInt(document.getElementById('sim_stakeDays').value);
-                if (isNaN(stakeH) || stakeH <= 0 || isNaN(days) || days < 1) { alert('输入有效数量和天数'); return; }
-                if (stakeH > simState.external) { alert('外部持币余额不足'); return; }
-                simState.external -= stakeH;
-                simState.stakePool += stakeH;
-                simRefreshUI();
-            }
+simRefreshUI();
 
-            function simHandleRedeem() {
-                const stakeH = parseFloat(document.getElementById('sim_stakeAmount').value);
-                const days = parseInt(document.getElementById('sim_stakeDays').value);
-                if (isNaN(stakeH) || stakeH <= 0 || isNaN(days) || days < 1) { alert('输入有效数量和天数'); return; }
-                const interest = simCalculateInterest(stakeH, days);
-                const total = stakeH + interest;
-                if (total > simState.stakePool) {
-                    alert(`质押池不足！当前质押池 = ${simState.stakePool.toLocaleString()} H，需要支付本息合计 ${total.toFixed(0)} H`);
-                    return;
-                }
-                simState.stakePool -= total;
-                simState.external += total;
-                simState.externalPayout += interest;
-                simRefreshUI();
-            }
-
-            function simReset() {
-                simState = JSON.parse(JSON.stringify(SIM_INIT));
-                simLastSell = null;
-                simRefreshUI();
-            }
-
-            // 绑定模拟交易事件
-            document.getElementById('sim_buyBtn').addEventListener('click', simHandleBuy);
-            document.getElementById('sim_sellBtn').addEventListener('click', simHandleSell);
-            document.getElementById('sim_stakeBtn').addEventListener('click', simHandleStake);
-            document.getElementById('sim_redeemBtn').addEventListener('click', simHandleRedeem);
-            document.getElementById('sim_resetBtn').addEventListener('click', simReset);
-            ['sim_buyAmount','sim_stakeAmount','sim_stakeDays','sim_sellAmount'].forEach(id => {
-                document.getElementById(id).addEventListener('input', simRefreshUI);
-            });
-            simRefreshUI();
         })();
     </script>
 </body>
