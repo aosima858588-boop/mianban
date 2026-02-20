@@ -671,178 +671,227 @@
         }
 
         /* 模拟交易专用样式 */
-        .sim-panel {
-            background: #F8FAFC;
-            border-radius: 28px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        .sim-stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
-            margin-top: 10px;
-        }
-        .sim-stat-card {
-            background: white;
-            border-radius: 22px;
-            padding: 16px 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
-            border: 1px solid #E2E8F0;
-        }
-        .sim-stat-label {
-            font-size: 12px;
-            color: #546E7A;
-            margin-bottom: 4px;
-            font-weight: 500;
-            text-transform: uppercase;
-        }
-        .sim-stat-value {
-            font-size: 18px;
-            font-weight: 700;
-            color: #0A1929;
-        }
-        .sim-stat-unit {
-            font-size: 12px;
-            color: #94A3B8;
-            margin-left: 4px;
-        }
-        .sim-flex-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-top: 20px;
-        }
-        .sim-action-card {
-            background: white;
-            border-radius: 28px;
-            padding: 22px;
-            flex: 1 1 260px;
-            border: 1px solid #E2E8F0;
-        }
-        .sim-action-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #0A1929;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .sim-action-title span {
-            background: #E3F2FD;
-            color: #1A73E8;
-            font-size: 12px;
-            padding: 4px 10px;
-            border-radius: 30px;
-        }
-        .sim-input-group {
-            margin-bottom: 16px;
-        }
-        .sim-input-group label {
-            font-size: 13px;
-            font-weight: 600;
-            color: #0A1929;
-            display: block;
-            margin-bottom: 6px;
-        }
-        .sim-input-group input {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid #E2E8F0;
-            border-radius: 30px;
-            font-size: 14px;
-            outline: none;
-            background: #F9FAFC;
-        }
-        .sim-input-group input:focus {
-            border-color: #1A73E8;
-            box-shadow: 0 0 0 3px rgba(26,115,232,0.1);
-        }
-        .sim-btn {
-            width: 100%;
-            background: linear-gradient(145deg, #1A73E8, #0D47A1);
-            border: none;
-            padding: 14px 0;
-            border-radius: 34px;
-            color: white;
-            font-weight: 600;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-bottom: 12px;
-            box-shadow: 0 6px 12px -6px rgba(13,71,161,0.4);
-        }
-        .sim-btn:hover {
-            transform: scale(0.98);
-        }
-        .sim-btn-success {
-            background: linear-gradient(145deg, #2E7D32, #1B5E20);
-        }
-        .sim-btn-secondary {
-            background: white;
-            color: #1A73E8;
-            border: 1px solid #1A73E8;
-            box-shadow: none;
-        }
-        .sim-info-badge {
-            background: #F1F5F9;
-            border-radius: 30px;
-            padding: 12px;
-            font-size: 13px;
-            color: #0A1929;
-            margin: 12px 0;
-            text-align: center;
-        }
-        .sim-mechanism-note {
-            background: #F0F7FF;
-            border-radius: 24px;
-            padding: 16px;
-            font-size: 13px;
-            color: #0A1929;
-            border: 1px dashed #1A73E8;
-            margin-top: 16px;
-            line-height: 1.6;
-        }
-        .sim-rate-table {
-            display: grid;
-            grid-template-columns: repeat(5,1fr);
-            gap: 6px;
-            margin: 16px 0;
-        }
-        .sim-rate-item {
-            background: #ECF4FF;
-            border-radius: 30px;
-            padding: 8px 4px;
-            text-align: center;
-            font-size: 12px;
-            font-weight: 500;
-        }
-        .sim-rate-days { color: #1A73E8; }
-        .sim-rate-percent { color: #2E7D32; font-weight: 700; }
-        .sim-last-sell {
-            background: #E8F0FE;
-            border-radius: 24px;
-            padding: 12px;
-            font-size: 13px;
-            margin-top: 12px;
-        }
-        .sim-profit-estimate {
-            background: #E2F0E8;
-            border-radius: 24px;
-            padding: 16px;
-            margin-top: 16px;
-            font-size: 13px;
-            color: #1B4E3D;
-        }
-        .sim-highlight {
-            background: #FEF9E7;
-            border-left: 4px solid #F1C40F;
-            padding: 16px;
-            border-radius: 24px;
-            margin: 20px 0;
-        }
+       /* ===== 模拟交易样式（字体优化，与社区风格统一）===== */
+.sim-panel {
+    background: var(--bg-light, #F8FAFC);
+    border-radius: 32px;
+    padding: 20px;
+    margin-bottom: 24px;
+    border: 1px solid var(--border-light, #EDF2F7);
+}
+/* 持仓状态卡片网格 */
+.sim-panel .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 10px;
+    margin-top: 12px;
+}
+.sim-panel .stat-card {
+    background: white;
+    border-radius: 20px;
+    padding: 12px 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    border: 1px solid var(--border-light);
+    transition: 0.1s;
+}
+.sim-panel .stat-card:active {
+    background: var(--bg-light);
+}
+.sim-panel .stat-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    font-weight: 600;
+    color: var(--text-light, #546E7A);
+    margin-bottom: 4px;
+    white-space: nowrap;
+}
+.sim-panel .stat-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-dark, #0A1929);
+    line-height: 1.2;
+    word-break: break-word;
+}
+.sim-panel .stat-unit {
+    font-size: 0.65rem;
+    color: var(--text-light);
+    font-weight: 400;
+    margin-left: 2px;
+}
+.sim-panel .stat-trend {
+    font-size: 0.65rem;
+    color: var(--primary, #1A73E8);
+    margin-top: 4px;
+    border-top: 1px dashed var(--border-light);
+    padding-top: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
+.sim-flex-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+.sim-action-card {
+    background: white;
+    border-radius: 28px;
+    padding: 20px 16px;
+    flex: 1 1 280px;
+    box-shadow: 0 10px 20px -10px rgba(0,20,40,0.06);
+    border: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+}
+.sim-action-title {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+.sim-action-title span {
+    background: #E3F2FD;
+    border-radius: 30px;
+    font-size: 0.65rem;
+    padding: 4px 10px;
+    color: var(--primary-dark);
+    font-weight: 600;
+}
+.sim-input-group {
+    margin-bottom: 16px;
+}
+.sim-input-group label {
+    font-weight: 600;
+    font-size: 0.75rem;
+    color: var(--text-dark);
+    display: block;
+    margin-bottom: 4px;
+}
+.sim-input-group input {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    border: 1.5px solid var(--border-light);
+    border-radius: 40px;
+    background: var(--bg-light);
+    transition: 0.2s;
+    outline: none;
+}
+.sim-input-group input:focus {
+    border-color: var(--primary);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(26,115,232,0.1);
+}
+.sim-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    width: 100%;
+    cursor: pointer;
+    transition: 0.1s;
+    border: 1px solid var(--primary-dark);
+    margin-bottom: 10px;
+    box-shadow: 0 4px 10px -4px var(--primary-dark);
+}
+.sim-btn:active {
+    transform: scale(0.98);
+    background: var(--primary-dark);
+}
+.sim-btn-secondary {
+    background: white;
+    color: var(--primary);
+    border: 1.5px solid var(--border-light);
+    box-shadow: none;
+}
+.sim-btn-secondary:active {
+    background: var(--bg-light);
+}
+.sim-btn-success {
+    background: #2E7D32;
+    border-color: #1B5E20;
+}
+.sim-btn-success:active {
+    background: #1B5E20;
+}
+.sim-info-badge {
+    background: var(--bg-light);
+    border-radius: 30px;
+    padding: 10px 12px;
+    font-size: 0.8rem;
+    color: var(--text-dark);
+    border: 1px solid var(--border-light);
+    margin-top: 6px;
+    text-align: center;
+    word-break: break-word;
+}
+.sim-mechanism-note {
+    background: #F0F7FF;
+    border-radius: 24px;
+    padding: 12px;
+    font-size: 0.75rem;
+    color: var(--text-dark);
+    border: 1px dashed var(--primary);
+    margin-top: 12px;
+    line-height: 1.5;
+}
+.sim-mechanism-note strong {
+    color: var(--primary);
+}
+.sim-rate-table {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+    margin: 12px 0 16px;
+}
+.sim-rate-item {
+    background: #ECF4FF;
+    border-radius: 20px;
+    padding: 6px 2px;
+    text-align: center;
+    font-size: 0.65rem;
+    font-weight: 500;
+    border: 1px solid #c1d8fc;
+}
+.sim-rate-days { color: var(--primary-dark); }
+.sim-rate-percent { color: #2E7D32; font-weight: 700; }
+.sim-last-sell {
+    background: #E8F0FE;
+    border-radius: 24px;
+    padding: 10px 12px;
+    margin-top: 12px;
+    font-size: 0.75rem;
+    border: 1px solid #a0b9e0;
+    color: var(--text-dark);
+}
+.sim-profit-estimate {
+    background: #E2F0E8;
+    border-radius: 24px;
+    padding: 12px;
+    margin-top: 12px;
+    font-size: 0.8rem;
+    border: 1px solid #9ec5b0;
+    color: #1b4e3d;
+}
+.sim-highlight {
+    background: #FEF9E7;
+    border-left: 4px solid #F1C40F;
+    padding: 14px 16px;
+    border-radius: 30px;
+    color: #4A3B00;
+    font-size: 0.85rem;
+    margin-top: 20px;
+}
         /* 留言板样式 */
         .message-item {
             display: flex;
@@ -2331,3 +2380,4 @@ simRefreshUI();
     </script>
 </body>
 </html>
+
