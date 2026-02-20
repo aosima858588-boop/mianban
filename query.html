@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover">
     <title>投资者返款查询 · 海豚社区</title>
     <!-- 公共样式（海豚社区全局样式） -->
     <link rel="stylesheet" href="css/style.css">
@@ -445,6 +445,13 @@
 
     <script>
         (function() {
+            // 阻止双指缩放（某些浏览器允许手势缩放，即使 viewport 设置了 user-scalable=no）
+            document.addEventListener('touchmove', function(event) {
+                if (event.touches.length > 1) {
+                    event.preventDefault();
+                }
+            }, { passive: false });
+
             // --- 配置 ---
             const CUTOFF_DATE = new Date(2026, 0, 26); // 2026-01-26 00:00
             const INJ_DAILY_RATE = 0.001; // INJ 日息率 (可根据实际调整)
@@ -746,6 +753,16 @@
                 if (el) el.style.display = 'none';
             }
 
+            // 监听 resize 事件（键盘收起时触发），确保输入框可见
+            window.addEventListener('resize', function() {
+                if (document.activeElement && document.activeElement.id === 'searchInput') {
+                    // 如果输入框是焦点，键盘可能收起，延迟一点点滚动以确保位置正确
+                    setTimeout(function() {
+                        document.activeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 100);
+                }
+            });
+
             // --- 初始化 ---
             window.onload = function() {
                 DOM.init();
@@ -774,8 +791,8 @@
                     }
                 });
 
-                // 自动聚焦输入框（弹出键盘）
-                DOM.searchInput.focus();
+                // 不再自动聚焦，让用户手动点击输入框
+                // DOM.searchInput.focus();
 
                 console.log('查询系统初始化完成');
             };
