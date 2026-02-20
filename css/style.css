@@ -1,0 +1,282 @@
+/* ===== 全局变量 ===== */
+:root {
+    --primary: #1A73E8;
+    --primary-dark: #0D47A1;
+    --bg-light: #F5F7FA;
+    --text-dark: #0A1929;
+    --text-light: #546E7A;
+    --border-light: #EDF2F7;
+    --card-bg: #FFFFFF;
+    --card-shadow: 0 15px 35px -15px rgba(0,0,0,0.08);
+    --radius-card: 32px;
+    --radius-btn: 40px;
+    --transition: all 0.2s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+}
+
+body {
+    background-color: var(--bg-light);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+.app-container {
+    width: 100%;
+    max-width: 430px;
+    background-color: var(--card-bg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);
+}
+
+/* ===== 卡片 ===== */
+.card {
+    background-color: var(--card-bg);
+    border-radius: var(--radius-card);
+    padding: 28px 24px;
+    box-shadow: var(--card-shadow), 0 0 0 1px rgba(0,0,0,0.01);
+    width: 100%;
+    border: none;
+}
+
+.card.highlight {
+    background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+    color: white;
+    box-shadow: 0 20px 35px -10px rgba(21,101,192,0.3);
+}
+
+.card.highlight .section-title,
+.card.highlight .activity-desc,
+.card.highlight .activity-link {
+    color: white;
+}
+
+/* ===== 按钮 ===== */
+.btn-primary {
+    width: 100%;
+    background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+    border: none;
+    padding: 18px 0;
+    border-radius: var(--radius-btn);
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 10px 20px -8px rgba(13,71,161,0.5);
+    margin-top: 12px;
+}
+.btn-primary:active {
+    transform: scale(0.97);
+    box-shadow: 0 5px 10px -3px rgba(0,0,0,0.2);
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    padding: 10px;
+    margin-top: 16px;
+    width: 100%;
+    text-align: center;
+}
+
+/* ===== 输入框组 ===== */
+.input-group {
+    margin-bottom: 20px;
+}
+.input-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+    display: block;
+}
+.input-field {
+    width: 100%;
+    background: var(--bg-light);
+    border: none;
+    padding: 18px 20px;
+    border-radius: 24px;
+    font-size: 16px;
+    color: var(--text-dark);
+    outline: none;
+    transition: box-shadow 0.2s;
+}
+.input-field:focus {
+    box-shadow: 0 0 0 3px rgba(26,115,232,0.2);
+}
+.input-field::placeholder {
+    color: #94A3B8;
+    font-weight: 400;
+}
+
+/* ===== 分割线 ===== */
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #94A3B8;
+    font-size: 14px;
+    margin: 20px 0;
+}
+.divider-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border-light);
+}
+
+/* ===== 社交图标 ===== */
+.social-row {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+}
+.social-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--bg-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-size: 24px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.social-icon:active {
+    background: #E3F2FD;
+}
+
+/* ===== 标签栏 ===== */
+.tab-bar {
+    display: flex;
+    gap: 8px;
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border-light);
+}
+.tab {
+    flex: 1;
+    background: var(--bg-light);
+    border: none;
+    padding: 14px 0;
+    border-radius: var(--radius-btn);
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+}
+.tab.active {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 8px 18px -6px var(--primary);
+}
+
+/* ===== 页面切换（用于entry.html的三个页面）===== */
+.page {
+    display: none;
+}
+.page.active {
+    display: block;
+}
+
+/* ===== 头部图标 ===== */
+.header-icon {
+    width: 56px;
+    height: 56px;
+    background: radial-gradient(circle at 30% 30%, #42A5F5, #1565C0);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 32px;
+    color: white;
+    box-shadow: 0 8px 15px -5px #0D47A1;
+}
+
+/* ===== 用户面板（首页）===== */
+.dolphin-icon {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    background: radial-gradient(circle at 30% 30%, #42A5F5, #1565C0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 15px -5px #0D47A1;
+}
+.dolphin-icon .h-main {
+    font-size: 36px;
+    font-weight: 800;
+    color: white;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    line-height: 1;
+}
+.dolphin-icon .h-letter {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 20px;
+    height: 20px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+    color: #1565C0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border: 1.5px solid white;
+}
+
+.badge {
+    background: linear-gradient(145deg, #FFD966, #F1C40F, #D4AC0D);
+    color: #4A3B00;
+    font-size: 14px;
+    font-weight: 800;
+    padding: 6px 16px;
+    border-radius: 40px;
+    box-shadow: 0 4px 8px rgba(212,172,13,0.3), inset 0 1px 3px rgba(255,255,240,0.8), inset 0 -2px 2px rgba(0,0,0,0.1);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.5);
+    white-space: nowrap;
+    border: 1px solid rgba(255,215,0,0.3);
+}
+
+/* ===== 水波纹效果 ===== */
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(26,115,232,0.4);
+    transform: scale(0);
+    animation: ripple-animation 0.5s ease-out;
+    pointer-events: none;
+    z-index: 10;
+}
+@keyframes ripple-animation {
+    to { transform: scale(6); opacity: 0; }
+}
+
+/* ===== 其他工具样式 ===== */
+.clickable { cursor: pointer; }
+.status-bar { height: 8px; }
+button, input { -webkit-font-smoothing: antialiased; }
