@@ -449,6 +449,7 @@
                 </div>
             </div>
 
+
             <!-- 卡片2：经济模型解析（新内容） -->
             <div class="drawer-card" id="card2">
                 <div class="drawer-header" data-target="card2">
@@ -537,9 +538,7 @@
                 </div>
                 <div class="drawer-content" id="content-card3">
                     <!-- 此处保留原有模拟交易完整代码，因篇幅略，实际请复制原内容 -->
-                    <p>模拟交易内容（略）</p>
-   <!-- 模拟交易完整内容（移植自模拟交易.html，ID加前缀 sim_） -->
-                  <div class="sim-panel">
+                    <div class="sim-panel">
         <div class="flex-between" style="margin-bottom: 16px;">
             <h3 style="margin:0; font-weight:600;">📊 实时持仓状态</h3>
             <button class="sim-btn-secondary" id="sim_resetBtn" style="width: auto; padding: 8px 20px;">⟲ 重置初始值</button>
@@ -612,11 +611,7 @@
     </div>
 </div>
 
-            <!-- 卡片4：KOL评价海豚模式 -->
-            <div class="drawer-card" id="card4">
-                <div class="drawer-header" data-target="card4">
-                    <div class="title-section card4">
-                        <i class="fas fa-star"></i>
+
             <!-- 卡片4：KOL评价 -->
             <div class="drawer-card" id="card4">
                 <div class="drawer-header" data-target="card4">
@@ -627,6 +622,7 @@
                     <i class="fas fa-chevron-down toggle-icon" id="icon-card4"></i>
                 </div>
                 <div class="drawer-content" id="content-card4">
+                    <!-- 原有KOL评价内容，略 -->
                   <div class="kol-quote">
                         <p class="paragraph" style="font-style: italic; font-size: 16px; font-weight: 500;">这是一个用数学公式当裁判，用高收益吸引人来玩，用外部资源助推，最终想实现多方共赢的财富循环游戏。</p>
                         <p class="paragraph" style="font-style: italic;">它的核心不是靠项目方拍脑袋喊单，而是把所有的规则（定价、税收、分红、回购）都写进代码里，让机器自动执行。</p>
@@ -709,6 +705,8 @@
                     </div>
                 </div>
             </div>
+
+
             <!-- 卡片5：代币价格参照表 -->
             <div class="drawer-card" id="card5">
                 <div class="drawer-header" data-target="card5">
@@ -716,7 +714,7 @@
                         <i class="fas fa-table"></i>
                         <h2>代币价格参照表</h2>
                     </div>
-                    <i class="fas fa-chevron-down toggle-icon" id="icon-card5"></i>
+                   <i class="fas fa-chevron-down toggle-icon" id="icon-card5"></i>
                 </div>
                 <div class="drawer-content" id="content-card5">
                     <div class="stats-grid" id="statsPanel5"></div>
@@ -758,13 +756,13 @@
                 </div>
             </div>
 
-            <!-- 卡片6：留言板（新增） -->
+            <!-- 卡片6：留言板 -->
             <div class="drawer-card" id="card6">
                 <div class="drawer-header" data-target="card6">
                     <div class="title-section card6">
                         <i class="fas fa-comments"></i>
                         <h2>留言板</h2>
-                    </div>
+                     </div>
                     <i class="fas fa-chevron-down toggle-icon" id="icon-card6"></i>
                 </div>
                 <div class="drawer-content" id="content-card6">
@@ -807,20 +805,20 @@
         </div>
     </div>
 
-    <script>
-        (function() {
-            // ========== 手风琴效果：每次只展开一个卡片 ==========
-            const headers = document.querySelectorAll('.drawer-header');
-            function closeAllCards() {
-                document.querySelectorAll('.drawer-card').forEach(card => {
-                    card.classList.remove('expanded');
-                });
-                document.querySelectorAll('.toggle-icon').forEach(icon => {
-                    icon.classList.remove('rotated');
-                });
-            }
 
-            headers.forEach(header => {
+    <script>
+        // 手风琴效果：每次只展开一个卡片
+        const headers = document.querySelectorAll('.drawer-header');
+        function closeAllCards() {
+            document.querySelectorAll('.drawer-card').forEach(card => {
+                card.classList.remove('expanded');
+            });
+            document.querySelectorAll('.toggle-icon').forEach(icon => {
+                icon.classList.remove('rotated');
+            });
+        }
+
+        headers.forEach(header => {
                 header.addEventListener('click', function(e) {
                     const targetId = this.dataset.target;
                     if (!targetId) return;
