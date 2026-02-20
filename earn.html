@@ -1,15 +1,1158 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>...</head>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>链上赚币 · 移动版</title>
+    <!-- 字体 & 图标库 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* 原有样式完全保留，不做任何改动 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: #f2f8f2;
+            min-height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 1rem;
+            color: #1a2e2a;
+        }
+
+        .glass-panel {
+            max-width: 480px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 2.2rem;
+            padding: 1.5rem 1.2rem;
+            box-shadow: 0 25px 50px -16px rgba(0, 40, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.02);
+            border: 1px solid #e0ede0;
+            margin: 0 auto;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .logo-icon {
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(145deg, #0f8a4c, #0a5f34);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.7rem;
+            box-shadow: 0 6px 12px -4px rgba(15, 138, 76, 0.3);
+            color: white;
+        }
+
+        .logo span {
+            font-size: 1.6rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #0f5a30, #0a3f22);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .wallet-btn {
+            background: white;
+            border: 1px solid #d0e6d0;
+            padding: 0.7rem 1rem;
+            border-radius: 2.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #0a5f34;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 8px -4px rgba(0, 30, 0, 0.05);
+        }
+
+        .wallet-btn i {
+            color: #0f8a4c;
+            font-size: 1.2rem;
+        }
+
+        .wallet-btn:hover {
+            border-color: #0f8a4c;
+            box-shadow: 0 6px 12px -6px rgba(15, 138, 76, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .stats-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 0;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border-radius: 1.8rem;
+            padding: 1.2rem 1.5rem;
+            border: 1px solid #e2eee2;
+            box-shadow: 0 8px 20px -12px rgba(0, 40, 0, 0.1);
+            transition: 0.2s;
+        }
+
+        .stat-card:hover {
+            border-color: #b8dbb8;
+            box-shadow: 0 12px 24px -12px rgba(15, 138, 76, 0.15);
+        }
+
+        .stat-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: #3b6b4f;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .stat-title i {
+            font-size: 1rem;
+            color: #0f8a4c;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 0.3rem;
+            color: #04381a;
+            letter-spacing: -0.02em;
+        }
+
+        .stat-unit {
+            font-size: 0.9rem;
+            color: #558b6a;
+            margin-left: 0.2rem;
+            font-weight: 400;
+        }
+
+        .stat-desc {
+            color: #558b6a;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .h-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, #0f8a4c, #0a5f34);
+            width: 22px;
+            height: 22px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-right: 4px;
+            color: white;
+        }
+
+        /* 品牌分隔线（左右各三条橙色流动线条） */
+        .brand-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.8rem 0 1.2rem 0;
+            opacity: 0.2;
+            transition: opacity 0.3s ease, gap 0.3s ease;
+            cursor: default;
+        }
+
+        .brand-divider:hover {
+            opacity: 0.4;
+            gap: 1.5rem; /* 悬停时文字与线条组间距拉大 */
+        }
+
+        .divider-lines {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .divider-line {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #f39c12, #e67e22, #f39c12, transparent);
+            background-size: 200% 100%;
+            animation: flow 2s linear infinite;
+            transition: filter 0.3s ease, height 0.3s ease;
+        }
+
+        /* 左右两侧线条的动画可以稍微错开，增加层次感 */
+        .divider-lines:first-child .divider-line:nth-child(1) {
+            animation-delay: 0s;
+        }
+        .divider-lines:first-child .divider-line:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .divider-lines:first-child .divider-line:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        .divider-lines:last-child .divider-line:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+        .divider-lines:last-child .divider-line:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+        .divider-lines:last-child .divider-line:nth-child(3) {
+            animation-delay: 0.5s;
+        }
+
+        .brand-divider:hover .divider-line {
+            animation: flow 0.8s linear infinite; /* 加速流动 */
+            height: 3px; /* 稍微变粗 */
+            filter: brightness(1.2); /* 增亮 */
+        }
+
+        @keyframes flow {
+            0% { background-position: 100% 0; }
+            100% { background-position: -100% 0; }
+        }
+
+        .divider-text {
+            font-size: 1.2rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            white-space: nowrap;
+            padding: 0 0.5rem;
+            background: linear-gradient(145deg, #0a5f34, #f39c12, #0a5f34);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textShimmer 3s linear infinite;
+            transition: text-shadow 0.3s ease;
+        }
+
+        .brand-divider:hover .divider-text {
+            text-shadow: 0 0 8px rgba(243, 156, 18, 0.4);
+            animation: textShimmer 1.5s linear infinite;
+        }
+
+        @keyframes textShimmer {
+            0% { background-position: 0% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .stake-card {
+            position: relative;
+            background: #ffffff;
+            border-radius: 2rem;
+            padding: 1.5rem 1.2rem 1.5rem;
+            border: 1px solid #e2eee2;
+            box-shadow: 0 15px 30px -16px rgba(0, 40, 0, 0.12);
+            margin-top: 0.2rem;
+            overflow: hidden;
+        }
+
+        /* 原有的隐约水印保留 */
+        .stake-card::after {
+            content: "链上赚币";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-10deg);
+            font-size: min(6rem, 15vw);
+            font-weight: 700;
+            color: #0a5f34;
+            opacity: 0.06;
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 1;
+            line-height: 1;
+            user-select: none;
+        }
+
+        .stake-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .stake-header h2 {
+            font-size: 1.7rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #0f5a30, #0a3f22);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .stake-header .tag {
+            background: #f0faf0;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #0f8a4c;
+            border: 1px solid #d0e8d0;
+        }
+
+        .user-balances {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem 0.8rem;
+            background: #fafffa;
+            border-radius: 1.5rem;
+            padding: 1.2rem 1.2rem;
+            margin-bottom: 2rem;
+            border: 1px solid #d0e8d0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .balance-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .balance-label {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: #3b6b4f;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+        }
+
+        .balance-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            display: flex;
+            align-items: baseline;
+            gap: 0.3rem;
+            flex-wrap: wrap;
+            color: #04381a;
+            line-height: 1.2;
+        }
+
+        .balance-value small {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: #558b6a;
+        }
+
+        .h-token {
+            display: inline-flex;
+            background: #e4f2e4;
+            border-radius: 10px;
+            padding: 0.1rem 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 0.3rem;
+            align-items: center;
+            gap: 0.2rem;
+            color: #0f8a4c;
+        }
+
+        .stake-action {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .input-area {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 2.5rem;
+            border: 1px solid #d0e8d0;
+            padding: 0.2rem 0.2rem 0.2rem 1.5rem;
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+
+        .input-area:focus-within {
+            border-color: #0f8a4c;
+            box-shadow: 0 0 0 3px rgba(15, 138, 76, 0.1);
+        }
+
+        .input-area i {
+            color: #0f8a4c;
+            font-size: 1.1rem;
+        }
+
+        .input-area input {
+            background: transparent;
+            border: none;
+            padding: 0.9rem 0.5rem;
+            font-size: 1.4rem;
+            font-weight: 500;
+            width: 100%;
+            color: #1a2e2a;
+            outline: none;
+        }
+
+        .input-area input::placeholder {
+            color: #b8d4b8;
+            font-weight: 300;
+            font-size: 1.2rem;
+        }
+
+        .max-btn {
+            background: white;
+            border: 1px solid #d0e8d0;
+            color: #0f8a4c;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 2.5rem;
+            cursor: pointer;
+            transition: 0.15s;
+            margin-right: 0.3rem;
+            letter-spacing: 0.03em;
+        }
+
+        .max-btn:hover {
+            background: #f0faf0;
+            border-color: #0f8a4c;
+            color: #0a5f34;
+        }
+
+        .rate-info-bar {
+            background: white;
+            border-radius: 2rem;
+            padding: 0.8rem 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.8rem 1rem;
+            border: 1px solid #d0e8d0;
+        }
+
+        .rate-text {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #04381a;
+        }
+
+        .rate-text i {
+            color: #0f8a4c;
+            font-size: 1rem;
+        }
+
+        .rate-range {
+            background: #f0faf0;
+            padding: 0.3rem 1rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            color: #0f8a4c;
+            border: 1px solid #c0e0c0;
+            font-size: 0.9rem;
+        }
+
+        .rule-btn {
+            background: white;
+            border: 1px dashed #b8d8b8;
+            color: #0f8a4c;
+            padding: 0.4rem 1.2rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .rule-btn:hover {
+            background: #f0faf0;
+            border: 1px solid #0f8a4c;
+            color: #0a5f34;
+        }
+
+        .rule-detail-card {
+            background: white;
+            border-radius: 1.8rem;
+            padding: 1.2rem 1.2rem;
+            margin-top: 0.8rem;
+            border: 1px solid #d0e8d0;
+            box-shadow: 0 15px 25px -18px rgba(0, 30, 0, 0.2);
+            display: none;
+        }
+
+        .rule-detail-card.show {
+            display: block;
+        }
+
+        .rule-detail-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #04381a;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 600;
+        }
+
+        .rule-table {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .rule-tier {
+            background: #fafffa;
+            border-radius: 1.2rem;
+            padding: 0.8rem 0.5rem;
+            text-align: center;
+            border: 1px solid #d0e8d0;
+        }
+
+        .rule-tier .days {
+            font-weight: 500;
+            color: #3b6b4f;
+            font-size: 0.85rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .rule-tier .rate {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0f8a4c;
+            line-height: 1.2;
+        }
+
+        .extra-rule {
+            color: #3b6b4f;
+            font-size: 0.85rem;
+            border-top: 1px solid #d0e8d0;
+            padding-top: 1rem;
+            margin-top: 0.5rem;
+            line-height: 1.5;
+        }
+
+        .reward-preview {
+            background: white;
+            border-radius: 2rem;
+            padding: 1rem 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            border: 1px solid #d0e8d0;
+        }
+
+        .reward-label i {
+            color: #f39c12;
+            margin-right: 6px;
+            font-size: 1rem;
+        }
+
+        .reward-label {
+            font-size: 0.95rem;
+            font-weight: 400;
+            color: #3b6b4f;
+        }
+
+        .reward-amount {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(145deg, #0f8a4c, #0a5f34);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .reward-suffix {
+            font-size: 0.85rem;
+            color: #558b6a;
+            margin-left: 0.2rem;
+            font-weight: 400;
+        }
+
+        .hint-note {
+            font-size: 0.75rem;
+            color: #558b6a;
+            margin-top: 0.2rem;
+            text-align: right;
+            font-weight: 300;
+            letter-spacing: 0.02em;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 1rem 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 3rem;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            letter-spacing: 0.02em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(115deg, #0f8a4c, #0a5f34);
+            box-shadow: 0 12px 20px -12px #0f8a4c;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(115deg, #119e56, #0b6f3b);
+            transform: scale(1.02);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #0f8a4c;
+            border: 1px solid #c0e0c0;
+        }
+
+        .btn-secondary:hover {
+            background: #f0faf0;
+            border-color: #0f8a4c;
+            color: #0a5f34;
+        }
+
+        .bill-section {
+            margin-top: 2rem;
+            background: white;
+            border-radius: 2rem;
+            padding: 1.2rem 1.2rem;
+            border: 1px solid #d0e8d0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .bill-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .bill-header h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #04381a;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .bill-tabs {
+            display: flex;
+            gap: 0.2rem;
+            background: #f0faf0;
+            padding: 0.2rem;
+            border-radius: 2.5rem;
+        }
+
+        .bill-tab {
+            padding: 0.4rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 2rem;
+            cursor: pointer;
+            color: #3b6b4f;
+            transition: 0.2s;
+        }
+
+        .bill-tab.active {
+            background: linear-gradient(145deg, #0f8a4c, #0a5f34);
+            color: white;
+        }
+
+        .bill-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-bottom: 0.8rem;
+            max-height: 200px;
+            overflow-y: auto;
+            padding-right: 0.3rem;
+        }
+
+        .bill-list.hidden {
+            display: none;
+        }
+
+        .bill-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            padding: 0.8rem 1rem;
+            border-radius: 1.5rem;
+            border: 1px solid #e2eee2;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        .bill-item:hover {
+            border-color: #b8dbb8;
+            box-shadow: 0 4px 10px -6px rgba(15, 138, 76, 0.2);
+        }
+
+        .bill-type {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-weight: 500;
+        }
+
+        .bill-type.stake i {
+            color: #0f8a4c;
+        }
+        .bill-type.reward i {
+            color: #f39c12;
+        }
+        .bill-type.claim i {
+            color: #3498db;
+        }
+
+        .bill-amount {
+            font-weight: 600;
+            color: #04381a;
+        }
+
+        .bill-time {
+            color: #558b6a;
+            font-size: 0.75rem;
+            font-weight: 300;
+        }
+
+        .bill-more {
+            text-align: center;
+            margin-top: 0.8rem;
+        }
+
+        .bill-more a {
+            color: #0f8a4c;
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: 0.2s;
+            font-weight: 500;
+        }
+
+        .bill-more a:hover {
+            color: #0a5f34;
+            gap: 0.6rem;
+        }
+
+        .footnote {
+            text-align: center;
+            color: #7f9f8c;
+            font-size: 0.8rem;
+            margin-top: 2rem;
+            border-top: 1px solid #e2eee2;
+            padding-top: 1.2rem;
+            font-weight: 300;
+            letter-spacing: 0.02em;
+        }
+
+        .footnote i {
+            color: #0f8a4c;
+        }
+
+        button, .bill-tab, a {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        @media (max-width: 380px) {
+            .glass-panel {
+                padding: 1rem 0.8rem;
+            }
+            .balance-value {
+                font-size: 1.1rem;
+            }
+            .rate-text {
+                font-size: 0.9rem;
+            }
+            .rule-btn {
+                padding: 0.3rem 1rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
 <body>
-    <div id="header-placeholder"></div>
-    <main class="container" style="max-width:600px; margin:2rem auto;">
-        <div class="card">
-            <h1>赚币 · OKX Boost</h1>
-            <p>介绍 OKX Boost 和链上赚币功能，内容待完善。</p>
+    <!-- 新增返回首页按钮，样式与页面风格一致 -->
+    <div style="max-width:480px; width:100%; margin:0 auto 12px auto;">
+        <a href="index.html" style="display: inline-flex; align-items: center; gap: 8px; background: white; border: 1px solid #d0e8d0; border-radius: 40px; padding: 10px 20px; color: #0f8a4c; font-weight: 500; text-decoration: none; box-shadow: 0 2px 8px -4px rgba(0,30,0,0.05);">
+            <i class="fas fa-arrow-left"></i> 返回首页
+        </a>
+    </div>
+
+    <div class="glass-panel">
+        <!-- 原有内容完全不变 -->
+        <div class="navbar">
+            <div class="logo">
+                <div class="logo-icon">H</div>
+                <span>链上赚币</span>
+            </div>
+            <button class="wallet-btn" id="connectWalletBtn">
+                <i class="fas fa-wallet"></i>
+            </button>
         </div>
-    </main>
-    <div id="footer-placeholder"></div>
-    <script type="module" src="js/main.js"></script>
+
+        <!-- 统计卡片 -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-title">
+                    <i class="fas fa-chart-line"></i> 总锁仓价值
+                </div>
+                <div class="stat-value">18.42M</div>
+                <div class="stat-desc"><i class="fas fa-arrow-up" style="color:#0f8a4c;"></i> +5.2% （7d）</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">
+                    <i class="fas fa-layer-group"></i> 总质押 <span class="h-badge">H</span>
+                </div>
+                <div class="stat-value">6.42M</div>
+                <div class="stat-desc"><i class="fas fa-users"></i> 1,842 参与者</div>
+            </div>
+        </div>
+
+        <!-- 品牌分隔线 -->
+        <div class="brand-divider">
+            <div class="divider-lines">
+                <span class="divider-line"></span>
+                <span class="divider-line"></span>
+                <span class="divider-line"></span>
+            </div>
+            <span class="divider-text">链上赚币</span>
+            <div class="divider-lines">
+                <span class="divider-line"></span>
+                <span class="divider-line"></span>
+                <span class="divider-line"></span>
+            </div>
+        </div>
+
+        <!-- 主质押卡片 -->
+        <div class="stake-card">
+            <div class="stake-header">
+                <h2>质押 H · 随存随取</h2>
+                <span class="tag"><i class="fa-regular fa-clock" style="margin-right:4px;"></i>按实际存期计息</span>
+            </div>
+
+            <!-- 个人持仓信息 -->
+            <div class="user-balances">
+                <div class="balance-item">
+                    <span class="balance-label"><i class="fa-solid fa-lock" style="margin-right: 3px; color:#0f8a4c;"></i>我的质押</span>
+                    <div class="balance-value">1,200.45</div>
+                </div>
+                <div class="balance-item">
+                    <span class="balance-label"><i class="fa-regular fa-circle-dot" style="margin-right: 3px; color:#0f8a4c;"></i>可用余额</span>
+                    <div class="balance-value" id="availableBalanceDisplay">2,500.00</div>
+                </div>
+                <div class="balance-item">
+                    <span class="balance-label"><i class="fa-solid fa-coins"></i> 未领取奖励</span>
+                    <div class="balance-value">12.36</div>
+                </div>
+                <div class="balance-item">
+                    <span class="balance-label"><i class="fa-solid fa-gift" style="color: #f39c12;"></i> 已领取奖励</span>
+                    <div class="balance-value">56.78</div>
+                </div>
+                <div class="balance-item">
+                    <span class="balance-label"><i class="fa-solid fa-chart-pie" style="color: #0f8a4c;"></i> 累计质押</span>
+                    <div class="balance-value">3,700.45</div>
+                </div>
+            </div>
+
+            <!-- 质押操作区域 -->
+            <div class="stake-action">
+                <div class="input-area">
+                    <i class="fa-solid fa-coins" style="margin-right: 0.3rem;"></i>
+                    <input type="number" id="stakeAmount" placeholder="0.0" min="0" step="any" value="100">
+                    <button class="max-btn" id="maxBtn">MAX</button>
+                </div>
+
+                <!-- 利率信息栏 + 规则按钮 -->
+                <div class="rate-info-bar">
+                    <div class="rate-text">
+                        <i class="fa-regular fa-calendar-check"></i>
+                        <span>阶梯日利率</span>
+                        <span class="rate-range">0.5% ～ 1.2%</span>
+                    </div>
+                    <button class="rule-btn" id="toggleRuleBtn"><i class="fa-regular fa-circle-question"></i> 规则</button>
+                </div>
+
+                <!-- 规则详情卡片 -->
+                <div class="rule-detail-card" id="ruleDetailCard">
+                    <h4><i class="fa-regular fa-list"></i> 利率规则说明</h4>
+                    <div class="rule-table">
+                        <div class="rule-tier">
+                            <div class="days">1-7 天</div>
+                            <div class="rate">0.5%</div>
+                            <div style="font-size:0.7rem; color:#558b6a;">日利率</div>
+                        </div>
+                        <div class="rule-tier">
+                            <div class="days">8-15 天</div>
+                            <div class="rate">0.6%</div>
+                            <div style="font-size:0.7rem; color:#558b6a;">日利率</div>
+                        </div>
+                        <div class="rule-tier">
+                            <div class="days">16-30 天</div>
+                            <div class="rate">0.8%</div>
+                            <div style="font-size:0.7rem; color:#558b6a;">日利率</div>
+                        </div>
+                        <div class="rule-tier">
+                            <div class="days">31-60 天</div>
+                            <div class="rate">1.0%</div>
+                            <div style="font-size:0.7rem; color:#558b6a;">日利率</div>
+                        </div>
+                        <div class="rule-tier">
+                            <div class="days">61天+</div>
+                            <div class="rate">1.2%</div>
+                            <div style="font-size:0.7rem; color:#558b6a;">日利率</div>
+                        </div>
+                    </div>
+                    <div class="extra-rule">
+                        <i class="fa-regular fa-clock" style="margin-right: 6px;"></i>
+                        每日20:00 按H/USDT价格折算发放等值USDT的H。实际利率根据您的连续存期自动匹配。
+                    </div>
+                </div>
+
+                <!-- 动态奖励预览 -->
+                <div class="reward-preview">
+                    <span class="reward-label"><i class="fa-regular fa-sun"></i> 预估每日奖励</span>
+                    <span>
+                        <span class="reward-amount" id="dailyReward">1.2000</span>
+                        <span class="reward-suffix">/天</span>
+                    </span>
+                </div>
+                <div class="hint-note">
+                    <i class="fa-regular fa-circle-info"></i> 按最高档1.2%估算，实际随存期浮动
+                </div>
+
+                <!-- 质押 & 赎回 按钮 -->
+                <div class="action-buttons">
+                    <button class="btn-primary" id="stakeBtn"><i class="fa-solid fa-arrow-up-from-bracket"></i> 质押</button>
+                    <button class="btn-secondary" id="unstakeBtn"><i class="fa-solid fa-arrow-down-to-bracket"></i> 赎回</button>
+                </div>
+            </div>
+
+            <!-- 账单动态区域 -->
+            <div class="bill-section">
+                <div class="bill-header">
+                    <h3><i class="fa-regular fa-receipt"></i> 账单动态</h3>
+                    <div class="bill-tabs">
+                        <span class="bill-tab active" data-tab="stake">质押</span>
+                        <span class="bill-tab" data-tab="reward">收益</span>
+                    </div>
+                </div>
+                <!-- 质押记录列表 -->
+                <div class="bill-list" id="stakeRecords">
+                    <div class="bill-item">
+                        <span class="bill-type stake"><i class="fa-solid fa-arrow-up"></i> 质押</span>
+                        <span class="bill-amount">+500</span>
+                        <span class="bill-time">03-15 14:23</span>
+                    </div>
+                    <div class="bill-item">
+                        <span class="bill-type stake"><i class="fa-solid fa-arrow-up"></i> 质押</span>
+                        <span class="bill-amount">+200</span>
+                        <span class="bill-time">03-14 09:12</span>
+                    </div>
+                    <div class="bill-item">
+                        <span class="bill-type stake"><i class="fa-solid fa-arrow-up"></i> 质押</span>
+                        <span class="bill-amount">+1000</span>
+                        <span class="bill-time">03-12 18:45</span>
+                    </div>
+                </div>
+                <!-- 收益记录列表 -->
+                <div class="bill-list hidden" id="rewardRecords">
+                    <div class="bill-item">
+                        <span class="bill-type reward"><i class="fa-regular fa-sun"></i> 发放</span>
+                        <span class="bill-amount">+12.36</span>
+                        <span class="bill-time">03-15 20:00</span>
+                    </div>
+                    <div class="bill-item">
+                        <span class="bill-type claim"><i class="fa-solid fa-hand-holding-heart"></i> 领取</span>
+                        <span class="bill-amount">-45.20</span>
+                        <span class="bill-time">03-14 10:30</span>
+                    </div>
+                    <div class="bill-item">
+                        <span class="bill-type reward"><i class="fa-regular fa-sun"></i> 发放</span>
+                        <span class="bill-amount">+10.15</span>
+                        <span class="bill-time">03-14 20:00</span>
+                    </div>
+                </div>
+                <div class="bill-more">
+                    <a href="#" id="viewMoreLink">查看更多 <i class="fa-regular fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 脚注说明 -->
+        <div class="footnote">
+            <i class="fa-regular fa-hand-back-point-up"></i> 演示界面 · 最终优化 · 移动专属
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const AVAILABLE_BALANCE = 2500.00;
+
+            const amountInput = document.getElementById('stakeAmount');
+            const dailySpan = document.getElementById('dailyReward');
+            const maxBtn = document.getElementById('maxBtn');
+            const connectBtn = document.getElementById('connectWalletBtn');
+            const stakeBtn = document.getElementById('stakeBtn');
+            const unstakeBtn = document.getElementById('unstakeBtn');
+            const toggleRuleBtn = document.getElementById('toggleRuleBtn');
+            const ruleCard = document.getElementById('ruleDetailCard');
+
+            const MAX_DAILY_RATE = 0.012;
+
+            function updateReward() {
+                let val = parseFloat(amountInput.value);
+                if (isNaN(val) || val < 0) val = 0;
+                const daily = val * MAX_DAILY_RATE;
+                dailySpan.textContent = daily.toFixed(4);
+            }
+
+            amountInput.addEventListener('input', updateReward);
+
+            maxBtn.addEventListener('click', function() {
+                amountInput.value = AVAILABLE_BALANCE.toFixed(2);
+                updateReward();
+            });
+
+            updateReward();
+
+            toggleRuleBtn.addEventListener('click', function() {
+                ruleCard.classList.toggle('show');
+                toggleRuleBtn.innerHTML = ruleCard.classList.contains('show') 
+                    ? '<i class="fa-regular fa-circle-xmark"></i> 关闭' 
+                    : '<i class="fa-regular fa-circle-question"></i> 规则';
+            });
+
+            function demoAlert(action) {
+                alert(`[演示] ${action} 功能尚未接入智能合约。\n当前环境为静态原型。`);
+            }
+
+            connectBtn.addEventListener('click', function() {
+                demoAlert('连接钱包');
+                const originalHtml = connectBtn.innerHTML;
+                connectBtn.innerHTML = '<i class="fa-regular fa-circle-check"></i>';
+                setTimeout(() => {
+                    connectBtn.innerHTML = originalHtml;
+                }, 1500);
+            });
+
+            stakeBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const amount = amountInput.value.trim();
+                if (!amount || parseFloat(amount) <= 0) {
+                    alert('请输入有效的质押数量');
+                    return;
+                }
+                if (parseFloat(amount) > AVAILABLE_BALANCE) {
+                    alert(`余额不足，你最多可质押 ${AVAILABLE_BALANCE} H`);
+                    return;
+                }
+                demoAlert(`质押 ${amount} H`);
+            });
+
+            unstakeBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                demoAlert('赎回操作');
+            });
+
+            amountInput.addEventListener('keydown', (e) => {
+                if (e.key === '-' || e.key === 'e') e.preventDefault();
+            });
+            amountInput.addEventListener('blur', () => {
+                if (amountInput.value < 0) amountInput.value = 0;
+                updateReward();
+            });
+
+            amountInput.addEventListener('change', function() {
+                let val = parseFloat(amountInput.value);
+                if (val > AVAILABLE_BALANCE) {
+                    amountInput.style.borderColor = '#ff8888';
+                    setTimeout(() => amountInput.style.borderColor = '', 800);
+                }
+            });
+
+            // 账单动态标签切换
+            const stakeTab = document.querySelector('.bill-tab[data-tab="stake"]');
+            const rewardTab = document.querySelector('.bill-tab[data-tab="reward"]');
+            const stakeList = document.getElementById('stakeRecords');
+            const rewardList = document.getElementById('rewardRecords');
+
+            stakeTab.addEventListener('click', function() {
+                stakeTab.classList.add('active');
+                rewardTab.classList.remove('active');
+                stakeList.classList.remove('hidden');
+                rewardList.classList.add('hidden');
+            });
+
+            rewardTab.addEventListener('click', function() {
+                rewardTab.classList.add('active');
+                stakeTab.classList.remove('active');
+                rewardList.classList.remove('hidden');
+                stakeList.classList.add('hidden');
+            });
+
+            document.getElementById('viewMoreLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                demoAlert('查看更多记录');
+            });
+        })();
+    </script>
 </body>
 </html>
