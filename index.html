@@ -18,11 +18,11 @@
             flex-direction: column;
             min-height: 100vh;
             position: relative;
-            padding-bottom: 0; /* 底部导航固定，不需要这里留白 */
+            padding-bottom: 0;
         }
         .content {
             flex: 1;
-            padding: 16px 0 80px; /* 底部留出80px防止导航遮挡 */
+            padding: 16px 0 80px;
             display: flex;
             flex-direction: column;
             gap: 28px;
@@ -425,7 +425,7 @@
 
                 <!-- 醒目资产行（带图标） -->
                 <div class="asset-row">
-                    <span class="asset-label"></span>
+                    <span class="asset-label">资产</span>
                     <span class="asset-value" id="totalAsset">$1,234.56</span>
                     <span class="asset-change positive" id="assetChange">
                         <i class="fas fa-arrow-up"></i> +$101 (0.14%)
@@ -512,21 +512,21 @@
             </div>
         </div>
 
-        <!-- 底部导航 - 固定定位 -->
+        <!-- 底部导航 - 固定定位，添加跳转链接 -->
         <div class="bottom-nav">
-            <div class="nav-item active" data-ripple>
+            <div class="nav-item active" data-ripple onclick="window.location.href='index.html'">
                 <span class="bubble bubble1"></span><span class="bubble bubble2"></span><span class="bubble bubble3"></span><span class="bubble bubble4"></span><span class="bubble bubble5"></span>
                 <i class="fas fa-home"></i><span>首页</span>
             </div>
-            <div class="nav-item" data-ripple>
+            <div class="nav-item" data-ripple onclick="window.location.href='earn.html'">
                 <span class="bubble bubble1"></span><span class="bubble bubble2"></span><span class="bubble bubble3"></span><span class="bubble bubble4"></span><span class="bubble bubble5"></span>
                 <i class="fas fa-coins"></i><span>赚币</span>
             </div>
-            <div class="nav-item" data-ripple>
+            <div class="nav-item" data-ripple onclick="window.location.href='model.html'">
                 <span class="bubble bubble1"></span><span class="bubble bubble2"></span><span class="bubble bubble3"></span><span class="bubble bubble4"></span><span class="bubble bubble5"></span>
                 <i class="fas fa-robot"></i><span>模型</span>
             </div>
-            <div class="nav-item" data-ripple>
+            <div class="nav-item" data-ripple onclick="window.location.href='wallet.html'">
                 <span class="bubble bubble1"></span><span class="bubble bubble2"></span><span class="bubble bubble3"></span><span class="bubble bubble4"></span><span class="bubble bubble5"></span>
                 <i class="fas fa-wallet"></i><span>钱包</span>
             </div>
@@ -577,12 +577,25 @@
             });
         }
 
-        // 导航激活状态切换
+        // 导航激活状态切换（点击后高亮当前页）
         navItems.forEach(item => {
             item.addEventListener('click', function(e) {
+                // 移除所有 active 类
                 navItems.forEach(nav => nav.classList.remove('active'));
+                // 给当前点击项添加 active 类
                 this.classList.add('active');
+                // 注意：因为用了 onclick 跳转，跳转后新页面会重新加载，所以当前页的 active 类可能被覆盖
+                // 为了准确，可以在每个页面通过当前文件名设置 active，但这里保持简单，跳转后自然刷新
             });
+        });
+
+        // 根据当前文件名设置 active 类（确保刷新后高亮正确）
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        navItems.forEach(item => {
+            const href = item.getAttribute('onclick');
+            if (href && href.includes(currentPage)) {
+                item.classList.add('active');
+            }
         });
 
         // 检查登录状态并加载用户信息
