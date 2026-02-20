@@ -110,14 +110,18 @@
             color: #1a73e8;
             transition: transform 0.3s;
         }
-        .drawer-header .toggle-icon.rotated { transform: rotate(180deg); }
+        .drawer-header .toggle-icon.rotated {
+            transform: rotate(180deg);
+        }
 
         .drawer-content {
             padding: 0 16px 16px 16px;
             display: none;
             border-top: 1px solid #edf2f7;
         }
-        .drawer-card.expanded .drawer-content { display: block; }
+        .drawer-card.expanded .drawer-content {
+            display: block;
+        }
 
         .drawer-content p,
         .drawer-content li,
@@ -276,46 +280,47 @@
             margin: 2rem 0;
         }
 
-        /* 模拟交易相关样式（简化但不丢失功能） */
-        .sim-panel, .sim-action-card, .stats-grid, .sim-rate-table, .sim-info-badge, .sim-mechanism-note, .sim-last-sell, .sim-profit-estimate, .sim-highlight {
-            margin: 1rem 0;
-            background: #f8fafc;
-            border-radius: 20px;
-            padding: 1rem;
-            border: 1px solid #e2e8f0;
-        }
+        /* 模拟交易卡片样式 */
+        .sim-panel { background: #f8fafc; border-radius: 20px; padding: 1.2rem; margin: 1rem 0; }
         .sim-flex-row { display: flex; flex-wrap: wrap; gap: 16px; }
-        .sim-action-card { flex: 1 1 260px; }
-        .sim-rate-table { display: grid; grid-template-columns: repeat(5,1fr); gap: 4px; }
-        .sim-btn {
-            background: #1a73e8;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 40px;
-            font-weight: 600;
-            width: 100%;
-            cursor: pointer;
-            margin-bottom: 8px;
-        }
-        .sim-btn-secondary { background: white; color: #1a73e8; border: 1px solid #1a73e8; }
+        .sim-action-card { flex: 1 1 280px; background: white; border-radius: 20px; padding: 1.2rem; border: 1px solid #e2e8f0; }
+        .sim-action-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
+        .sim-action-title span { background: #e3f2fd; border-radius: 30px; padding: 0.2rem 0.8rem; font-size: 0.7rem; color: #1a73e8; }
+        .sim-input-group { margin-bottom: 1rem; }
+        .sim-input-group label { display: block; font-weight: 500; margin-bottom: 0.3rem; }
+        .sim-input-group input { width: 100%; padding: 0.8rem; border-radius: 40px; border: 1px solid #e2e8f0; }
+        .sim-btn { background: #1a73e8; color: white; border: none; border-radius: 40px; padding: 0.8rem; width: 100%; font-weight: 600; margin-bottom: 0.5rem; cursor: pointer; }
         .sim-btn-success { background: #2e7d32; }
+        .sim-btn-secondary { background: white; color: #1a73e8; border: 1px solid #1a73e8; }
+        .sim-info-badge { background: #f8fafc; border-radius: 20px; padding: 0.8rem; text-align: center; font-size: 0.9rem; }
+        .sim-mechanism-note { margin-top: 1rem; background: #f0f7ff; border-radius: 16px; padding: 0.8rem; font-size: 0.8rem; }
+        .sim-rate-table { display: grid; grid-template-columns: repeat(5,1fr); gap: 4px; margin-bottom: 1rem; }
+        .sim-rate-item { background: #ecf4ff; border-radius: 20px; padding: 0.5rem 0; text-align: center; }
+        .sim-rate-days { color: #1a73e8; }
+        .sim-rate-percent { color: #2e7d32; font-weight: 700; }
+        .sim-last-sell { background: #e8f0fe; border-radius: 16px; padding: 0.8rem; margin: 0.8rem 0; font-size: 0.8rem; }
+        .sim-profit-estimate { background: #e2f0e8; border-radius: 16px; padding: 0.8rem; font-size: 0.8rem; }
+        .sim-highlight { background: #fef9e7; border-left: 4px solid #f1c40f; border-radius: 20px; padding: 1rem; margin: 1rem 0; font-size: 0.9rem; }
 
-        /* 卡片4 KOL评价原有样式保留 */
+        /* 卡片4 KOL评价 */
         .kol-quote { background: #f5f9ff; border-radius: 20px; padding: 1.5rem; margin: 1.5rem 0; }
         .kol-name { display: flex; align-items: center; gap: 12px; margin-top: 1rem; }
         .kol-avatar { width: 44px; height: 44px; background: #e3f2fd; border-radius: 22px; display: flex; align-items: center; justify-content: center; }
+        .step-card { background: white; border-radius: 20px; padding: 1.2rem; margin: 1.2rem 0; border: 1px solid #e2e8f0; }
+        .risk-item { display: flex; gap: 12px; margin-bottom: 1rem; }
+        .risk-icon { width: 32px; height: 32px; background: #fef9e7; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: #f1c40f; }
 
-        /* 卡片5 价格参照表原有样式保留 */
+        /* 卡片5价格参照表 */
         .table-wrapper { overflow-x: auto; }
         .repay-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
         .pagination-bar { display: flex; flex-wrap: wrap; justify-content: space-between; margin-top: 1rem; }
 
-        /* 卡片6 留言板 */
+        /* 卡片6留言板 */
         .message-item { display: flex; gap: 12px; margin-bottom: 1rem; }
         .message-avatar { width: 40px; height: 40px; background: #e3f2fd; border-radius: 20px; display: flex; align-items: center; justify-content: center; }
         .message-input-area { display: flex; gap: 10px; margin-top: 1rem; }
-        .message-input-area input { flex:1; padding: 12px; border-radius: 40px; border: 1px solid #e2e8f0; }
+        .message-input-area input { flex:1; padding: 0.8rem; border-radius: 40px; border: 1px solid #e2e8f0; }
+        .message-input-area button { background: #1a73e8; color: white; border: none; border-radius: 40px; padding: 0.8rem 2rem; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -473,85 +478,79 @@
                 </div>
             </div>
 
-            <!-- 卡片3：模拟市场交易（完整功能） -->
+            <!-- 卡片3：模拟市场交易（完整UI） -->
             <div class="drawer-card" id="card3">
-    <div class="drawer-header" data-target="card3">
-        <div class="title-section card3"><i class="fas fa-chart-line"></i><h2>模拟市场交易</h2></div>
-        <i class="fas fa-chevron-down toggle-icon" id="icon-card3"></i>
-    </div>
-    <div class="drawer-content" id="content-card3">
-        <!-- 模拟交易面板 (完整UI) -->
-        <div class="sim-panel" style="background:#f8fafc; border-radius:20px; padding:1.2rem; margin:1rem 0;">
-            <div class="flex-between" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-                <h3 style="margin:0; font-weight:600;">📊 实时持仓状态</h3>
-                <button class="sim-btn-secondary" id="sim_resetBtn" style="background:white; color:#1a73e8; border:1px solid #1a73e8; border-radius:40px; padding:0.5rem 1.2rem; cursor:pointer;">⟲ 重置</button>
-            </div>
-            <div class="stats-grid" id="sim_stateGrid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:12px;"></div>
-        </div>
+                <div class="drawer-header" data-target="card3">
+                    <div class="title-section card3"><i class="fas fa-chart-line"></i><h2>模拟市场交易</h2></div>
+                    <i class="fas fa-chevron-down toggle-icon" id="icon-card3"></i>
+                </div>
+                <div class="drawer-content" id="content-card3">
+                    <div class="sim-panel">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                            <h3 style="margin:0; font-weight:600;">📊 实时持仓状态</h3>
+                            <button class="sim-btn-secondary" id="sim_resetBtn" style="background:white; color:#1a73e8; border:1px solid #1a73e8; border-radius:40px; padding:0.5rem 1.2rem; cursor:pointer;">⟲ 重置</button>
+                        </div>
+                        <div class="stats-grid" id="sim_stateGrid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:12px;"></div>
+                    </div>
 
-        <div class="sim-flex-row" style="display:flex; flex-wrap:wrap; gap:16px;">
-            <!-- 买入卡 -->
-            <div class="sim-action-card" style="flex:1 1 280px; background:white; border-radius:20px; padding:1.2rem; border:1px solid #e2e8f0;">
-                <div class="sim-action-title" style="font-size:1.2rem; font-weight:600; margin-bottom:1rem; display:flex; align-items:center; gap:8px;">
-                    📥 买入 <span style="background:#e3f2fd; border-radius:30px; padding:0.2rem 0.8rem; font-size:0.7rem; color:#1a73e8;">税5% U</span>
-                </div>
-                <div class="sim-input-group" style="margin-bottom:1rem;">
-                    <label style="display:block; font-weight:500; margin-bottom:0.3rem;">投入 USDT</label>
-                    <input type="number" id="sim_buyAmount" value="1000" style="width:100%; padding:0.8rem; border-radius:40px; border:1px solid #e2e8f0;">
-                </div>
-                <button class="sim-btn" id="sim_buyBtn" style="background:#1a73e8; color:white; border:none; border-radius:40px; padding:0.8rem; width:100%; font-weight:600; margin-bottom:0.8rem;">执行买入</button>
-                <div class="sim-info-badge" id="sim_buyPreview" style="background:#f8fafc; border-radius:20px; padding:0.8rem; text-align:center; font-size:0.9rem;">外部获得 ≈ ? H</div>
-                <div class="sim-mechanism-note" style="margin-top:1rem; background:#f0f7ff; border-radius:16px; padding:0.8rem; font-size:0.8rem;">
-                    <strong>📌 买入机制</strong><br>1️⃣ 投入U扣5%税(入国库) 2️⃣ 剩余U加入LP池 3️⃣ 恒定乘积 x·y=k，H减少 4️⃣ 减少的H归外部持币 5️⃣ 价格上升
+                    <div class="sim-flex-row">
+                        <!-- 买入卡 -->
+                        <div class="sim-action-card">
+                            <div class="sim-action-title">📥 买入 <span>税5% U</span></div>
+                            <div class="sim-input-group">
+                                <label>投入 USDT</label>
+                                <input type="number" id="sim_buyAmount" value="1000">
+                            </div>
+                            <button class="sim-btn" id="sim_buyBtn">执行买入</button>
+                            <div class="sim-info-badge" id="sim_buyPreview">外部获得 ≈ ? H</div>
+                            <div class="sim-mechanism-note">
+                                <strong>📌 买入机制</strong><br>1️⃣ 投入U扣5%税(入国库) 2️⃣ 剩余U加入LP池 3️⃣ 恒定乘积 x·y=k，H减少 4️⃣ 减少的H归外部持币 5️⃣ 价格上升
+                            </div>
+                        </div>
+
+                        <!-- 质押/赎回卡 -->
+                        <div class="sim-action-card">
+                            <div class="sim-action-title">🔒 质押操作 <span>阶梯日息</span></div>
+                            <div class="sim-rate-table">
+                                <div class="sim-rate-item"><span class="sim-rate-days">1-7d</span><br><span class="sim-rate-percent">0.5%</span></div>
+                                <div class="sim-rate-item"><span class="sim-rate-days">8-15d</span><br><span class="sim-rate-percent">0.6%</span></div>
+                                <div class="sim-rate-item"><span class="sim-rate-days">16-30d</span><br><span class="sim-rate-percent">0.8%</span></div>
+                                <div class="sim-rate-item"><span class="sim-rate-days">31-60d</span><br><span class="sim-rate-percent">1.0%</span></div>
+                                <div class="sim-rate-item"><span class="sim-rate-days">≥61d</span><br><span class="sim-rate-percent">1.2%</span></div>
+                            </div>
+                            <div class="sim-input-group">
+                                <label>质押/赎回数量 (H)</label>
+                                <input type="number" id="sim_stakeAmount" value="50000">
+                            </div>
+                            <div class="sim-input-group">
+                                <label>质押天数</label>
+                                <input type="number" id="sim_stakeDays" value="30">
+                            </div>
+                            <button class="sim-btn" id="sim_stakeBtn">🔐 锁定本金</button>
+                            <button class="sim-btn sim-btn-success" id="sim_redeemBtn">💰 赎回本息</button>
+                            <div class="sim-info-badge" id="sim_stakePreview">预期利息 ≈ 0 H</div>
+                        </div>
+
+                        <!-- 卖出卡 -->
+                        <div class="sim-action-card">
+                            <div class="sim-action-title">📤 卖出 <span>税5% U</span></div>
+                            <div class="sim-input-group">
+                                <label>卖出数量 (H)</label>
+                                <input type="number" id="sim_sellAmount" value="50000">
+                            </div>
+                            <button class="sim-btn" id="sim_sellBtn">执行卖出</button>
+                            <div class="sim-info-badge" id="sim_sellPreview">外部可获得 ≈ ? USDT</div>
+                            <div class="sim-last-sell" id="sim_lastSellResult">暂无卖出记录</div>
+                            <div class="sim-profit-estimate" id="sim_profitEstimate">当前价格：？</div>
+                        </div>
+                    </div>
+
+                    <div class="sim-highlight">
+                        ⚡ <strong>操作规则</strong>：买入/质押/赎回/卖出均针对外部持币；赎回本息从质押池支出；卖出税按U的5%扣除；总供应10亿。
+                    </div>
                 </div>
             </div>
 
-            <!-- 质押/赎回卡 -->
-            <div class="sim-action-card" style="flex:1 1 280px; background:white; border-radius:20px; padding:1.2rem; border:1px solid #e2e8f0;">
-                <div class="sim-action-title" style="font-size:1.2rem; font-weight:600; margin-bottom:1rem; display:flex; align-items:center; gap:8px;">
-                    🔒 质押操作 <span style="background:#e3f2fd; border-radius:30px; padding:0.2rem 0.8rem; font-size:0.7rem; color:#1a73e8;">阶梯日息</span>
-                </div>
-                <div class="sim-rate-table" style="display:grid; grid-template-columns:repeat(5,1fr); gap:4px; margin-bottom:1rem;">
-                    <div class="sim-rate-item" style="background:#ecf4ff; border-radius:20px; padding:0.5rem 0; text-align:center;"><span class="sim-rate-days" style="color:#1a73e8;">1-7d</span><br><span class="sim-rate-percent" style="color:#2e7d32;">0.5%</span></div>
-                    <div class="sim-rate-item" style="background:#ecf4ff; border-radius:20px; padding:0.5rem 0; text-align:center;"><span class="sim-rate-days" style="color:#1a73e8;">8-15d</span><br><span class="sim-rate-percent" style="color:#2e7d32;">0.6%</span></div>
-                    <div class="sim-rate-item" style="background:#ecf4ff; border-radius:20px; padding:0.5rem 0; text-align:center;"><span class="sim-rate-days" style="color:#1a73e8;">16-30d</span><br><span class="sim-rate-percent" style="color:#2e7d32;">0.8%</span></div>
-                    <div class="sim-rate-item" style="background:#ecf4ff; border-radius:20px; padding:0.5rem 0; text-align:center;"><span class="sim-rate-days" style="color:#1a73e8;">31-60d</span><br><span class="sim-rate-percent" style="color:#2e7d32;">1.0%</span></div>
-                    <div class="sim-rate-item" style="background:#ecf4ff; border-radius:20px; padding:0.5rem 0; text-align:center;"><span class="sim-rate-days" style="color:#1a73e8;">≥61d</span><br><span class="sim-rate-percent" style="color:#2e7d32;">1.2%</span></div>
-                </div>
-                <div class="sim-input-group" style="margin-bottom:1rem;">
-                    <label style="display:block; font-weight:500; margin-bottom:0.3rem;">质押/赎回数量 (H)</label>
-                    <input type="number" id="sim_stakeAmount" value="50000" style="width:100%; padding:0.8rem; border-radius:40px; border:1px solid #e2e8f0;">
-                </div>
-                <div class="sim-input-group" style="margin-bottom:1rem;">
-                    <label style="display:block; font-weight:500; margin-bottom:0.3rem;">质押天数</label>
-                    <input type="number" id="sim_stakeDays" value="30" style="width:100%; padding:0.8rem; border-radius:40px; border:1px solid #e2e8f0;">
-                </div>
-                <button class="sim-btn" id="sim_stakeBtn" style="background:#1a73e8; color:white; border:none; border-radius:40px; padding:0.8rem; width:100%; font-weight:600; margin-bottom:0.5rem;">🔐 锁定本金</button>
-                <button class="sim-btn sim-btn-success" id="sim_redeemBtn" style="background:#2e7d32; color:white; border:none; border-radius:40px; padding:0.8rem; width:100%; font-weight:600; margin-bottom:0.8rem;">💰 赎回本息</button>
-                <div class="sim-info-badge" id="sim_stakePreview" style="background:#f8fafc; border-radius:20px; padding:0.8rem; text-align:center; font-size:0.9rem;">预期利息 ≈ 0 H</div>
-            </div>
-
-            <!-- 卖出卡 -->
-            <div class="sim-action-card" style="flex:1 1 280px; background:white; border-radius:20px; padding:1.2rem; border:1px solid #e2e8f0;">
-                <div class="sim-action-title" style="font-size:1.2rem; font-weight:600; margin-bottom:1rem; display:flex; align-items:center; gap:8px;">
-                    📤 卖出 <span style="background:#e3f2fd; border-radius:30px; padding:0.2rem 0.8rem; font-size:0.7rem; color:#1a73e8;">税5% U</span>
-                </div>
-                <div class="sim-input-group" style="margin-bottom:1rem;">
-                    <label style="display:block; font-weight:500; margin-bottom:0.3rem;">卖出数量 (H)</label>
-                    <input type="number" id="sim_sellAmount" value="50000" style="width:100%; padding:0.8rem; border-radius:40px; border:1px solid #e2e8f0;">
-                </div>
-                <button class="sim-btn" id="sim_sellBtn" style="background:#1a73e8; color:white; border:none; border-radius:40px; padding:0.8rem; width:100%; font-weight:600; margin-bottom:0.8rem;">执行卖出</button>
-                <div class="sim-info-badge" id="sim_sellPreview" style="background:#f8fafc; border-radius:20px; padding:0.8rem; text-align:center; font-size:0.9rem;">外部可获得 ≈ ? USDT</div>
-                <div class="sim-last-sell" id="sim_lastSellResult" style="background:#e8f0fe; border-radius:16px; padding:0.8rem; margin:0.8rem 0; font-size:0.8rem;">暂无卖出记录</div>
-                <div class="sim-profit-estimate" id="sim_profitEstimate" style="background:#e2f0e8; border-radius:16px; padding:0.8rem; font-size:0.8rem;">当前价格：？</div>
-            </div>
-        </div>
-
-        <div class="sim-highlight" style="background:#fef9e7; border-left:4px solid #f1c40f; border-radius:20px; padding:1rem; margin:1rem 0; font-size:0.9rem;">
-            ⚡ <strong>操作规则</strong>：买入/质押/赎回/卖出均针对外部持币；赎回本息从质押池支出；卖出税按U的5%扣除；总供应10亿。
-        </div>
-    </div>
-</div>
             <!-- 卡片4：KOL评价 -->
             <div class="drawer-card" id="card4">
                 <div class="drawer-header" data-target="card4">
@@ -577,7 +576,7 @@
                 </div>
             </div>
 
-            <!-- 卡片5：代币价格参照表（保留原始数据） -->
+            <!-- 卡片5：代币价格参照表（数据完整） -->
             <div class="drawer-card" id="card5">
                 <div class="drawer-header" data-target="card5">
                     <div class="title-section card5"><i class="fas fa-table"></i><h2>代币价格参照表</h2></div>
@@ -617,8 +616,8 @@
     </div>
 
     <script>
-        // 手风琴效果
         (function() {
+            // 手风琴效果
             const headers = document.querySelectorAll('.drawer-header');
             function closeAllCards() {
                 document.querySelectorAll('.drawer-card').forEach(c => c.classList.remove('expanded'));
@@ -626,7 +625,9 @@
             }
             headers.forEach(header => {
                 header.addEventListener('click', function(e) {
-                    const targetId = this.dataset.target;
+                    e.stopPropagation();
+                    const targetId = this.dataset.target; // 例如 card1
+                    if (!targetId) return;
                     const card = document.getElementById(targetId);
                     const icon = document.getElementById('icon-' + targetId);
                     if (card.classList.contains('expanded')) {
@@ -639,139 +640,184 @@
                     }
                 });
             });
-        })();
 
-        // 卡片3模拟交易脚本（简化，保留核心逻辑）
-        (function() {
-    const INIT_STATE = { hLp:17351600, uLp:109836.60, community:682648400, stakePool:300000000, treasuryU:0, external:0, externalPayout:0 };
-    let state = JSON.parse(JSON.stringify(INIT_STATE));
-    let lastSell = null;
-    function computeDerived() { let price = state.uLp / state.hLp; let k = state.hLp * state.uLp; return {price, k}; }
-    function calculateInterest(p, d) {
-        if (p<=0 || d<=0) return 0;
-        let total = 0;
-        const stages = [[1,7,0.005],[8,15,0.006],[16,30,0.008],[31,60,0.01],[61,Infinity,0.012]];
-        for (let s of stages) {
-            let stageDays = Math.min(d, s[1]===Infinity? d : s[1]-s[0]+1);
-            total += p * s[2] * stageDays;
-            d -= stageDays;
-            if (d<=0) break;
-        }
-        return total;
-    }
-    function refreshUI() {
-        const d = computeDerived();
-        const grid = document.getElementById('sim_stateGrid');
-        grid.innerHTML = `
-            <div class="stat-card" style="background:white; border-radius:16px; padding:0.8rem;"><div class="stat-label" style="font-size:0.7rem; color:#546e7a;">H价格</div><div class="stat-value" style="font-size:1.2rem; font-weight:600;">${d.price.toFixed(6)} USDT</div></div>
-            <div class="stat-card" style="background:white; border-radius:16px; padding:0.8rem;"><div class="stat-label">LP池H</div><div class="stat-value">${state.hLp.toLocaleString()}</div></div>
-            <div class="stat-card" style="background:white; border-radius:16px; padding:0.8rem;"><div class="stat-label">LP池U</div><div class="stat-value">${state.uLp.toFixed(2)}</div></div>
-            <div class="stat-card" style="background:white; border-radius:16px; padding:0.8rem;"><div class="stat-label">外部持币</div><div class="stat-value">${state.external.toLocaleString()}</div></div>
-            <div class="stat-card" style="background:white; border-radius:16px; padding:0.8rem;"><div class="stat-label">质押池</div><div class="stat-value">${state.stakePool.toLocaleString()}</div></div>
-            <div class="stat-card" style="background:white; border-radius:16px; padding:0.8rem;"><div class="stat-label">国库U</div><div class="stat-value">${state.treasuryU.toFixed(2)}</div></div>
-            <div class="stat-card" style="background:white; border-radius:16px; padding:0.8rem;"><div class="stat-label">累计支出</div><div class="stat-value">${state.externalPayout.toLocaleString()}</div></div>
-        `;
-        // 买入预览
-        let buyU = parseFloat(document.getElementById('sim_buyAmount').value)||0;
-        if(buyU>0) {
-            let tax = buyU*0.05;
-            let net = buyU*0.95;
-            let newU = state.uLp + net;
-            let newH = (state.hLp * state.uLp) / newU;
-            let getH = state.hLp - newH;
-            document.getElementById('sim_buyPreview').innerText = `外部获得 ≈ ${getH.toFixed(0)} H (税 ${tax.toFixed(2)} U)`;
-        } else {
-            document.getElementById('sim_buyPreview').innerText = '外部获得 ≈ ? H';
-        }
-        // 质押预览
-        let stakeH = parseFloat(document.getElementById('sim_stakeAmount').value)||0;
-        let days = parseInt(document.getElementById('sim_stakeDays').value)||0;
-        let interest = calculateInterest(stakeH, days);
-        document.getElementById('sim_stakePreview').innerHTML = `预期利息 ≈ ${interest.toFixed(0)} H`;
-        // 卖出预览
-        let sellH = parseFloat(document.getElementById('sim_sellAmount').value)||0;
-        if(sellH>0) {
-            if(sellH > state.external) {
-                document.getElementById('sim_sellPreview').innerText = '外部余额不足';
-            } else {
-                let k = state.hLp * state.uLp;
-                let newH = state.hLp + sellH;
-                let newU = k / newH;
-                let grossU = state.uLp - newU;
-                let taxU = grossU * 0.05;
-                let netU = grossU - taxU;
-                document.getElementById('sim_sellPreview').innerText = `可获得 ≈ ${netU.toFixed(2)} USDT (税 ${taxU.toFixed(2)} U)`;
-                let profitText = `当前价格：${(newU/newH).toFixed(6)} USDT`;
-                document.getElementById('sim_profitEstimate').innerHTML = profitText;
-            }
-        } else {
-            document.getElementById('sim_sellPreview').innerText = '外部可获得 ≈ ? USDT';
-        }
-        if(lastSell) {
-            document.getElementById('sim_lastSellResult').innerHTML = `<strong>上次卖出</strong>: ${lastSell.amount} H → 获得 ${lastSell.netU.toFixed(2)} USDT (税 ${lastSell.taxU.toFixed(2)} U)<br>新价格: ${lastSell.newPrice.toFixed(6)} USDT`;
-        }
-    }
-    document.getElementById('sim_buyBtn').addEventListener('click', ()=>{
-        let buyU = parseFloat(document.getElementById('sim_buyAmount').value);
-        if(buyU>0){
-            let tax = buyU*0.05;
-            let net = buyU*0.95;
-            let k = state.hLp * state.uLp;
-            let newU = state.uLp + net;
-            let newH = k / newU;
-            let getH = state.hLp - newH;
-            if(getH>0){
-                state.uLp = newU; state.hLp = newH; state.external += getH; state.treasuryU += tax;
-                refreshUI();
-            }
-        }
-    });
-    document.getElementById('sim_sellBtn').addEventListener('click', ()=>{
-        let sellH = parseFloat(document.getElementById('sim_sellAmount').value);
-        if(sellH>0 && sellH<=state.external){
-            let k = state.hLp * state.uLp;
-            let newH = state.hLp + sellH;
-            let newU = k / newH;
-            let grossU = state.uLp - newU;
-            let taxU = grossU * 0.05;
-            let netU = grossU - taxU;
-            if(grossU>0){
-                lastSell = { amount:sellH, netU, taxU, newPrice:newU/newH };
-                state.hLp = newH; state.uLp = newU; state.external -= sellH; state.treasuryU += taxU;
-                refreshUI();
-            }
-        }
-    });
-    document.getElementById('sim_stakeBtn').addEventListener('click', ()=>{
-        let stakeH = parseFloat(document.getElementById('sim_stakeAmount').value);
-        if(stakeH>0 && stakeH<=state.external){
-            state.external -= stakeH; state.stakePool += stakeH; refreshUI();
-        }
-    });
-    document.getElementById('sim_redeemBtn').addEventListener('click', ()=>{
-        let stakeH = parseFloat(document.getElementById('sim_stakeAmount').value);
-        let days = parseInt(document.getElementById('sim_stakeDays').value)||0;
-        let interest = calculateInterest(stakeH, days);
-        let total = stakeH + interest;
-        if(total <= state.stakePool){
-            state.stakePool -= total; state.external += total; state.externalPayout += interest; refreshUI();
-        }
-    });
-    document.getElementById('sim_resetBtn').addEventListener('click', ()=>{
-        state = JSON.parse(JSON.stringify(INIT_STATE)); lastSell = null; refreshUI();
-    });
-    ['sim_buyAmount','sim_stakeAmount','sim_stakeDays','sim_sellAmount'].forEach(id=>{
-        let el = document.getElementById(id);
-        if(el) el.addEventListener('input', refreshUI);
-    });
-    refreshUI();
-})();
+            // 卡片3模拟交易脚本
+            (function() {
+                const INIT_STATE = { hLp:17351600, uLp:109836.60, community:682648400, stakePool:300000000, treasuryU:0, external:0, externalPayout:0 };
+                let state = JSON.parse(JSON.stringify(INIT_STATE));
+                let lastSell = null;
 
-        // 卡片5价格参照表脚本（略，为节省篇幅，此处简略，实际需补全完整数据）
-        (function() {
-            const rawText = `0	10000	200000000 		800000000 	80.0000%	0.00005000`; // 此处仅作示意，实际请从原文件复制完整数据
-            // 完整脚本过长，此处省略，但实际功能保留
-            const rawText = `累计买入	池子U	池子H	买入H	累计买入/H	占比	当前价格
+                function computeDerived() {
+                    let price = state.uLp / state.hLp;
+                    let k = state.hLp * state.uLp;
+                    return { price, k };
+                }
+
+                function calculateInterest(p, d) {
+                    if (p<=0 || d<=0) return 0;
+                    let total = 0;
+                    const stages = [
+                        { start:1, end:7, rate:0.005 },
+                        { start:8, end:15, rate:0.006 },
+                        { start:16, end:30, rate:0.008 },
+                        { start:31, end:60, rate:0.010 },
+                        { start:61, end:Infinity, rate:0.012 }
+                    ];
+                    for (let s of stages) {
+                        if (d <= 0) break;
+                        let stageDays = s.end === Infinity ? d : Math.min(d, s.end - s.start + 1);
+                        total += p * s.rate * stageDays;
+                        d -= stageDays;
+                    }
+                    return total;
+                }
+
+                function refreshUI() {
+                    const d = computeDerived();
+                    const grid = document.getElementById('sim_stateGrid');
+                    if (!grid) return;
+                    grid.innerHTML = `
+                        <div class="stat-card" style="background:white; border-radius:16px; padding:0.8rem;"><div class="stat-label" style="font-size:0.7rem; color:#546e7a;">H价格</div><div class="stat-value" style="font-size:1.2rem; font-weight:600;">${d.price.toFixed(6)} USDT</div></div>
+                        <div class="stat-card" style="background:white; border-radius:16px; padding:0.8rem;"><div class="stat-label">LP池H</div><div class="stat-value">${state.hLp.toLocaleString()}</div></div>
+                        <div class="stat-card" style="background:white; border-radius:16px; padding:0.8rem;"><div class="stat-label">LP池U</div><div class="stat-value">${state.uLp.toFixed(2)}</div></div>
+                        <div class="stat-card" style="background:white; border-radius:16px; padding:0.8rem;"><div class="stat-label">外部持币</div><div class="stat-value">${state.external.toLocaleString()}</div></div>
+                        <div class="stat-card" style="background:white; border-radius:16px; padding:0.8rem;"><div class="stat-label">质押池</div><div class="stat-value">${state.stakePool.toLocaleString()}</div></div>
+                        <div class="stat-card" style="background:white; border-radius:16px; padding:0.8rem;"><div class="stat-label">国库U</div><div class="stat-value">${state.treasuryU.toFixed(2)}</div></div>
+                        <div class="stat-card" style="background:white; border-radius:16px; padding:0.8rem;"><div class="stat-label">累计支出</div><div class="stat-value">${state.externalPayout.toLocaleString()}</div></div>
+                    `;
+
+                    // 买入预览
+                    let buyU = parseFloat(document.getElementById('sim_buyAmount')?.value) || 0;
+                    if (buyU > 0) {
+                        let tax = buyU * 0.05;
+                        let net = buyU * 0.95;
+                        let newU = state.uLp + net;
+                        let newH = (state.hLp * state.uLp) / newU;
+                        let getH = state.hLp - newH;
+                        document.getElementById('sim_buyPreview').innerText = `外部获得 ≈ ${getH.toFixed(0)} H (税 ${tax.toFixed(2)} U)`;
+                    } else {
+                        document.getElementById('sim_buyPreview').innerText = '外部获得 ≈ ? H';
+                    }
+
+                    // 质押预览
+                    let stakeH = parseFloat(document.getElementById('sim_stakeAmount')?.value) || 0;
+                    let days = parseInt(document.getElementById('sim_stakeDays')?.value) || 0;
+                    let interest = calculateInterest(stakeH, days);
+                    document.getElementById('sim_stakePreview').innerHTML = `预期利息 ≈ ${interest.toFixed(0)} H`;
+
+                    // 卖出预览
+                    let sellH = parseFloat(document.getElementById('sim_sellAmount')?.value) || 0;
+                    if (sellH > 0) {
+                        if (sellH > state.external) {
+                            document.getElementById('sim_sellPreview').innerText = '外部余额不足';
+                        } else {
+                            let k = state.hLp * state.uLp;
+                            let newH = state.hLp + sellH;
+                            let newU = k / newH;
+                            let grossU = state.uLp - newU;
+                            let taxU = grossU * 0.05;
+                            let netU = grossU - taxU;
+                            let newPrice = newU / newH;
+                            document.getElementById('sim_sellPreview').innerText = `可获得 ≈ ${netU.toFixed(2)} USDT (税 ${taxU.toFixed(2)} U)`;
+                            if (stakeH > 0 && days > 0) {
+                                let totalH = stakeH + interest;
+                                let totalUsdt = totalH * newPrice;
+                                let interestUsdt = interest * newPrice;
+                                document.getElementById('sim_profitEstimate').innerHTML = `卖出后价格：${newPrice.toFixed(6)} USDT<br>若赎回本息 (${totalH.toFixed(0)} H) 卖出 ≈ ${totalUsdt.toFixed(2)} USDT (利息价值 ${interestUsdt.toFixed(2)} USDT)`;
+                            } else {
+                                document.getElementById('sim_profitEstimate').innerHTML = `卖出后价格：${newPrice.toFixed(6)} USDT`;
+                            }
+                        }
+                    } else {
+                        document.getElementById('sim_sellPreview').innerText = '外部可获得 ≈ ? USDT';
+                        if (stakeH > 0 && days > 0) {
+                            let totalH = stakeH + interest;
+                            let totalUsdt = totalH * d.price;
+                            let interestUsdt = interest * d.price;
+                            document.getElementById('sim_profitEstimate').innerHTML = `当前价格：${d.price.toFixed(6)} USDT<br>若赎回本息 (${totalH.toFixed(0)} H) 卖出 ≈ ${totalUsdt.toFixed(2)} USDT (利息价值 ${interestUsdt.toFixed(2)} USDT)`;
+                        } else {
+                            document.getElementById('sim_profitEstimate').innerHTML = `当前价格：${d.price.toFixed(6)} USDT`;
+                        }
+                    }
+
+                    if (lastSell) {
+                        document.getElementById('sim_lastSellResult').innerHTML = `<strong>上次卖出</strong>: ${lastSell.amount} H → 获得 ${lastSell.netU.toFixed(2)} USDT (税 ${lastSell.taxU.toFixed(2)} U)<br>新价格: ${lastSell.newPrice.toFixed(6)} USDT`;
+                    } else {
+                        document.getElementById('sim_lastSellResult').innerHTML = '暂无卖出记录';
+                    }
+                }
+
+                // 事件绑定
+                document.getElementById('sim_buyBtn')?.addEventListener('click', ()=>{
+                    let buyU = parseFloat(document.getElementById('sim_buyAmount')?.value);
+                    if (buyU > 0) {
+                        let tax = buyU * 0.05;
+                        let net = buyU * 0.95;
+                        let k = state.hLp * state.uLp;
+                        let newU = state.uLp + net;
+                        let newH = k / newU;
+                        let getH = state.hLp - newH;
+                        if (getH > 0) {
+                            state.uLp = newU; state.hLp = newH; state.external += getH; state.treasuryU += tax;
+                            refreshUI();
+                        }
+                    }
+                });
+
+                document.getElementById('sim_sellBtn')?.addEventListener('click', ()=>{
+                    let sellH = parseFloat(document.getElementById('sim_sellAmount')?.value);
+                    if (sellH > 0 && sellH <= state.external) {
+                        let k = state.hLp * state.uLp;
+                        let newH = state.hLp + sellH;
+                        let newU = k / newH;
+                        let grossU = state.uLp - newU;
+                        let taxU = grossU * 0.05;
+                        let netU = grossU - taxU;
+                        let newPrice = newU / newH;
+                        if (grossU > 0) {
+                            lastSell = { amount: sellH, netU, taxU, newPrice };
+                            state.hLp = newH; state.uLp = newU; state.external -= sellH; state.treasuryU += taxU;
+                            refreshUI();
+                        }
+                    }
+                });
+
+                document.getElementById('sim_stakeBtn')?.addEventListener('click', ()=>{
+                    let stakeH = parseFloat(document.getElementById('sim_stakeAmount')?.value);
+                    if (stakeH > 0 && stakeH <= state.external) {
+                        state.external -= stakeH; state.stakePool += stakeH;
+                        refreshUI();
+                    }
+                });
+
+                document.getElementById('sim_redeemBtn')?.addEventListener('click', ()=>{
+                    let stakeH = parseFloat(document.getElementById('sim_stakeAmount')?.value);
+                    let days = parseInt(document.getElementById('sim_stakeDays')?.value) || 0;
+                    let interest = calculateInterest(stakeH, days);
+                    let total = stakeH + interest;
+                    if (total <= state.stakePool) {
+                        state.stakePool -= total; state.external += total; state.externalPayout += interest;
+                        refreshUI();
+                    }
+                });
+
+                document.getElementById('sim_resetBtn')?.addEventListener('click', ()=>{
+                    state = JSON.parse(JSON.stringify(INIT_STATE));
+                    lastSell = null;
+                    refreshUI();
+                });
+
+                ['sim_buyAmount','sim_stakeAmount','sim_stakeDays','sim_sellAmount'].forEach(id => {
+                    let el = document.getElementById(id);
+                    if (el) el.addEventListener('input', refreshUI);
+                });
+
+                refreshUI();
+            })();
+
+            // 卡片5价格参照表脚本（完整数据）
+            (function() {
+                const rawText = `累计买入	池子U	池子H	买入H	累计买入/H	占比	当前价格
 0	10000	200000000 		800000000 	80.0000%	0.00005000 
 500	10500	190000000 	10000000 	10000000 	81.0000%	0.00005526 
 1000	11000	180952381 	9047619 	19047619 	81.9048%	0.00006079 
@@ -1385,111 +1431,100 @@
 305000	315000	6041335 	9620 	193958665 	99.3959%	0.05214079 
 305500	315500	6031746 	9589 	193968254 	99.3968%	0.05230658`;
 
-            function parseData(text) {
-                const lines = text.split('\n');
-                const headers = lines[0].split('\t');
-                const data = [];
-                for (let i = 1; i < lines.length; i++) {
-                    const line = lines[i].trim();
-                    if (line === '') continue;
-                    const cols = line.split('\t');
-                    while (cols.length < headers.length) cols.push('');
-                    const row = {
-                        累计买入: cols[0]?.trim() || '',
-                        池子U: cols[1]?.trim() || '',
-                        池子H: cols[2]?.trim() || '',
-                        买入H: cols[3]?.trim() || '',
-                        累计买入H: cols[4]?.trim() || '',
-                        占比: cols[5]?.trim() || '',
-                        当前价格: cols[6]?.trim() || '',
-                    };
-                    row.累计买入Num = parseFloat(row.累计买入) || 0;
-                    row.池子UNum = parseFloat(row.池子U) || 0;
-                    row.池子HNum = parseFloat(row.池子H) || 0;
-                    row.买入HNum = parseFloat(row.买入H) || 0;
-                    row.累计买入HNum = parseFloat(row.累计买入H) || 0;
-                    row.价格Num = parseFloat(row.当前价格) || 0;
-                    data.push(row);
+                function parseData(text) {
+                    const lines = text.split('\n');
+                    const data = [];
+                    for (let i = 1; i < lines.length; i++) {
+                        const line = lines[i].trim();
+                        if (line === '') continue;
+                        const cols = line.split('\t');
+                        const row = {
+                            累计买入: cols[0] || '',
+                            池子U: cols[1] || '',
+                            池子H: cols[2] || '',
+                            买入H: cols[3] || '',
+                            累计买入H: cols[4] || '',
+                            占比: cols[5] || '',
+                            当前价格: cols[6] || '',
+                        };
+                        row.累计买入Num = parseFloat(row.累计买入) || 0;
+                        row.价格Num = parseFloat(row.当前价格) || 0;
+                        row.累计买入HNum = parseFloat(row.累计买入H) || 0;
+                        data.push(row);
+                    }
+                    return data;
                 }
-                return data;
-            }
 
-            const allData = parseData(rawText);
-            const totalRows = allData.length;
+                const allData = parseData(rawText);
+                const totalRows = allData.length;
 
-            function renderStats5() {
-                const first = allData[0];
-                const last = allData[totalRows-1];
-                const priceChange = (last.价格Num / first.价格Num * 100 - 100).toFixed(2);
-                const statsHtml = `
-                    <div class="stat-item"><span class="stat-label">📊 总记录数</span><div class="stat-value">${totalRows}</div><div class="stat-footnote">每500U一步</div></div>
-                    <div class="stat-item"><span class="stat-label">🚀 起始价格</span><div class="stat-value">${first.价格Num.toFixed(8)}</div><div class="stat-footnote">累计买入 ${first.累计买入Num}</div></div>
-                    <div class="stat-item"><span class="stat-label">⚡ 最终价格</span><div class="stat-value">${last.价格Num.toFixed(8)}</div><div class="stat-footnote">累计买入 ${last.累计买入Num}</div></div>
-                    <div class="stat-item"><span class="stat-label">📈 涨幅</span><div class="stat-value">+${priceChange}%</div><div class="stat-footnote">约 ${(last.价格Num/first.价格Num).toFixed(1)} 倍</div></div>
-                    <div class="stat-item"><span class="stat-label">💰 累计买入H</span><div class="stat-value">${(last.累计买入HNum/1e6).toFixed(2)}M</div><div class="stat-footnote">最后累计买入/H</div></div>
-                `;
-                document.getElementById('statsPanel5').innerHTML = statsHtml;
-            }
-
-            let currentPage5 = 1;
-            let rowsPerPage5 = 20;
-
-            function renderTable5() {
-                const start = (currentPage5 - 1) * rowsPerPage5;
-                const end = Math.min(start + rowsPerPage5, totalRows);
-                const pageData = allData.slice(start, end);
-
-                let tbodyHtml = '';
-                for (let r of pageData) {
-                    tbodyHtml += `<tr>
-                        <td class="text-center">${r.累计买入}</td>
-                        <td class="text-right">${r.池子U}</td>
-                        <td class="text-right">${r.池子H}</td>
-                        <td class="text-right">${r.买入H || '<span class="empty-cell">—</span>'}</td>
-                        <td class="text-right">${r.累计买入H}</td>
-                        <td class="text-right">${r.占比}</td>
-                        <td class="text-right">${r.当前价格}</td>
-                    </tr>`;
+                function renderStats5() {
+                    const first = allData[0];
+                    const last = allData[totalRows-1];
+                    const priceChange = ((last.价格Num / first.价格Num * 100) - 100).toFixed(2);
+                    const statsHtml = `
+                        <div class="stat-item"><span class="stat-label">总记录数</span><div class="stat-value">${totalRows}</div></div>
+                        <div class="stat-item"><span class="stat-label">起始价格</span><div class="stat-value">${first.价格Num.toFixed(8)}</div></div>
+                        <div class="stat-item"><span class="stat-label">最终价格</span><div class="stat-value">${last.价格Num.toFixed(8)}</div></div>
+                        <div class="stat-item"><span class="stat-label">涨幅</span><div class="stat-value">+${priceChange}%</div></div>
+                    `;
+                    document.getElementById('statsPanel5').innerHTML = statsHtml;
                 }
-                document.getElementById('tableBody5').innerHTML = tbodyHtml;
 
-                const totalPages = Math.ceil(totalRows / rowsPerPage5);
-                document.getElementById('pageIndicator5').innerText = `第 ${currentPage5} / ${totalPages} 页`;
-                document.getElementById('totalRecords5').innerText = `共 ${totalRows} 条记录 (每页 ${rowsPerPage5} 条)`;
+                let currentPage5 = 1;
+                let rowsPerPage5 = 20;
 
-                document.getElementById('firstPage5').disabled = currentPage5 === 1;
-                document.getElementById('prevPage5').disabled = currentPage5 === 1;
-                document.getElementById('nextPage5').disabled = currentPage5 === totalPages;
-                document.getElementById('lastPage5').disabled = currentPage5 === totalPages;
-            }
+                function renderTable5() {
+                    const start = (currentPage5 - 1) * rowsPerPage5;
+                    const end = Math.min(start + rowsPerPage5, totalRows);
+                    const pageData = allData.slice(start, end);
+                    let tbodyHtml = '';
+                    for (let r of pageData) {
+                        tbodyHtml += `<tr>
+                            <td class="text-center">${r.累计买入}</td>
+                            <td class="text-right">${r.池子U}</td>
+                            <td class="text-right">${r.池子H}</td>
+                            <td class="text-right">${r.买入H || '-'}</td>
+                            <td class="text-right">${r.累计买入H}</td>
+                            <td class="text-right">${r.占比}</td>
+                            <td class="text-right">${r.当前价格}</td>
+                        </tr>`;
+                    }
+                    document.getElementById('tableBody5').innerHTML = tbodyHtml;
+                    const totalPages = Math.ceil(totalRows / rowsPerPage5);
+                    document.getElementById('pageIndicator5').innerText = `第 ${currentPage5} / ${totalPages} 页`;
+                    document.getElementById('totalRecords5').innerText = `共 ${totalRows} 条记录`;
+                    document.getElementById('firstPage5').disabled = currentPage5 === 1;
+                    document.getElementById('prevPage5').disabled = currentPage5 === 1;
+                    document.getElementById('nextPage5').disabled = currentPage5 === totalPages;
+                    document.getElementById('lastPage5').disabled = currentPage5 === totalPages;
+                }
 
-            function changePage5(delta) {
-                const totalPages = Math.ceil(totalRows / rowsPerPage5);
-                let newPage = currentPage5 + delta;
-                if (newPage < 1) newPage = 1;
-                if (newPage > totalPages) newPage = totalPages;
-                if (newPage !== currentPage5) {
-                    currentPage5 = newPage;
+                function changePage5(delta) {
+                    const totalPages = Math.ceil(totalRows / rowsPerPage5);
+                    let newPage = currentPage5 + delta;
+                    if (newPage < 1) newPage = 1;
+                    if (newPage > totalPages) newPage = totalPages;
+                    if (newPage !== currentPage5) {
+                        currentPage5 = newPage;
+                        renderTable5();
+                    }
+                }
+
+                document.getElementById('prevPage5').addEventListener('click', () => changePage5(-1));
+                document.getElementById('nextPage5').addEventListener('click', () => changePage5(1));
+                document.getElementById('firstPage5').addEventListener('click', () => { currentPage5 = 1; renderTable5(); });
+                document.getElementById('lastPage5').addEventListener('click', () => { currentPage5 = Math.ceil(totalRows / rowsPerPage5); renderTable5(); });
+                document.getElementById('rowsPerPage5').addEventListener('change', function(e) {
+                    rowsPerPage5 = parseInt(e.target.value, 10);
+                    currentPage5 = 1;
                     renderTable5();
-                }
-            }
+                });
 
-            function goToFirst5() { currentPage5 = 1; renderTable5(); }
-            function goToLast5() { currentPage5 = Math.ceil(totalRows / rowsPerPage5); renderTable5(); }
-
-            renderStats5();
-            renderTable5();
-
-            document.getElementById('prevPage5').addEventListener('click', () => changePage5(-1));
-            document.getElementById('nextPage5').addEventListener('click', () => changePage5(1));
-            document.getElementById('firstPage5').addEventListener('click', goToFirst5);
-            document.getElementById('lastPage5').addEventListener('click', goToLast5);
-            document.getElementById('rowsPerPage5').addEventListener('change', function(e) {
-                rowsPerPage5 = parseInt(e.target.value, 10);
-                currentPage5 = 1;
+                renderStats5();
                 renderTable5();
-            });
-
+            })();
+        })();
     </script>
 </body>
 </html>
