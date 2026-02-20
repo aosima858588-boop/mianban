@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
     <title>投资者返款查询 · 海豚社区</title>
-    <!-- 公共样式 -->
+    <!-- 公共样式（海豚社区全局样式） -->
     <link rel="stylesheet" href="css/style.css">
-    <!-- 额外样式（仅查询页特有） -->
+    <!-- Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- 查询页特有样式（粒子背景、表格等） -->
     <style>
-        /* 查询页特有样式 */
+        /* ===== 粒子背景 ===== */
         #particles {
             position: fixed;
             top: 0;
@@ -29,13 +31,8 @@
             0% { transform: translateY(0) rotate(0deg); opacity: 0.2; }
             100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
         }
-        /* 覆盖公共卡片样式，保持查询页卡片略透明 */
-        .card {
-            background: rgba(255,255,255,0.85);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,255,255,0.7);
-        }
-        /* 统计卡片网格 */
+
+        /* ===== 统计卡片网格（覆盖公共样式） ===== */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -58,7 +55,8 @@
             font-size: 0.7rem;
             color: #4f6b8f;
         }
-        /* 用户摘要 */
+
+        /* ===== 用户摘要 ===== */
         .user-summary {
             background: #edf4fd;
             border-radius: 24px;
@@ -92,7 +90,8 @@
             word-break: break-all;
             color: #1f3a66;
         }
-        /* 两列统计卡片 */
+
+        /* ===== 两列统计卡片 ===== */
         .stats-row {
             display: flex;
             gap: 12px;
@@ -122,7 +121,8 @@
             color: #6f88aa;
             margin-top: 4px;
         }
-        /* 产品卡片 */
+
+        /* ===== 产品卡片 ===== */
         .product-list {
             display: flex;
             flex-direction: column;
@@ -211,7 +211,8 @@
             color: white;
             border-color: #1f3f6e;
         }
-        /* 明细表格 */
+
+        /* ===== 明细表格 ===== */
         .detail-container {
             display: none;
             margin-top: 16px;
@@ -247,7 +248,8 @@
             color: #c00000;
             font-weight: 600;
         }
-        /* 空状态 & 加载 */
+
+        /* ===== 空状态 & 加载 ===== */
         .empty-state, .loading-state {
             text-align: center;
             padding: 50px 20px;
@@ -258,7 +260,8 @@
         .loading-state {
             display: none;
         }
-        /* 返回按钮样式（与首页风格统一） */
+
+        /* ===== 返回按钮（毛玻璃风格，与社区统一） ===== */
         .back-button {
             display: inline-flex;
             align-items: center;
@@ -275,6 +278,7 @@
             box-shadow: 0 8px 20px rgba(0, 20, 40, 0.08);
             transition: all 0.25s ease;
             font-size: 1rem;
+            margin: 16px 0;
         }
         .back-button:hover {
             background: rgba(255, 255, 255, 0.95);
@@ -286,7 +290,8 @@
             transform: translateY(0);
             box-shadow: 0 5px 12px rgba(0,0,0,0.1);
         }
-        /* 搜索输入框样式 */
+
+        /* ===== 搜索输入框美化 ===== */
         .search-field {
             width: 100%;
             padding: 16px 20px;
@@ -310,7 +315,6 @@
             font-weight: 400;
             font-size: 0.95rem;
         }
-        /* 清除按钮 */
         .clear-button {
             position: absolute;
             right: 16px;
@@ -339,26 +343,31 @@
             transform: scale(1.1);
             border-color: #1A73E8;
         }
-        /* 按钮禁用样式 */
+
+        /* 禁用按钮样式 */
         .btn-primary:disabled {
             opacity: 0.5;
             pointer-events: none;
         }
+
+        /* 页脚文字 */
+        .footer-note {
+            text-align: center;
+            color: #8a9fc7;
+            font-size: 0.75rem;
+            margin: 30px 0 20px;
+        }
     </style>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div id="particles"></div>
     <div class="app-container" style="padding: 0 12px;">
-        <!-- 优化返回按钮 -->
-        <div style="display: flex; align-items: center; margin: 16px 0;">
-            <a href="index.html" class="back-button">
-                <i class="fas fa-arrow-left"></i> 返回首页
-            </a>
-        </div>
+        <!-- 返回首页按钮 -->
+        <a href="index.html" class="back-button">
+            <i class="fas fa-arrow-left"></i> 返回首页
+        </a>
 
-        <!-- 搜索卡片（美化版） -->
+        <!-- 搜索卡片 -->
         <div class="card">
             <h2><i class="fas fa-search" style="color: #2a4b7c;"></i> 查询投资者</h2>
             <div class="search-box">
@@ -373,7 +382,7 @@
             </div>
         </div>
 
-        <!-- 全局统计卡片 (动态更新) -->
+        <!-- 全局统计卡片（动态更新） -->
         <div class="stats-grid">
             <div class="stat-item"><div class="stat-value" id="totalUsers">0</div><div class="stat-label">投资者</div></div>
             <div class="stat-item"><div class="stat-value" id="totalInvestments">$0</div><div class="stat-label">总投资</div></div>
@@ -381,7 +390,7 @@
             <div class="stat-item"><div class="stat-value" id="pendingReturns">$0</div><div class="stat-label">待返款</div></div>
         </div>
 
-        <!-- 结果区域 (初始隐藏) -->
+        <!-- 结果区域（初始隐藏） -->
         <div id="results-section" style="display: none;">
             <div class="card" style="padding: 18px;">
                 <!-- 用户摘要 -->
@@ -426,12 +435,12 @@
             <p style="margin-top: 10px;">正在查询...</p>
         </div>
 
-        <div class="footer-note" style="text-align:center; color:#8a9fc7; font-size:0.75rem; margin:30px 0 20px;">
+        <div class="footer-note">
             <i class="far fa-calendar-alt"></i> 基准日 2026-01-26 · 红色标记为未返
         </div>
     </div>
 
-    <!-- 数据文件 -->
+    <!-- 数据文件（必须存在，否则查询功能无法工作） -->
     <script src="js/data.js"></script>
 
     <script>
@@ -585,10 +594,10 @@
                 document.getElementById('pendingReturns').textContent = formatCurrency(totalInvest * 0.23);
             }
 
-            // --- 搜索主逻辑（优化版，包含按钮启用）---
+            // --- 搜索主逻辑 ---
             function searchInvestments(query) {
                 if (typeof injData === 'undefined' || typeof usdt45Data === 'undefined' || typeof usdtFinanceData === 'undefined') {
-                    alert('数据加载成功！系统已准备就绪，请输入查询条件。');
+                    alert('数据文件未加载，请确保 js/data.js 存在并包含数据。');
                     DOM.searchBtn.disabled = false;
                     return;
                 }
@@ -634,7 +643,7 @@
                         console.error(e);
                         alert('查询出错，请稍后重试');
                     } finally {
-                        DOM.searchBtn.disabled = false; // 查询完成，启用按钮
+                        DOM.searchBtn.disabled = false;
                     }
                 }, 500);
             }
@@ -753,7 +762,7 @@
                 // 查询按钮点击
                 DOM.searchBtn.addEventListener('click', function() {
                     if (DOM.searchBtn.disabled) return;
-                    DOM.searchBtn.disabled = true; // 立即禁用，防止双击
+                    DOM.searchBtn.disabled = true;
                     searchInvestments(DOM.searchInput.value);
                 });
 
@@ -765,9 +774,7 @@
                     }
                 });
 
-                // 聚焦输入框
                 DOM.searchInput.focus();
-
                 console.log('查询系统初始化完成');
             };
         })();
