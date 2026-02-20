@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>投资者返款查询 · 海豚社区</title>
     <!-- 公共样式（海豚社区全局样式） -->
     <link rel="stylesheet" href="css/style.css">
@@ -774,7 +774,9 @@
                     }
                 });
 
+                // 自动聚焦输入框（弹出键盘）
                 DOM.searchInput.focus();
+
                 console.log('查询系统初始化完成');
             };
         })();
