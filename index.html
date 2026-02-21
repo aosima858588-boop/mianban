@@ -25,7 +25,7 @@
             padding: 12px 0 80px;
             display: flex;
             flex-direction: column;
-            gap: 16px; /* 减小卡片间间距 */
+            gap: 16px;
         }
         .user-panel-header {
             display: flex;
@@ -130,26 +130,29 @@
         }
         /* 数据总览 - 四列 */
         .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            display: flex;
             gap: 8px;
             margin-top: 4px;
+            white-space: nowrap;
         }
         .stat-item {
             text-align: center;
             background: rgba(255,255,255,0.4);
             border-radius: 16px;
-            padding: 8px 4px;
+            padding: 12px 6px;  /* 增加垂直内边距 */
+            min-width: 85px;      /* 增加最小宽度 */
+            flex-shrink: 0;
         }
         .stat-value {
-            font-size: 18px;
+            font-size: 20px;      /* 从16px增大到20px */
             font-weight: 700;
-            color: #0A1929;
+            color: var(--text-dark);
             line-height: 1.2;
-            margin-bottom: 2px;
+            margin-bottom: 4px;    /* 增加间距 */
+            font-family: var(--font-sans);
         }
         .stat-compare {
-            font-size: 10px;
+            font-size: 12px;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
@@ -162,10 +165,22 @@
         .stat-compare.positive { color: #2E7D32; }
         .stat-compare.negative { color: #C62828; }
         .stat-label {
-            font-size: 10px;
-            color: #546E7A;
+            font-size: 12px;
+            color: var(--text-light);
             font-weight: 500;
-            margin-top: 4px;
+            margin-top: 6px;       /* 增加顶部间距 */
+            font-family: var(--font-sans);
+        }
+        .stats-scroll {
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 4px;
+            margin: 0 -4px;
+            padding-left: 4px;
+        }
+        .stats-scroll::-webkit-scrollbar {
+            display: none;
         }
 
         .tools-grid {
@@ -408,160 +423,6 @@
             color: #b91c1c;
         }
 
-        /* ===== 签到日历抽屉样式 ===== */
-        .sign-drawer {
-            background: rgba(255,255,255,0.7);
-            backdrop-filter: blur(20px);
-            border-radius: 40px;
-            padding: 20px;
-            margin: 16px 0;
-            border: 1px solid rgba(255,255,255,0.6);
-            box-shadow: 0 20px 40px -15px rgba(0,20,40,0.15);
-            transition: all 0.3s ease;
-            overflow: hidden;
-            display: none;
-        }
-        .sign-drawer.open {
-            display: block;
-        }
-        .sign-drawer .stats-row {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-        .sign-drawer .stat-item {
-            flex: 1;
-            background: white;
-            border-radius: 24px;
-            padding: 12px 4px;
-            text-align: center;
-            box-shadow: 0 10px 25px -8px rgba(26,115,232,0.15);
-            border: 1px solid rgba(255,255,255,0.9);
-        }
-        .sign-drawer .stat-label {
-            font-size: 0.65rem;
-            font-weight: 600;
-            color: #64748b;
-            margin-bottom: 4px;
-            text-transform: uppercase;
-        }
-        .sign-drawer .stat-number {
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: #1A73E8;
-            line-height: 1.1;
-        }
-        .sign-drawer .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-        .sign-drawer .calendar-month {
-            font-size: 1.4rem;
-            font-weight: 700;
-            background: linear-gradient(145deg, #0a1a2f, #1e3a6b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .sign-drawer .nav-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 20px;
-            background: white;
-            border: 1px solid #e2e8f0;
-            color: #1A73E8;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .sign-drawer .nav-btn:hover {
-            background: #1A73E8;
-            color: white;
-        }
-        .sign-drawer .weekdays {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-            margin-bottom: 8px;
-            text-align: center;
-            font-weight: 600;
-            color: #1A73E8;
-            font-size: 0.75rem;
-        }
-        .sign-drawer .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-            margin-bottom: 20px;
-        }
-        .sign-drawer .calendar-day {
-            aspect-ratio: 1 / 1;
-            background: white;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 500;
-            color: #1e293b;
-            border: 1px solid #e2e8f0;
-            font-size: 0.8rem;
-            position: relative;
-        }
-        .sign-drawer .calendar-day.today {
-            border: 2px solid #1A73E8;
-            color: #1A73E8;
-            font-weight: 700;
-        }
-        .sign-drawer .calendar-day.signed {
-            background: linear-gradient(145deg, #1A73E8, #0D47A1);
-            color: white;
-            border: none;
-        }
-        .sign-drawer .calendar-day.signed::after {
-            content: '✓';
-            position: absolute;
-            top: -4px;
-            right: -4px;
-            background: #22c55e;
-            width: 14px;
-            height: 14px;
-            border-radius: 7px;
-            font-size: 9px;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid white;
-        }
-        .sign-drawer .other-month {
-            opacity: 0.4;
-        }
-        .sign-drawer .sign-btn {
-            width: 100%;
-            background: linear-gradient(145deg, #1A73E8, #0D47A1);
-            border: none;
-            padding: 14px 0;
-            border-radius: 40px;
-            color: white;
-            font-weight: 700;
-            font-size: 1.1rem;
-            cursor: pointer;
-            box-shadow: 0 10px 20px -8px #1A73E8;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        .sign-drawer .sign-btn.disabled {
-            background: #cbd5e1;
-            box-shadow: none;
-            pointer-events: none;
-            opacity: 0.6;
-        }
-
         /* ===== Meme行情模块样式 ===== */
         .meme-section {
             margin: 8px 0;
@@ -764,29 +625,34 @@
                 </div>
             </div>
 
-            <!-- 数据总览 - 四列紧凑 -->
+            <!-- 数据总览 - 四列放大版 -->
             <div class="card">
-                <div class="section-title"><i class="fas fa-chart-line" style="color:#1A73E8;"></i> 数据总览</div>
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="stat-value">2.45M</div>
-                        <div class="stat-compare positive"><i class="fas fa-arrow-up"></i> 5.2%</div>
-                        <div class="stat-label">质押H总量</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">8.92M</div>
-                        <div class="stat-compare positive"><i class="fas fa-arrow-up"></i> 12.3%</div>
-                        <div class="stat-label">总交易量</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">1.23M</div>
-                        <div class="stat-compare positive"><i class="fas fa-arrow-up"></i> 2.7%</div>
-                        <div class="stat-label">国库累计</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">12.3k</div>
-                        <div class="stat-compare negative"><i class="fas fa-arrow-down"></i> 1.5%</div>
-                        <div class="stat-label">活跃人数</div>
+                <div class="meme-header">
+                    <div class="section-title"><i class="fas fa-chart-line" style="color:#1A73E8;"></i> 数据总览</div>
+                    <a href="community-data.html" class="meme-refresh"><i class="fas fa-arrow-right"></i> 更多</a>
+                </div>
+                <div class="stats-scroll">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">2.45M</div>
+                            <div class="stat-compare positive"><i class="fas fa-arrow-up"></i> 5.2%</div>
+                            <div class="stat-label">质押H总量</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">8.92M</div>
+                            <div class="stat-compare positive"><i class="fas fa-arrow-up"></i> 12.3%</div>
+                            <div class="stat-label">总交易量</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">1.23M</div>
+                            <div class="stat-compare positive"><i class="fas fa-arrow-up"></i> 2.7%</div>
+                            <div class="stat-label">国库累计</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">12.3k</div>
+                            <div class="stat-compare negative"><i class="fas fa-arrow-down"></i> 1.5%</div>
+                            <div class="stat-label">活跃人数</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -802,7 +668,7 @@
                 </div>
             </div>
 
-            <!-- 最新活动（移到常用工具上方） -->
+            <!-- 最新活动 -->
             <div class="card highlight">
                 <div class="section-title light"><i class="fas fa-star"></i> 最新活动</div>
                 <div class="activity-content">
@@ -811,35 +677,12 @@
                 </div>
             </div>
 
-            <!-- 签到日历抽屉（默认隐藏，点击签到图标展开） -->
-            <div class="sign-drawer" id="signDrawer">
-                <div class="stats-row">
-                    <div class="stat-item"><div class="stat-label">累计签到</div><div class="stat-number">128</div></div>
-                    <div class="stat-item"><div class="stat-label">连续签到</div><div class="stat-number">7</div></div>
-                    <div class="stat-item"><div class="stat-label">今日奖励</div><div class="stat-number">+10</div></div>
-                </div>
-                <div class="calendar-header">
-                    <span class="calendar-month" id="drawerMonth">2025年3月</span>
-                    <div class="calendar-nav">
-                        <span class="nav-btn" id="drawerPrevMonth"><i class="fas fa-chevron-left"></i></span>
-                        <span class="nav-btn" id="drawerNextMonth"><i class="fas fa-chevron-right"></i></span>
-                    </div>
-                </div>
-                <div class="weekdays">
-                    <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
-                </div>
-                <div class="calendar-grid" id="drawerCalendarGrid"></div>
-                <button class="sign-btn" id="drawerSignBtn">
-                    <i class="fas fa-check-circle"></i> 今日签到
-                </button>
-            </div>
-
             <!-- 常用工具 -->
             <div class="card">
                 <div class="section-title"><i class="fas fa-tools" style="color:#1A73E8;"></i> 常用工具</div>
                 <div class="tools-grid">
-                    <!-- 签到图标：点击展开/收起抽屉 -->
-                    <div class="tool-item" id="signTool">
+                    <!-- 签到 -->
+                    <div class="tool-item" onclick="location.href='sign.html'">
                         <div class="tool-icon"><i class="fas fa-calendar-check"></i></div>
                         <span class="tool-label">签到</span>
                     </div>
@@ -991,101 +834,12 @@
                 console.warn('无法获取用户资料', error);
             }
         });
-
-        // ========== 签到日历抽屉逻辑 ==========
-        const signTool = document.getElementById('signTool');
-        const signDrawer = document.getElementById('signDrawer');
-        const drawerMonthSpan = document.getElementById('drawerMonth');
-        const drawerCalendarGrid = document.getElementById('drawerCalendarGrid');
-        const drawerPrevBtn = document.getElementById('drawerPrevMonth');
-        const drawerNextBtn = document.getElementById('drawerNextMonth');
-        const drawerSignBtn = document.getElementById('drawerSignBtn');
-
-        // 示例已签到日期
-        const signedDates = [1, 3, 5, 7, 10, 12, 15, 18, 20, 22, 25, 28];
-        const currentDate = new Date(2025, 2, 15); // 演示用，固定为2025-03-15
-        let displayYear = currentDate.getFullYear();
-        let displayMonth = currentDate.getMonth();
-        const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
-
-        function renderDrawerCalendar(year, month) {
-            drawerMonthSpan.textContent = year + '年' + monthNames[month];
-            let firstDay = new Date(year, month, 1).getDay();
-            let startOffset = firstDay === 0 ? 6 : firstDay - 1;
-            let daysInMonth = new Date(year, month + 1, 0).getDate();
-            let prevMonthDays = new Date(year, month, 0).getDate();
-            let gridHtml = '';
-
-            for (let i = 0; i < startOffset; i++) {
-                let day = prevMonthDays - startOffset + i + 1;
-                gridHtml += `<div class="calendar-day other-month">${day}</div>`;
-            }
-            for (let day = 1; day <= daysInMonth; day++) {
-                let classes = 'calendar-day';
-                if (year === currentDate.getFullYear() && month === currentDate.getMonth() && day === currentDate.getDate()) {
-                    classes += ' today';
-                }
-                if (signedDates.includes(day)) {
-                    classes += ' signed';
-                }
-                gridHtml += `<div class="${classes}">${day}</div>`;
-            }
-            let totalCells = Math.ceil((startOffset + daysInMonth) / 7) * 7;
-            let nextMonthDays = totalCells - (startOffset + daysInMonth);
-            for (let i = 1; i <= nextMonthDays; i++) {
-                gridHtml += `<div class="calendar-day other-month">${i}</div>`;
-            }
-            drawerCalendarGrid.innerHTML = gridHtml;
-        }
-
-        renderDrawerCalendar(displayYear, displayMonth);
-
-        drawerPrevBtn.addEventListener('click', () => {
-            if (displayMonth === 0) {
-                displayYear--;
-                displayMonth = 11;
-            } else {
-                displayMonth--;
-            }
-            renderDrawerCalendar(displayYear, displayMonth);
-        });
-
-        drawerNextBtn.addEventListener('click', () => {
-            if (displayMonth === 11) {
-                displayYear++;
-                displayMonth = 0;
-            } else {
-                displayMonth++;
-            }
-            renderDrawerCalendar(displayYear, displayMonth);
-        });
-
-        // 签到按钮点击
-        let isSignedToday = false;
-        drawerSignBtn.addEventListener('click', () => {
-            if (isSignedToday) {
-                alert('今日已经签到过了，明天再来吧');
-            } else {
-                alert('签到成功！获得10积分');
-                isSignedToday = true;
-                drawerSignBtn.classList.add('disabled');
-                drawerSignBtn.innerHTML = '<i class="fas fa-check-circle"></i> 今日已签到';
-                // 更新统计卡片中的今日奖励（示例）
-                document.querySelector('.sign-drawer .stats-row .stat-item:last-child .stat-number').textContent = '+0';
-            }
-        });
-
-        // 点击签到图标展开/收起抽屉
-        signTool.addEventListener('click', () => {
-            signDrawer.classList.toggle('open');
-        });
     </script>
 
     <!-- Meme行情脚本 -->
     <script>
         (function() {
             const container = document.getElementById('memeContainer');
-            const refreshBtn = document.querySelector('.meme-refresh'); // 现在是更多按钮，但仍保留ID以便脚本
 
             // 热门Meme币ID列表
             const memeIds = ['dogecoin', 'shiba-inu', 'pepe', 'bonk', 'floki', 'dogwifcoin', 'book-of-meme'];
