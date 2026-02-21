@@ -26,7 +26,15 @@
             justify-content: center;
             align-items: flex-start;
             margin: 0;
-            padding: 20px 16px;
+            padding: 20px 0;  /* 移除左右内边距，仅保留上下 */
+        }
+
+        /* 内容容器 - 宽度100%且无左右边距 */
+        .page-content {
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0;        /* 完全靠边 */
         }
 
         /* 卡片通用 */
@@ -37,7 +45,7 @@
             padding: 24px 20px;
             box-shadow: 0 20px 40px -15px rgba(0,0,0,0.15);
             border: 1px solid rgba(255,255,255,0.6);
-            margin-bottom: 16px;
+            margin: 0 0 16px 0;   /* 左右边距为0，卡片贴边 */
             transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
         .card:hover {
@@ -454,11 +462,6 @@
             background: var(--primary);
         }
         .content {
-            padding-bottom: 80px;
-        }
-        .page-content {
-            max-width: 600px;
-            margin: 0 auto;
             padding-bottom: 80px;
         }
     </style>
