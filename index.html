@@ -22,10 +22,10 @@
         }
         .content {
             flex: 1;
-            padding: 16px 0 80px;
+            padding: 12px 0 80px;
             display: flex;
             flex-direction: column;
-            gap: 28px;
+            gap: 16px; /* 减小卡片间间距 */
         }
         .user-panel-header {
             display: flex;
@@ -128,47 +128,51 @@
         .announcement .more:active {
             transform: translateX(3px);
         }
+        /* 数据总览 - 四列 */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 28px 16px;
-            margin-top: 6px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-top: 4px;
         }
         .stat-item {
             text-align: center;
+            background: rgba(255,255,255,0.4);
+            border-radius: 16px;
+            padding: 8px 4px;
         }
         .stat-value {
-            font-size: 26px;
-            font-weight: 800;
+            font-size: 18px;
+            font-weight: 700;
             color: #0A1929;
             line-height: 1.2;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
         .stat-compare {
-            font-size: 14px;
+            font-size: 10px;
             font-weight: 600;
-            margin-bottom: 4px;
             display: inline-flex;
             align-items: center;
-            gap: 3px;
+            gap: 2px;
             background: white;
-            padding: 2px 10px;
-            border-radius: 30px;
+            padding: 2px 6px;
+            border-radius: 20px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.03);
         }
         .stat-compare.positive { color: #2E7D32; }
         .stat-compare.negative { color: #C62828; }
         .stat-label {
-            font-size: 14px;
+            font-size: 10px;
             color: #546E7A;
             font-weight: 500;
             margin-top: 4px;
         }
+
         .tools-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 28px 16px;
-            margin-top: 10px;
+            gap: 20px 12px;
+            margin-top: 8px;
         }
         .tool-item {
             display: flex;
@@ -182,7 +186,7 @@
             transform: scale(0.94);
         }
         .tool-icon {
-            font-size: 40px;
+            font-size: 36px;
             width: auto;
             height: auto;
             line-height: 1;
@@ -200,7 +204,7 @@
         .tool-item:nth-child(7) .tool-icon { color: #F4511E; }
         .tool-item:nth-child(8) .tool-icon { color: #43A047; }
         .tool-label {
-            font-size: 13px;
+            font-size: 12px;
             color: #546E7A;
             text-align: center;
             font-weight: 600;
@@ -214,7 +218,7 @@
             gap: 16px;
         }
         .activity-desc {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             line-height: 1.4;
             text-shadow: 0 2px 5px rgba(0,0,0,0.2);
@@ -224,10 +228,10 @@
             align-items: center;
             gap: 8px;
             color: white;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             background: rgba(255,255,255,0.2);
-            padding: 10px 22px;
+            padding: 8px 18px;
             border-radius: 40px;
             backdrop-filter: blur(6px);
             box-shadow: 0 8px 16px rgba(0,0,0,0.15);
@@ -241,16 +245,16 @@
         }
         .quick-actions {
             display: flex;
-            gap: 14px;
-            margin: 16px 0 8px;
+            gap: 12px;
+            margin: 12px 0 8px;
         }
         .quick-btn {
             flex: 1;
             border: none;
-            padding: 14px 0;
+            padding: 12px 0;
             border-radius: 40px;
             font-weight: 700;
-            font-size: 16px;
+            font-size: 14px;
             cursor: pointer;
             transition: all 0.2s;
             display: flex;
@@ -280,7 +284,7 @@
             background-color: rgba(255,255,255,0.85);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
-            padding: 8px 24px;
+            padding: 6px 20px;
             display: flex;
             justify-content: space-around;
             align-items: center;
@@ -294,20 +298,21 @@
             flex-direction: column;
             align-items: center;
             gap: 2px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             cursor: pointer;
             transition: color 0.2s;
             color: #94A3B8;
             position: relative;
-            padding: 6px 12px;
+            padding: 6px 8px;
             border-radius: 30px;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
             overflow: visible;
+            text-decoration: none;
         }
         .nav-item i {
-            font-size: 22px;
+            font-size: 20px;
             pointer-events: none;
             position: relative;
             z-index: 3;
@@ -341,13 +346,13 @@
             display: flex;
             align-items: baseline;
             gap: 12px;
-            margin: 16px 0 12px;
-            padding: 12px 20px;
+            margin: 14px 0 10px;
+            padding: 10px 16px;
             background: linear-gradient(145deg, #ffffff, #f8fafc);
             border-radius: 40px;
             border: 1px solid rgba(26,115,232,0.2);
             box-shadow: 0 8px 20px rgba(26,115,232,0.12);
-            font-size: 1.1rem;
+            font-size: 1rem;
             position: relative;
             overflow: hidden;
         }
@@ -367,7 +372,7 @@
             letter-spacing: 0.3px;
         }
         .asset-value {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 800;
             color: #0A1929;
             margin-right: 4px;
@@ -375,8 +380,8 @@
         }
         .asset-change {
             font-weight: 700;
-            font-size: 1.1rem;
-            padding: 4px 16px;
+            font-size: 1rem;
+            padding: 4px 14px;
             border-radius: 40px;
             background: rgba(34,197,94,0.15);
             color: #166534;
@@ -402,6 +407,311 @@
         .asset-change.negative i {
             color: #b91c1c;
         }
+
+        /* ===== 签到日历抽屉样式 ===== */
+        .sign-drawer {
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 20px;
+            margin: 16px 0;
+            border: 1px solid rgba(255,255,255,0.6);
+            box-shadow: 0 20px 40px -15px rgba(0,20,40,0.15);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            display: none;
+        }
+        .sign-drawer.open {
+            display: block;
+        }
+        .sign-drawer .stats-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .sign-drawer .stat-item {
+            flex: 1;
+            background: white;
+            border-radius: 24px;
+            padding: 12px 4px;
+            text-align: center;
+            box-shadow: 0 10px 25px -8px rgba(26,115,232,0.15);
+            border: 1px solid rgba(255,255,255,0.9);
+        }
+        .sign-drawer .stat-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+        .sign-drawer .stat-number {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #1A73E8;
+            line-height: 1.1;
+        }
+        .sign-drawer .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .sign-drawer .calendar-month {
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(145deg, #0a1a2f, #1e3a6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .sign-drawer .nav-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 20px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            color: #1A73E8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .sign-drawer .nav-btn:hover {
+            background: #1A73E8;
+            color: white;
+        }
+        .sign-drawer .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            margin-bottom: 8px;
+            text-align: center;
+            font-weight: 600;
+            color: #1A73E8;
+            font-size: 0.75rem;
+        }
+        .sign-drawer .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            margin-bottom: 20px;
+        }
+        .sign-drawer .calendar-day {
+            aspect-ratio: 1 / 1;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            color: #1e293b;
+            border: 1px solid #e2e8f0;
+            font-size: 0.8rem;
+            position: relative;
+        }
+        .sign-drawer .calendar-day.today {
+            border: 2px solid #1A73E8;
+            color: #1A73E8;
+            font-weight: 700;
+        }
+        .sign-drawer .calendar-day.signed {
+            background: linear-gradient(145deg, #1A73E8, #0D47A1);
+            color: white;
+            border: none;
+        }
+        .sign-drawer .calendar-day.signed::after {
+            content: '✓';
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #22c55e;
+            width: 14px;
+            height: 14px;
+            border-radius: 7px;
+            font-size: 9px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid white;
+        }
+        .sign-drawer .other-month {
+            opacity: 0.4;
+        }
+        .sign-drawer .sign-btn {
+            width: 100%;
+            background: linear-gradient(145deg, #1A73E8, #0D47A1);
+            border: none;
+            padding: 14px 0;
+            border-radius: 40px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 10px 20px -8px #1A73E8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .sign-drawer .sign-btn.disabled {
+            background: #cbd5e1;
+            box-shadow: none;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        /* ===== Meme行情模块样式 ===== */
+        .meme-section {
+            margin: 8px 0;
+        }
+        .meme-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .meme-header h2 {
+            font-family: var(--font-sans);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .meme-header i {
+            color: var(--primary, #8b5cf6);
+        }
+        .meme-refresh {
+            background: white;
+            border: none;
+            border-radius: 30px;
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            color: var(--primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .meme-refresh:active {
+            transform: scale(0.97);
+        }
+        .meme-scroll {
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 6px;
+            margin: 0 -16px;
+            padding-left: 16px;
+        }
+        .meme-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .meme-grid {
+            display: flex;
+            gap: 10px;
+        }
+        .meme-card {
+            background: white;
+            border-radius: 20px;
+            padding: 12px;
+            min-width: 140px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            transition: 0.2s;
+            white-space: normal;
+        }
+        .meme-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -8px rgba(139,92,246,0.2);
+        }
+        .meme-card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .meme-card-header img {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+        }
+        .meme-card-header .placeholder-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--primary-light, #ede9fe);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary, #8b5cf6);
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+        .meme-card-header .symbol {
+            font-weight: 600;
+            color: #0f172a;
+            font-size: 0.9rem;
+        }
+        .meme-price {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 4px;
+        }
+        .meme-change {
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .meme-change.positive {
+            color: #10b981;
+        }
+        .meme-change.negative {
+            color: #ef4444;
+        }
+        .meme-loading, .meme-error {
+            background: white;
+            border-radius: 30px;
+            padding: 20px;
+            text-align: center;
+            color: #64748b;
+        }
+
+        /* 卡片通用样式（减小内边距） */
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 32px;
+            padding: 18px 16px;
+            box-shadow: var(--card-shadow, 0 15px 35px -15px rgba(0,0,0,0.08)), 0 0 0 1px rgba(0,0,0,0.01);
+            width: 100%;
+            border: none;
+        }
+        .card.highlight {
+            background: linear-gradient(145deg, var(--primary, #1A73E8), var(--primary-dark, #0D47A1));
+            color: white;
+            box-shadow: 0 20px 35px -10px rgba(21,101,192,0.3);
+        }
+        .card.highlight .section-title,
+        .card.highlight .activity-desc,
+        .card.highlight .activity-link {
+            color: white;
+        }
+        .section-title {
+            font-size: 18px !important;
+            font-weight: 700;
+            color: #0A1929;
+            margin-bottom: 16px !important;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
     </style>
 </head>
 <body>
@@ -423,9 +733,9 @@
                     <i class="fas fa-chevron-down expand-indicator"></i>
                 </div>
 
-                <!-- 醒目资产行（带图标） -->
+                <!-- 资产行 -->
                 <div class="asset-row">
-                    <span class="asset-label"></span>
+                    <span class="asset-label">资产</span>
                     <span class="asset-value" id="totalAsset">$1,234.56</span>
                     <span class="asset-change positive" id="assetChange">
                         <i class="fas fa-arrow-up"></i> +$101 (0.14%)
@@ -454,9 +764,9 @@
                 </div>
             </div>
 
-            <!-- 数据总览 -->
+            <!-- 数据总览 - 四列紧凑 -->
             <div class="card">
-                <div class="section-title" style="font-size:20px; font-weight:700; color:#0A1929; margin-bottom:22px; display:flex; align-items:center; gap:8px;"><i class="fas fa-chart-line" style="color:#1A73E8;"></i> 数据总览</div>
+                <div class="section-title"><i class="fas fa-chart-line" style="color:#1A73E8;"></i> 数据总览</div>
                 <div class="stats-grid">
                     <div class="stat-item">
                         <div class="stat-value">2.45M</div>
@@ -481,27 +791,93 @@
                 </div>
             </div>
 
-            <!-- 常用工具 -->
-            <div class="card">
-                <div class="section-title" style="font-size:20px; font-weight:700; color:#0A1929; margin-bottom:22px; display:flex; align-items:center; gap:8px;"><i class="fas fa-tools" style="color:#1A73E8;"></i> 常用工具</div>
-                <div class="tools-grid">
-                    <div class="tool-item" onclick="alert('签到功能开发中')"><div class="tool-icon"><i class="fas fa-calendar-check"></i></div><span class="tool-label">签到</span></div>
-                    <div class="tool-item" onclick="alert('抽奖功能开发中')"><div class="tool-icon"><i class="fas fa-ticket-alt"></i></div><span class="tool-label">抽奖</span></div>
-                    <div class="tool-item" onclick="alert('积分功能开发中')"><div class="tool-icon"><i class="fas fa-coins"></i></div><span class="tool-label">积分</span></div>
-                    <div class="tool-item" onclick="alert('红包功能开发中')"><div class="tool-icon"><i class="fas fa-gift"></i></div><span class="tool-label">红包</span></div>
-                    <div class="tool-item" onclick="location.href='query.html'"><div class="tool-icon"><i class="fas fa-search"></i></div><span class="tool-label">查询系统</span></div>
-                    <div class="tool-item" onclick="alert('社区数据开发中')"><div class="tool-icon"><i class="fas fa-chart-pie"></i></div><span class="tool-label">社区数据</span></div>
-                    <div class="tool-item" onclick="alert('计算器开发中')"><div class="tool-icon"><i class="fas fa-calculator"></i></div><span class="tool-label">计算器</span></div>
-                    <div class="tool-item" onclick="alert('下载中心开发中')"><div class="tool-icon"><i class="fas fa-download"></i></div><span class="tool-label">下载中心</span></div>
+            <!-- Meme行情模块 -->
+            <div class="card meme-section">
+                <div class="meme-header">
+                    <h2><i class="fas fa-dog"></i> Meme 行情</h2>
+                    <a href="meme-market.html" class="meme-refresh"><i class="fas fa-arrow-right"></i> 更多</a>
+                </div>
+                <div id="memeContainer" class="meme-scroll">
+                    <div class="meme-loading">加载中...</div>
                 </div>
             </div>
 
-            <!-- 最新活动 -->
+            <!-- 最新活动（移到常用工具上方） -->
             <div class="card highlight">
-                <div class="section-title light" style="font-size:20px; font-weight:700; margin-bottom:22px; display:flex; align-items:center; gap:8px;"><i class="fas fa-star"></i> 最新活动</div>
+                <div class="section-title light"><i class="fas fa-star"></i> 最新活动</div>
                 <div class="activity-content">
                     <span class="activity-desc">OKX Boost 最佳策略<br>获得空投</span>
-                    <span class="activity-link">立即参与 <i class="fas fa-arrow-right"></i></span>
+                    <a href="boost-activity.html" class="activity-link">立即参与 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- 签到日历抽屉（默认隐藏，点击签到图标展开） -->
+            <div class="sign-drawer" id="signDrawer">
+                <div class="stats-row">
+                    <div class="stat-item"><div class="stat-label">累计签到</div><div class="stat-number">128</div></div>
+                    <div class="stat-item"><div class="stat-label">连续签到</div><div class="stat-number">7</div></div>
+                    <div class="stat-item"><div class="stat-label">今日奖励</div><div class="stat-number">+10</div></div>
+                </div>
+                <div class="calendar-header">
+                    <span class="calendar-month" id="drawerMonth">2025年3月</span>
+                    <div class="calendar-nav">
+                        <span class="nav-btn" id="drawerPrevMonth"><i class="fas fa-chevron-left"></i></span>
+                        <span class="nav-btn" id="drawerNextMonth"><i class="fas fa-chevron-right"></i></span>
+                    </div>
+                </div>
+                <div class="weekdays">
+                    <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
+                </div>
+                <div class="calendar-grid" id="drawerCalendarGrid"></div>
+                <button class="sign-btn" id="drawerSignBtn">
+                    <i class="fas fa-check-circle"></i> 今日签到
+                </button>
+            </div>
+
+            <!-- 常用工具 -->
+            <div class="card">
+                <div class="section-title"><i class="fas fa-tools" style="color:#1A73E8;"></i> 常用工具</div>
+                <div class="tools-grid">
+                    <!-- 签到图标：点击展开/收起抽屉 -->
+                    <div class="tool-item" id="signTool">
+                        <div class="tool-icon"><i class="fas fa-calendar-check"></i></div>
+                        <span class="tool-label">签到</span>
+                    </div>
+                    <!-- 抽奖 -->
+                    <div class="tool-item" onclick="location.href='lottery.html'">
+                        <div class="tool-icon"><i class="fas fa-ticket-alt"></i></div>
+                        <span class="tool-label">抽奖</span>
+                    </div>
+                    <!-- 积分 -->
+                    <div class="tool-item" onclick="location.href='points.html'">
+                        <div class="tool-icon"><i class="fas fa-coins"></i></div>
+                        <span class="tool-label">积分</span>
+                    </div>
+                    <!-- 红包 -->
+                    <div class="tool-item" onclick="location.href='redpacket.html'">
+                        <div class="tool-icon"><i class="fas fa-gift"></i></div>
+                        <span class="tool-label">红包</span>
+                    </div>
+                    <!-- 查询系统 -->
+                    <div class="tool-item" onclick="location.href='query.html'">
+                        <div class="tool-icon"><i class="fas fa-search"></i></div>
+                        <span class="tool-label">查询系统</span>
+                    </div>
+                    <!-- 社区数据 -->
+                    <div class="tool-item" onclick="location.href='community-data.html'">
+                        <div class="tool-icon"><i class="fas fa-chart-pie"></i></div>
+                        <span class="tool-label">社区数据</span>
+                    </div>
+                    <!-- 计算器 -->
+                    <div class="tool-item" onclick="location.href='calculator.html'">
+                        <div class="tool-icon"><i class="fas fa-calculator"></i></div>
+                        <span class="tool-label">计算器</span>
+                    </div>
+                    <!-- 下载中心 -->
+                    <div class="tool-item" onclick="location.href='download.html'">
+                        <div class="tool-icon"><i class="fas fa-download"></i></div>
+                        <span class="tool-label">下载中心</span>
+                    </div>
                 </div>
             </div>
 
@@ -512,24 +888,24 @@
             </div>
         </div>
 
-        <!-- 底部导航 - 固定定位，添加跳转链接 -->
+        <!-- 底部导航 -->
         <div class="bottom-nav">
-            <div class="nav-item active" data-ripple onclick="window.location.href='index.html'">
+            <a href="index.html" class="nav-item active" data-ripple>
                 <span class="bubble bubble1"></span><span class="bubble bubble2"></span><span class="bubble bubble3"></span><span class="bubble bubble4"></span><span class="bubble bubble5"></span>
                 <i class="fas fa-home"></i><span>首页</span>
-            </div>
-            <div class="nav-item" data-ripple onclick="window.location.href='earn.html'">
+            </a>
+            <a href="earn.html" class="nav-item" data-ripple>
                 <span class="bubble bubble1"></span><span class="bubble bubble2"></span><span class="bubble bubble3"></span><span class="bubble bubble4"></span><span class="bubble bubble5"></span>
                 <i class="fas fa-coins"></i><span>赚币</span>
-            </div>
-            <div class="nav-item" data-ripple onclick="window.location.href='model.html'">
+            </a>
+            <a href="model.html" class="nav-item" data-ripple>
                 <span class="bubble bubble1"></span><span class="bubble bubble2"></span><span class="bubble bubble3"></span><span class="bubble bubble4"></span><span class="bubble bubble5"></span>
                 <i class="fas fa-robot"></i><span>模型</span>
-            </div>
-            <div class="nav-item" data-ripple onclick="window.location.href='wallet.html'">
+            </a>
+            <a href="wallet.html" class="nav-item" data-ripple>
                 <span class="bubble bubble1"></span><span class="bubble bubble2"></span><span class="bubble bubble3"></span><span class="bubble bubble4"></span><span class="bubble bubble5"></span>
                 <i class="fas fa-wallet"></i><span>钱包</span>
-            </div>
+            </a>
         </div>
     </div>
 
@@ -565,7 +941,7 @@
             ripple.addEventListener('animationend', () => ripple.remove());
         }
 
-        // 展开/折叠
+        // 展开/折叠用户面板
         const toggleBtn = document.getElementById('toggleExpand');
         const expandArea = document.getElementById('expandArea');
         const indicator = document.querySelector('.expand-indicator');
@@ -580,20 +956,16 @@
         // 导航激活状态切换（点击后高亮当前页）
         navItems.forEach(item => {
             item.addEventListener('click', function(e) {
-                // 移除所有 active 类
                 navItems.forEach(nav => nav.classList.remove('active'));
-                // 给当前点击项添加 active 类
                 this.classList.add('active');
-                // 注意：因为用了 onclick 跳转，跳转后新页面会重新加载，所以当前页的 active 类可能被覆盖
-                // 为了准确，可以在每个页面通过当前文件名设置 active，但这里保持简单，跳转后自然刷新
             });
         });
 
-        // 根据当前文件名设置 active 类（确保刷新后高亮正确）
+        // 根据当前文件名设置 active 类
         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
         navItems.forEach(item => {
-            const href = item.getAttribute('onclick');
-            if (href && href.includes(currentPage)) {
+            const href = item.getAttribute('href');
+            if (href && href === currentPage) {
                 item.classList.add('active');
             }
         });
@@ -606,7 +978,6 @@
                 return;
             }
 
-            // 获取用户资料
             const { data: profile, error } = await supabase
                 .from('profiles')
                 .select('username, points')
@@ -619,9 +990,149 @@
             } else {
                 console.warn('无法获取用户资料', error);
             }
-
-            // 此处可以添加获取资产数据的逻辑，并更新 #totalAsset 和 #assetChange
         });
+
+        // ========== 签到日历抽屉逻辑 ==========
+        const signTool = document.getElementById('signTool');
+        const signDrawer = document.getElementById('signDrawer');
+        const drawerMonthSpan = document.getElementById('drawerMonth');
+        const drawerCalendarGrid = document.getElementById('drawerCalendarGrid');
+        const drawerPrevBtn = document.getElementById('drawerPrevMonth');
+        const drawerNextBtn = document.getElementById('drawerNextMonth');
+        const drawerSignBtn = document.getElementById('drawerSignBtn');
+
+        // 示例已签到日期
+        const signedDates = [1, 3, 5, 7, 10, 12, 15, 18, 20, 22, 25, 28];
+        const currentDate = new Date(2025, 2, 15); // 演示用，固定为2025-03-15
+        let displayYear = currentDate.getFullYear();
+        let displayMonth = currentDate.getMonth();
+        const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+
+        function renderDrawerCalendar(year, month) {
+            drawerMonthSpan.textContent = year + '年' + monthNames[month];
+            let firstDay = new Date(year, month, 1).getDay();
+            let startOffset = firstDay === 0 ? 6 : firstDay - 1;
+            let daysInMonth = new Date(year, month + 1, 0).getDate();
+            let prevMonthDays = new Date(year, month, 0).getDate();
+            let gridHtml = '';
+
+            for (let i = 0; i < startOffset; i++) {
+                let day = prevMonthDays - startOffset + i + 1;
+                gridHtml += `<div class="calendar-day other-month">${day}</div>`;
+            }
+            for (let day = 1; day <= daysInMonth; day++) {
+                let classes = 'calendar-day';
+                if (year === currentDate.getFullYear() && month === currentDate.getMonth() && day === currentDate.getDate()) {
+                    classes += ' today';
+                }
+                if (signedDates.includes(day)) {
+                    classes += ' signed';
+                }
+                gridHtml += `<div class="${classes}">${day}</div>`;
+            }
+            let totalCells = Math.ceil((startOffset + daysInMonth) / 7) * 7;
+            let nextMonthDays = totalCells - (startOffset + daysInMonth);
+            for (let i = 1; i <= nextMonthDays; i++) {
+                gridHtml += `<div class="calendar-day other-month">${i}</div>`;
+            }
+            drawerCalendarGrid.innerHTML = gridHtml;
+        }
+
+        renderDrawerCalendar(displayYear, displayMonth);
+
+        drawerPrevBtn.addEventListener('click', () => {
+            if (displayMonth === 0) {
+                displayYear--;
+                displayMonth = 11;
+            } else {
+                displayMonth--;
+            }
+            renderDrawerCalendar(displayYear, displayMonth);
+        });
+
+        drawerNextBtn.addEventListener('click', () => {
+            if (displayMonth === 11) {
+                displayYear++;
+                displayMonth = 0;
+            } else {
+                displayMonth++;
+            }
+            renderDrawerCalendar(displayYear, displayMonth);
+        });
+
+        // 签到按钮点击
+        let isSignedToday = false;
+        drawerSignBtn.addEventListener('click', () => {
+            if (isSignedToday) {
+                alert('今日已经签到过了，明天再来吧');
+            } else {
+                alert('签到成功！获得10积分');
+                isSignedToday = true;
+                drawerSignBtn.classList.add('disabled');
+                drawerSignBtn.innerHTML = '<i class="fas fa-check-circle"></i> 今日已签到';
+                // 更新统计卡片中的今日奖励（示例）
+                document.querySelector('.sign-drawer .stats-row .stat-item:last-child .stat-number').textContent = '+0';
+            }
+        });
+
+        // 点击签到图标展开/收起抽屉
+        signTool.addEventListener('click', () => {
+            signDrawer.classList.toggle('open');
+        });
+    </script>
+
+    <!-- Meme行情脚本 -->
+    <script>
+        (function() {
+            const container = document.getElementById('memeContainer');
+            const refreshBtn = document.querySelector('.meme-refresh'); // 现在是更多按钮，但仍保留ID以便脚本
+
+            // 热门Meme币ID列表
+            const memeIds = ['dogecoin', 'shiba-inu', 'pepe', 'bonk', 'floki', 'dogwifcoin', 'book-of-meme'];
+
+            async function fetchMemeData() {
+                try {
+                    container.innerHTML = '<div class="meme-loading">加载中...</div>';
+                    const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${memeIds.join(',')}&order=market_cap_desc&per_page=20&page=1&sparkline=false`);
+                    if (!response.ok) throw new Error('网络错误');
+                    const data = await response.json();
+                    renderMemeCards(data);
+                } catch (error) {
+                    console.error('获取Meme行情失败:', error);
+                    container.innerHTML = '<div class="meme-error">加载失败，点击更多重试</div>';
+                }
+            }
+
+            function renderMemeCards(coins) {
+                if (!coins || coins.length === 0) {
+                    container.innerHTML = '<div class="meme-error">暂无数据</div>';
+                    return;
+                }
+                let html = '<div class="meme-grid">';
+                coins.forEach(coin => {
+                    const change = coin.price_change_percentage_24h;
+                    const changeClass = change >= 0 ? 'positive' : 'negative';
+                    const changeIcon = change >= 0 ? 'fa-arrow-up' : 'fa-arrow-down';
+                    const imageHtml = coin.image ? `<img src="${coin.image}" alt="${coin.symbol}">` : `<span class="placeholder-icon">${coin.symbol.charAt(0).toUpperCase()}</span>`;
+                    html += `
+                        <div class="meme-card">
+                            <div class="meme-card-header">
+                                ${imageHtml}
+                                <span class="symbol">${coin.symbol.toUpperCase()}</span>
+                            </div>
+                            <div class="meme-price">$${coin.current_price.toFixed(4)}</div>
+                            <div class="meme-change ${changeClass}">
+                                <i class="fas ${changeIcon}"></i> ${change.toFixed(2)}%
+                            </div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+                container.innerHTML = html;
+            }
+
+            fetchMemeData();
+        })();
     </script>
 </body>
 </html>
