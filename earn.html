@@ -3,996 +3,569 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>链上赚币 · 移动版</title>
-    <!-- 字体 & 图标库 -->
+    <title>赚币 · 海豚社区</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* ===== 原有样式 + 滚动修复 ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        /* 页面特有样式 */
+        :root {
+            --primary: #8b5cf6;
+            --primary-dark: #7c3aed;
+            --primary-light: #ede9fe;
+            --primary-gradient: linear-gradient(145deg, #8b5cf6, #6d4aff);
+            --gold: #fbbf24;
+            --gold-dark: #f59e0b;
+            --gold-gradient: linear-gradient(90deg, #fbbf24, #f59e0b, #fbbf24);
         }
-
         body {
-            background: #f2f8f2;
+            background: radial-gradient(circle at 10% 20%, #ffffff, #f5f3ff);
+            font-family: 'Inter', sans-serif;
+            padding: 20px 16px;
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 1rem;
-            color: #1a2e2a;
-            overflow-y: auto;
+            justify-content: center;
+            align-items: flex-start;
+            margin: 0;
         }
-
-        .page-wrapper {
-            max-width: 480px;
+        .app-container {
+            max-width: 600px;
             width: 100%;
-            margin: 0 auto;
         }
 
-        .back-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: white;
-            border: 1px solid #d0e8d0;
+        /* 统一卡片 */
+        .card {
+            background: rgba(255,255,255,0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-radius: 40px;
-            padding: 10px 20px;
-            color: #0f8a4c;
-            font-weight: 500;
-            text-decoration: none;
-            box-shadow: 0 2px 8px -4px rgba(0,30,0,0.05);
-            margin-bottom: 12px;
-            transition: 0.2s;
+            padding: 24px 20px;
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.15);
+            border: 1px solid rgba(255,255,255,0.6);
+            margin-bottom: 20px;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
-        .back-button:hover {
-            background: #f0faf0;
-            border-color: #0f8a4c;
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 30px 45px -15px rgba(139,92,246,0.2);
         }
 
-        .glass-panel {
-            max-width: 480px;
+        /* 顶部统计卡片（三列紧凑） */
+        .stats-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+        .stat-card {
+            flex: 1;
+            background: white;
+            border-radius: 24px;
+            padding: 12px 4px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+        .stat-title {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+        .stat-number {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+
+        /* 金色标题区域 - 链上赚币 + 流动线条 */
+        .title-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 24px 0 32px;
+            gap: 16px;
+        }
+        .line-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 60px;
+            overflow: hidden;
+        }
+        .line-group.left .flow-line {
+            transform-origin: left;
+            animation: flow-left 1.5s infinite ease-in-out;
+        }
+        .line-group.right .flow-line {
+            transform-origin: right;
+            animation: flow-right 1.5s infinite ease-in-out;
+        }
+        .flow-line {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold), var(--gold-dark), var(--gold), transparent);
+            border-radius: 2px;
             width: 100%;
-            background: #ffffff;
-            border-radius: 2.2rem;
-            padding: 1.5rem 1.2rem;
-            box-shadow: 0 25px 50px -16px rgba(0, 40, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.02);
-            border: 1px solid #e0ede0;
-            margin: 0 auto;
+            opacity: 0.7;
+        }
+        .line-group.left .flow-line:nth-child(1) { animation-delay: 0s; width: 80%; }
+        .line-group.left .flow-line:nth-child(2) { animation-delay: 0.2s; width: 100%; }
+        .line-group.left .flow-line:nth-child(3) { animation-delay: 0.4s; width: 70%; }
+        .line-group.right .flow-line:nth-child(1) { animation-delay: 0.1s; width: 80%; }
+        .line-group.right .flow-line:nth-child(2) { animation-delay: 0.3s; width: 100%; }
+        .line-group.right .flow-line:nth-child(3) { animation-delay: 0.5s; width: 70%; }
+        @keyframes flow-left {
+            0% { transform: translateX(-100%); opacity: 0; }
+            50% { transform: translateX(0); opacity: 1; }
+            100% { transform: translateX(100%); opacity: 0; }
+        }
+        @keyframes flow-right {
+            0% { transform: translateX(100%); opacity: 0; }
+            50% { transform: translateX(0); opacity: 1; }
+            100% { transform: translateX(-100%); opacity: 0; }
+        }
+        .title-text {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 8px rgba(251,191,36,0.3);
+            white-space: nowrap;
         }
 
-        /* 以下原有样式保持不变 */
-        .navbar {
+        /* 主质押卡片 */
+        .stake-card {
+            background: white;
+            border-radius: 32px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+        }
+        .stake-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
+            margin-bottom: 20px;
             flex-wrap: wrap;
-            gap: 0.8rem;
+            gap: 12px;
         }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.7rem;
-        }
-
-        .logo-icon {
-            width: 42px;
-            height: 42px;
-            background: linear-gradient(145deg, #0f8a4c, #0a5f34);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.7rem;
-            box-shadow: 0 6px 12px -4px rgba(15, 138, 76, 0.3);
-            color: white;
-        }
-
-        .logo span {
-            font-size: 1.6rem;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            background: linear-gradient(135deg, #0f5a30, #0a3f22);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .wallet-btn {
-            background: white;
-            border: 1px solid #d0e6d0;
-            padding: 0.7rem 1rem;
-            border-radius: 2.5rem;
-            font-weight: 500;
-            font-size: 0.9rem;
-            color: #0a5f34;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 2px 8px -4px rgba(0, 30, 0, 0.05);
-        }
-
-        .wallet-btn i {
-            color: #0f8a4c;
-            font-size: 1.2rem;
-        }
-
-        .wallet-btn:hover {
-            border-color: #0f8a4c;
-            box-shadow: 0 6px 12px -6px rgba(15, 138, 76, 0.2);
-            transform: translateY(-1px);
-        }
-
-        .stats-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-bottom: 0;
-        }
-
-        .stat-card {
-            background: #ffffff;
-            border-radius: 1.8rem;
-            padding: 1.2rem 1.5rem;
-            border: 1px solid #e2eee2;
-            box-shadow: 0 8px 20px -12px rgba(0, 40, 0, 0.1);
-            transition: 0.2s;
-        }
-
-        .stat-card:hover {
-            border-color: #b8dbb8;
-            box-shadow: 0 12px 24px -12px rgba(15, 138, 76, 0.15);
-        }
-
-        .stat-title {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.85rem;
-            font-weight: 400;
-            color: #3b6b4f;
-            margin-bottom: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-        }
-
-        .stat-title i {
-            font-size: 1rem;
-            color: #0f8a4c;
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 0.3rem;
-            color: #04381a;
-            letter-spacing: -0.02em;
-        }
-
-        .stat-unit {
-            font-size: 0.9rem;
-            color: #558b6a;
-            margin-left: 0.2rem;
-            font-weight: 400;
-        }
-
-        .stat-desc {
-            color: #558b6a;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        .h-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(145deg, #0f8a4c, #0a5f34);
-            width: 22px;
-            height: 22px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-right: 4px;
-            color: white;
-        }
-
-        .brand-divider {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            margin: 1.8rem 0 1.2rem 0;
-            opacity: 0.2;
-            transition: opacity 0.3s ease, gap 0.3s ease;
-            cursor: default;
-        }
-
-        .brand-divider:hover {
-            opacity: 0.4;
-            gap: 1.5rem;
-        }
-
-        .divider-lines {
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-            gap: 0.4rem;
-        }
-
-        .divider-line {
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #f39c12, #e67e22, #f39c12, transparent);
-            background-size: 200% 100%;
-            animation: flow 2s linear infinite;
-            transition: filter 0.3s ease, height 0.3s ease;
-        }
-
-        .divider-lines:first-child .divider-line:nth-child(1) { animation-delay: 0s; }
-        .divider-lines:first-child .divider-line:nth-child(2) { animation-delay: 0.2s; }
-        .divider-lines:first-child .divider-line:nth-child(3) { animation-delay: 0.4s; }
-        .divider-lines:last-child .divider-line:nth-child(1) { animation-delay: 0.1s; }
-        .divider-lines:last-child .divider-line:nth-child(2) { animation-delay: 0.3s; }
-        .divider-lines:last-child .divider-line:nth-child(3) { animation-delay: 0.5s; }
-
-        .brand-divider:hover .divider-line {
-            animation: flow 0.8s linear infinite;
-            height: 3px;
-            filter: brightness(1.2);
-        }
-
-        @keyframes flow {
-            0% { background-position: 100% 0; }
-            100% { background-position: -100% 0; }
-        }
-
-        .divider-text {
-            font-size: 1.2rem;
-            font-weight: 500;
-            letter-spacing: 0.1em;
-            white-space: nowrap;
-            padding: 0 0.5rem;
-            background: linear-gradient(145deg, #0a5f34, #f39c12, #0a5f34);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: textShimmer 3s linear infinite;
-            transition: text-shadow 0.3s ease;
-        }
-
-        .brand-divider:hover .divider-text {
-            text-shadow: 0 0 8px rgba(243, 156, 18, 0.4);
-            animation: textShimmer 1.5s linear infinite;
-        }
-
-        @keyframes textShimmer {
-            0% { background-position: 0% 0; }
-            100% { background-position: 200% 0; }
-        }
-
-        .stake-card {
-            position: relative;
-            background: #ffffff;
-            border-radius: 2rem;
-            padding: 1.5rem 1.2rem 1.5rem;
-            border: 1px solid #e2eee2;
-            box-shadow: 0 15px 30px -16px rgba(0, 40, 0, 0.12);
-            margin-top: 0.2rem;
-            overflow: hidden;
-        }
-
-        .stake-card::after {
-            content: "链上赚币";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-10deg);
-            font-size: min(6rem, 15vw);
-            font-weight: 700;
-            color: #0a5f34;
-            opacity: 0.06;
-            white-space: nowrap;
-            pointer-events: none;
-            z-index: 1;
-            line-height: 1;
-            user-select: none;
-        }
-
-        .stake-header {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 0.6rem;
-            margin-bottom: 1.5rem;
-            position: relative;
-            z-index: 2;
-        }
-
         .stake-header h2 {
-            font-size: 1.7rem;
-            font-weight: 600;
-            background: linear-gradient(135deg, #0f5a30, #0a3f22);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.02em;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0f172a;
         }
-
-        .stake-header .tag {
-            background: #f0faf0;
-            padding: 0.3rem 1rem;
-            border-radius: 40px;
+        .stake-tag {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 30px;
             font-size: 0.75rem;
-            font-weight: 500;
-            color: #0f8a4c;
-            border: 1px solid #d0e8d0;
+            font-weight: 600;
+            border: 1px solid rgba(139,92,246,0.2);
         }
 
-        .user-balances {
+        /* 余额网格 */
+        .balance-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem 0.8rem;
-            background: #fafffa;
-            border-radius: 1.5rem;
-            padding: 1.2rem 1.2rem;
-            margin-bottom: 2rem;
-            border: 1px solid #d0e8d0;
-            position: relative;
-            z-index: 2;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            background: #f8fafc;
+            border-radius: 24px;
+            padding: 16px;
+            margin-bottom: 20px;
+            border: 1px solid #e2e8f0;
         }
-
         .balance-item {
             display: flex;
             flex-direction: column;
-            gap: 0.2rem;
         }
-
         .balance-label {
-            font-size: 0.8rem;
-            font-weight: 400;
-            color: #3b6b4f;
-            letter-spacing: 0.02em;
-            white-space: nowrap;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
         }
-
         .balance-value {
             font-size: 1.3rem;
             font-weight: 700;
-            display: flex;
-            align-items: baseline;
-            gap: 0.3rem;
-            flex-wrap: wrap;
-            color: #04381a;
-            line-height: 1.2;
+            color: #0f172a;
         }
 
-        .balance-value small {
-            font-size: 0.8rem;
-            font-weight: 400;
-            color: #558b6a;
-        }
-
-        .h-token {
-            display: inline-flex;
-            background: #e4f2e4;
-            border-radius: 10px;
-            padding: 0.1rem 0.5rem;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-left: 0.3rem;
-            align-items: center;
-            gap: 0.2rem;
-            color: #0f8a4c;
-        }
-
-        .stake-action {
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        .input-area {
+        /* 输入区域 */
+        .input-wrapper {
             display: flex;
             align-items: center;
             background: white;
-            border-radius: 2.5rem;
-            border: 1px solid #d0e8d0;
-            padding: 0.2rem 0.2rem 0.2rem 1.5rem;
-            transition: border 0.2s, box-shadow 0.2s;
+            border-radius: 60px;
+            border: 1px solid #e2e8f0;
+            padding: 4px 4px 4px 20px;
+            margin-bottom: 16px;
         }
-
-        .input-area:focus-within {
-            border-color: #0f8a4c;
-            box-shadow: 0 0 0 3px rgba(15, 138, 76, 0.1);
+        .input-wrapper i {
+            color: var(--primary);
+            margin-right: 8px;
         }
-
-        .input-area i {
-            color: #0f8a4c;
-            font-size: 1.1rem;
-        }
-
-        .input-area input {
+        .input-wrapper input {
             background: transparent;
             border: none;
-            padding: 0.9rem 0.5rem;
-            font-size: 1.4rem;
-            font-weight: 500;
+            padding: 14px 0;
+            font-size: 1.2rem;
+            font-weight: 600;
             width: 100%;
-            color: #1a2e2a;
+            color: #0f172a;
             outline: none;
         }
-
-        .input-area input::placeholder {
-            color: #b8d4b8;
-            font-weight: 300;
-            font-size: 1.2rem;
-        }
-
         .max-btn {
-            background: white;
-            border: 1px solid #d0e8d0;
-            color: #0f8a4c;
-            font-weight: 600;
-            font-size: 0.9rem;
-            padding: 0.6rem 1.2rem;
-            border-radius: 2.5rem;
+            background: var(--primary);
+            border: none;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 10px 28px;
+            border-radius: 40px;
             cursor: pointer;
             transition: 0.15s;
-            margin-right: 0.3rem;
-            letter-spacing: 0.03em;
         }
-
         .max-btn:hover {
-            background: #f0faf0;
-            border-color: #0f8a4c;
-            color: #0a5f34;
+            background: var(--primary-dark);
         }
 
-        .rate-info-bar {
-            background: white;
-            border-radius: 2rem;
-            padding: 0.8rem 1.2rem;
+        /* 利率栏 */
+        .rate-bar {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 0.8rem 1rem;
-            border: 1px solid #d0e8d0;
+            background: white;
+            border-radius: 40px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            border: 1px solid #e2e8f0;
         }
-
         .rate-text {
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 1rem;
-            font-weight: 500;
-            color: #04381a;
         }
-
-        .rate-text i {
-            color: #0f8a4c;
-            font-size: 1rem;
-        }
-
         .rate-range {
-            background: #f0faf0;
-            padding: 0.3rem 1rem;
-            border-radius: 2rem;
-            font-weight: 600;
-            color: #0f8a4c;
-            border: 1px solid #c0e0c0;
-            font-size: 0.9rem;
+            background: var(--primary-light);
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-weight: 700;
+            color: var(--primary);
         }
-
-        .rule-btn {
-            background: white;
-            border: 1px dashed #b8d8b8;
-            color: #0f8a4c;
-            padding: 0.4rem 1.2rem;
-            border-radius: 2rem;
+        .rule-toggle {
+            background: transparent;
+            border: 1px dashed var(--primary);
+            color: var(--primary);
+            padding: 6px 16px;
+            border-radius: 30px;
             cursor: pointer;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: 0.2s;
-            font-size: 0.85rem;
+            white-space: nowrap;
         }
 
-        .rule-btn:hover {
-            background: #f0faf0;
-            border: 1px solid #0f8a4c;
-            color: #0a5f34;
-        }
-
-        .rule-detail-card {
-            background: white;
-            border-radius: 1.8rem;
-            padding: 1.2rem 1.2rem;
-            margin-top: 0.8rem;
-            border: 1px solid #d0e8d0;
-            box-shadow: 0 15px 25px -18px rgba(0, 30, 0, 0.2);
+        /* 规则卡片 - 修复文字溢出 */
+        .rule-card {
+            background: #f8fafc;
+            border-radius: 24px;
+            padding: 12px;
+            margin-bottom: 16px;
             display: none;
+            border: 1px solid #e2e8f0;
         }
-
-        .rule-detail-card.show {
+        .rule-card.show {
             display: block;
         }
-
-        .rule-detail-card h4 {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            color: #04381a;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            font-weight: 600;
-        }
-
-        .rule-table {
+        .rule-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 0.8rem;
-            margin-bottom: 1.2rem;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px;
+            margin: 8px 0;
         }
-
         .rule-tier {
-            background: #fafffa;
-            border-radius: 1.2rem;
-            padding: 0.8rem 0.5rem;
+            background: white;
+            border-radius: 16px;
+            padding: 8px 2px;
             text-align: center;
-            border: 1px solid #d0e8d0;
+            border: 1px solid #e2e8f0;
+            word-break: break-word;
         }
-
-        .rule-tier .days {
-            font-weight: 500;
-            color: #3b6b4f;
-            font-size: 0.85rem;
-            margin-bottom: 0.2rem;
+        .rule-tier div:first-child {
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-bottom: 2px;
         }
-
         .rule-tier .rate {
-            font-size: 1.5rem;
+            font-size: 1.1rem;
             font-weight: 700;
-            color: #0f8a4c;
+            color: var(--primary);
             line-height: 1.2;
         }
-
         .extra-rule {
-            color: #3b6b4f;
-            font-size: 0.85rem;
-            border-top: 1px solid #d0e8d0;
-            padding-top: 1rem;
-            margin-top: 0.5rem;
-            line-height: 1.5;
+            font-size: 0.75rem;
+            color: #64748b;
+            border-top: 1px dashed #e2e8f0;
+            padding-top: 10px;
+            margin-top: 8px;
         }
 
-        .reward-preview {
-            background: white;
-            border-radius: 2rem;
-            padding: 1rem 1.2rem;
+        /* 奖励预览 */
+        .reward-panel {
+            background: #f8fafc;
+            border-radius: 40px;
+            padding: 14px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            border: 1px solid #d0e8d0;
+            margin-bottom: 8px;
         }
-
-        .reward-label i {
-            color: #f39c12;
-            margin-right: 6px;
-            font-size: 1rem;
-        }
-
-        .reward-label {
-            font-size: 0.95rem;
-            font-weight: 400;
-            color: #3b6b4f;
-        }
-
-        .reward-amount {
-            font-size: 1.6rem;
+        .reward-number {
+            font-size: 1.8rem;
             font-weight: 700;
-            background: linear-gradient(145deg, #0f8a4c, #0a5f34);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.02em;
+            color: var(--primary);
         }
 
-        .reward-suffix {
-            font-size: 0.85rem;
-            color: #558b6a;
-            margin-left: 0.2rem;
-            font-weight: 400;
-        }
-
-        .hint-note {
-            font-size: 0.75rem;
-            color: #558b6a;
-            margin-top: 0.2rem;
-            text-align: right;
-            font-weight: 300;
-            letter-spacing: 0.02em;
-        }
-
-        .action-buttons {
+        /* 按钮组 - 统一大小 */
+        .button-group {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 0.5rem;
+            gap: 12px;
+            margin: 20px 0;
         }
-
         .btn-primary, .btn-secondary {
-            padding: 1rem 0;
-            font-size: 1.2rem;
-            font-weight: 600;
-            border-radius: 3rem;
-            border: none;
+            padding: 14px 0;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1.1rem;
             cursor: pointer;
             transition: 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.6rem;
-            letter-spacing: 0.02em;
+            border: none;
         }
-
         .btn-primary {
-            background: linear-gradient(115deg, #0f8a4c, #0a5f34);
-            box-shadow: 0 12px 20px -12px #0f8a4c;
+            background: var(--primary-gradient);
             color: white;
+            box-shadow: 0 8px 16px -6px var(--primary);
         }
-
-        .btn-primary:hover {
-            background: linear-gradient(115deg, #119e56, #0b6f3b);
-            transform: scale(1.02);
+        .btn-primary:active {
+            transform: scale(0.97);
         }
-
         .btn-secondary {
             background: white;
-            color: #0f8a4c;
-            border: 1px solid #c0e0c0;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        .btn-secondary:active {
+            background: var(--primary-light);
         }
 
-        .btn-secondary:hover {
-            background: #f0faf0;
-            border-color: #0f8a4c;
-            color: #0a5f34;
-        }
-
+        /* 账单区域 */
         .bill-section {
-            margin-top: 2rem;
-            background: white;
-            border-radius: 2rem;
-            padding: 1.2rem 1.2rem;
-            border: 1px solid #d0e8d0;
-            position: relative;
-            z-index: 2;
+            background: #f8fafc;
+            border-radius: 24px;
+            padding: 16px;
+            border: 1px solid #e2e8f0;
         }
-
-        .bill-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .bill-header h3 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #04381a;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
         .bill-tabs {
             display: flex;
-            gap: 0.2rem;
-            background: #f0faf0;
-            padding: 0.2rem;
-            border-radius: 2.5rem;
+            gap: 4px;
+            background: white;
+            padding: 4px;
+            border-radius: 30px;
+            margin-bottom: 16px;
         }
-
         .bill-tab {
-            padding: 0.4rem 1rem;
-            font-size: 0.85rem;
-            font-weight: 500;
-            border-radius: 2rem;
+            flex: 1;
+            padding: 8px 0;
+            text-align: center;
+            border-radius: 30px;
             cursor: pointer;
-            color: #3b6b4f;
-            transition: 0.2s;
+            font-weight: 600;
+            color: #64748b;
         }
-
         .bill-tab.active {
-            background: linear-gradient(145deg, #0f8a4c, #0a5f34);
+            background: var(--primary);
             color: white;
         }
-
         .bill-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-            margin-bottom: 0.8rem;
             max-height: 200px;
             overflow-y: auto;
-            padding-right: 0.3rem;
         }
-
-        .bill-list.hidden {
-            display: none;
-        }
-
         .bill-item {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            background: white;
-            padding: 0.8rem 1rem;
-            border-radius: 1.5rem;
-            border: 1px solid #e2eee2;
-            font-size: 0.9rem;
-            transition: 0.2s;
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .bill-item:last-child {
+            border-bottom: none;
         }
 
-        .bill-item:hover {
-            border-color: #b8dbb8;
-            box-shadow: 0 4px 10px -6px rgba(15, 138, 76, 0.2);
-        }
-
-        .bill-type {
+        /* 底部导航 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(15px);
+            padding: 6px 24px;
             display: flex;
+            justify-content: space-around;
             align-items: center;
-            gap: 0.4rem;
-            font-weight: 500;
+            border-top: 1px solid rgba(255,255,255,0.8);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            z-index: 100;
+            box-sizing: border-box;
         }
-
-        .bill-type.stake i {
-            color: #0f8a4c;
-        }
-        .bill-type.reward i {
-            color: #f39c12;
-        }
-        .bill-type.claim i {
-            color: #3498db;
-        }
-
-        .bill-amount {
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            font-size: 11px;
             font-weight: 600;
-            color: #04381a;
-        }
-
-        .bill-time {
-            color: #558b6a;
-            font-size: 0.75rem;
-            font-weight: 300;
-        }
-
-        .bill-more {
-            text-align: center;
-            margin-top: 0.8rem;
-        }
-
-        .bill-more a {
-            color: #0f8a4c;
+            color: #94A3B8;
             text-decoration: none;
-            font-size: 0.85rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            transition: 0.2s;
-            font-weight: 500;
+            transition: color 0.2s;
+            padding: 6px 8px;
+            border-radius: 30px;
+            position: relative;
         }
-
-        .bill-more a:hover {
-            color: #0a5f34;
-            gap: 0.6rem;
+        .nav-item i {
+            font-size: 20px;
         }
-
-        .footnote {
-            text-align: center;
-            color: #7f9f8c;
-            font-size: 0.8rem;
-            margin-top: 2rem;
-            border-top: 1px solid #e2eee2;
-            padding-top: 1.2rem;
-            font-weight: 300;
-            letter-spacing: 0.02em;
+        .nav-item:hover {
+            color: var(--primary);
+            background: rgba(139,92,246,0.05);
         }
-
-        .footnote i {
-            color: #0f8a4c;
+        .nav-item.active {
+            color: var(--primary);
         }
-
-        button, .bill-tab, a {
-            -webkit-tap-highlight-color: transparent;
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--primary);
         }
-
-        @media (max-width: 380px) {
-            .glass-panel {
-                padding: 1rem 0.8rem;
-            }
-            .balance-value {
-                font-size: 1.1rem;
-            }
-            .rate-text {
-                font-size: 0.9rem;
-            }
-            .rule-btn {
-                padding: 0.3rem 1rem;
-                font-size: 0.8rem;
-            }
+        .content {
+            padding-bottom: 80px;
         }
     </style>
 </head>
 <body>
-    <div class="page-wrapper">
-        <!-- 返回首页按钮 -->
-        <a href="index.html" class="back-button">
-            <i class="fas fa-arrow-left"></i> 返回首页
-        </a>
-
-        <div class="glass-panel">
-            <!-- 导航栏 -->
-            <div class="navbar">
-                <div class="logo">
-                    <div class="logo-icon">H</div>
-                    <span>链上赚币</span>
-                </div>
-                <button class="wallet-btn" id="connectWalletBtn">
-                    <i class="fas fa-wallet"></i>
-                </button>
-            </div>
-
-            <!-- 统计卡片 -->
-            <div class="stats-grid">
+    <div class="app-container">
+        <div class="content">
+            <!-- 顶部统计卡片 -->
+            <div class="stats-row">
                 <div class="stat-card">
-                    <div class="stat-title">
-                        <i class="fas fa-chart-line"></i> 总锁仓价值
-                    </div>
-                    <div class="stat-value">18,420,000</div>
-                    <div class="stat-desc"><i class="fas fa-arrow-up" style="color:#0f8a4c;"></i> +5.2% （7d）</div>
+                    <div class="stat-title">总锁仓价值</div>
+                    <div class="stat-number">$18.42M</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-title">
-                        <i class="fas fa-layer-group"></i> 总质押 <span class="h-badge">H</span>
-                    </div>
-                    <div class="stat-value">6,411,000</div>
-                    <div class="stat-desc"><i class="fas fa-users"></i> 1,842 参与者</div>
+                    <div class="stat-title">总质押 H</div>
+                    <div class="stat-number">6.42M</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">参与者</div>
+                    <div class="stat-number">1,842</div>
                 </div>
             </div>
 
-            <!-- 品牌分隔线 -->
-            <div class="brand-divider">
-                <div class="divider-lines">
-                    <span class="divider-line"></span>
-                    <span class="divider-line"></span>
-                    <span class="divider-line"></span>
+            <!-- 金色标题 + 流动线条 -->
+            <div class="title-section">
+                <div class="line-group left">
+                    <div class="flow-line"></div>
+                    <div class="flow-line"></div>
+                    <div class="flow-line"></div>
                 </div>
-                <span class="divider-text">链上赚币</span>
-                <div class="divider-lines">
-                    <span class="divider-line"></span>
-                    <span class="divider-line"></span>
-                    <span class="divider-line"></span>
+                <div class="title-text">
+                    链上赚币
+                </div>
+                <div class="line-group right">
+                    <div class="flow-line"></div>
+                    <div class="flow-line"></div>
+                    <div class="flow-line"></div>
                 </div>
             </div>
 
             <!-- 主质押卡片 -->
-            <div class="stake-card">
-                <div class="stake-header">
-                    <h2>质押 H · 随存随取</h2>
-                    <span class="tag"><i class="fa-regular fa-clock" style="margin-right:4px;"></i>按实际存期计息</span>
-                </div>
+            <div class="card">
+                <div class="stake-card">
+                    <div class="stake-header">
+                        <h2>质押 H · 随存随取</h2>
+                        <span class="stake-tag"><i class="fa-regular fa-clock"></i> 按实际存期计息</span>
+                    </div>
 
-                <!-- 个人持仓信息 -->
-                <div class="user-balances">
-                    <div class="balance-item">
-                        <span class="balance-label"><i class="fa-solid fa-lock" style="margin-right: 3px; color:#0f8a4c;"></i>我的质押</span>
-                        <div class="balance-value">1,200.45</div>
+                    <!-- 余额信息 -->
+                    <div class="balance-grid">
+                        <div class="balance-item">
+                            <span class="balance-label">我的质押</span>
+                            <span class="balance-value">1,200.45 H</span>
+                        </div>
+                        <div class="balance-item">
+                            <span class="balance-label">可用余额</span>
+                            <span class="balance-value" id="availableBalanceDisplay">2,500.00 H</span>
+                        </div>
+                        <div class="balance-item">
+                            <span class="balance-label">未领取奖励</span>
+                            <span class="balance-value">12.36 H</span>
+                        </div>
+                        <div class="balance-item">
+                            <span class="balance-label">已领取奖励</span>
+                            <span class="balance-value">56.78 H</span>
+                        </div>
                     </div>
-                    <div class="balance-item">
-                        <span class="balance-label"><i class="fa-regular fa-circle-dot" style="margin-right: 3px; color:#0f8a4c;"></i>可用余额</span>
-                        <div class="balance-value" id="availableBalanceDisplay">2,500.00</div>
-                    </div>
-                    <div class="balance-item">
-                        <span class="balance-label"><i class="fa-solid fa-coins"></i> 未领取奖励</span>
-                        <div class="balance-value">12.36</div>
-                    </div>
-                    <div class="balance-item">
-                        <span class="balance-label"><i class="fa-solid fa-gift" style="color: #f39c12;"></i> 已领取奖励</span>
-                        <div class="balance-value">56.78</div>
-                    </div>
-                    <div class="balance-item">
-                        <span class="balance-label"><i class="fa-solid fa-chart-pie" style="color: #0f8a4c;"></i> 累计质押</span>
-                        <div class="balance-value">3,700.45</div>
-                    </div>
-                </div>
 
-                <!-- 质押操作区域 -->
-                <div class="stake-action">
-                    <div class="input-area">
-                        <i class="fa-solid fa-coins" style="margin-right: 0.3rem;"></i>
+                    <!-- 输入区域 -->
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-coins"></i>
                         <input type="number" id="stakeAmount" placeholder="0.0" min="0" step="any" value="100">
                         <button class="max-btn" id="maxBtn">MAX</button>
                     </div>
 
-                    <!-- 利率信息栏 + 规则按钮 -->
-                    <div class="rate-info-bar">
+                    <!-- 利率栏 -->
+                    <div class="rate-bar">
                         <div class="rate-text">
-                            <i class="fa-regular fa-calendar-check"></i>
+                            <i class="fa-regular fa-calendar-check" style="color:var(--primary);"></i>
                             <span>阶梯日利率</span>
                             <span class="rate-range">0.5% ～ 1.2%</span>
                         </div>
-                        <button class="rule-btn" id="toggleRuleBtn"><i class="fa-regular fa-circle-question"></i> 规则</button>
+                        <button class="rule-toggle" id="toggleRuleBtn"><i class="fa-regular fa-circle-question"></i> 规则</button>
                     </div>
 
-                    <!-- 规则详情卡片 -->
-                    <div class="rule-detail-card" id="ruleDetailCard">
-                        <h4><i class="fa-regular fa-list"></i> 利率规则说明</h4>
-                        <div class="rule-table">
-                            <div class="rule-tier">
-                                <div class="days">1-7 天</div>
-                                <div class="rate">0.5%</div>
-                                <div style="font-size:0.7rem; color:#558b6a;">日利率</div>
-                            </div>
-                            <div class="rule-tier">
-                                <div class="days">8-15 天</div>
-                                <div class="rate">0.6%</div>
-                                <div style="font-size:0.7rem; color:#558b6a;">日利率</div>
-                            </div>
-                            <div class="rule-tier">
-                                <div class="days">16-30 天</div>
-                                <div class="rate">0.8%</div>
-                                <div style="font-size:0.7rem; color:#558b6a;">日利率</div>
-                            </div>
-                            <div class="rule-tier">
-                                <div class="days">31-60 天</div>
-                                <div class="rate">1.0%</div>
-                                <div style="font-size:0.7rem; color:#558b6a;">日利率</div>
-                            </div>
-                            <div class="rule-tier">
-                                <div class="days">61天+</div>
-                                <div class="rate">1.2%</div>
-                                <div style="font-size:0.7rem; color:#558b6a;">日利率</div>
-                            </div>
+                    <!-- 规则卡片（修复文字溢出） -->
+                    <div class="rule-card" id="ruleDetailCard">
+                        <div class="rule-grid">
+                            <div class="rule-tier"><div>1-7天</div><div class="rate">0.5%</div></div>
+                            <div class="rule-tier"><div>8-15天</div><div class="rate">0.6%</div></div>
+                            <div class="rule-tier"><div>16-30天</div><div class="rate">0.8%</div></div>
+                            <div class="rule-tier"><div>31-60天</div><div class="rate">1.0%</div></div>
+                            <div class="rule-tier"><div>61天+</div><div class="rate">1.2%</div></div>
                         </div>
                         <div class="extra-rule">
-                            <i class="fa-regular fa-clock" style="margin-right: 6px;"></i>
-                            每日20:00 按H/USDT价格折算发放等值USDT的H。实际利率根据您的连续存期自动匹配。
+                            <i class="fa-regular fa-clock"></i> 每日20:00 按实时价格折算发放H。
                         </div>
                     </div>
 
-                    <!-- 动态奖励预览 -->
-                    <div class="reward-preview">
-                        <span class="reward-label"><i class="fa-regular fa-sun"></i> 预估每日奖励</span>
+                    <!-- 奖励预览 -->
+                    <div class="reward-panel">
+                        <span><i class="fa-regular fa-sun"></i> 预估每日奖励</span>
                         <span>
-                            <span class="reward-amount" id="dailyReward">1.2000</span>
-                            <span class="reward-suffix">/天</span>
+                            <span class="reward-number" id="dailyReward">1.2000</span>
+                            <span> H/天</span>
                         </span>
                     </div>
-                    <div class="hint-note">
-                        <i class="fa-regular fa-circle-info"></i> 按最高档1.2%估算，实际随存期浮动
-                    </div>
 
-                    <!-- 质押 & 赎回 按钮 -->
-                    <div class="action-buttons">
+                    <!-- 按钮组（质押/赎回） -->
+                    <div class="button-group">
                         <button class="btn-primary" id="stakeBtn"><i class="fa-solid fa-arrow-up-from-bracket"></i> 质押</button>
                         <button class="btn-secondary" id="unstakeBtn"><i class="fa-solid fa-arrow-down-to-bracket"></i> 赎回</button>
                     </div>
@@ -1000,60 +573,34 @@
 
                 <!-- 账单动态区域 -->
                 <div class="bill-section">
-                    <div class="bill-header">
-                        <h3><i class="fa-regular fa-receipt"></i> 账单动态</h3>
-                        <div class="bill-tabs">
-                            <span class="bill-tab active" data-tab="stake">质押</span>
-                            <span class="bill-tab" data-tab="reward">收益</span>
-                        </div>
+                    <div class="bill-tabs">
+                        <span class="bill-tab active" data-tab="stake">质押</span>
+                        <span class="bill-tab" data-tab="reward">收益</span>
                     </div>
-                    <!-- 质押记录列表 -->
                     <div class="bill-list" id="stakeRecords">
-                        <div class="bill-item">
-                            <span class="bill-type stake"><i class="fa-solid fa-arrow-up"></i> 质押</span>
-                            <span class="bill-amount">+500</span>
-                            <span class="bill-time">03-15 14:23</span>
-                        </div>
-                        <div class="bill-item">
-                            <span class="bill-type stake"><i class="fa-solid fa-arrow-up"></i> 质押</span>
-                            <span class="bill-amount">+200</span>
-                            <span class="bill-time">03-14 09:12</span>
-                        </div>
-                        <div class="bill-item">
-                            <span class="bill-type stake"><i class="fa-solid fa-arrow-up"></i> 质押</span>
-                            <span class="bill-amount">+1000</span>
-                            <span class="bill-time">03-12 18:45</span>
-                        </div>
+                        <div class="bill-item"><span>质押 +500 H</span><span>03-15 14:23</span></div>
+                        <div class="bill-item"><span>质押 +200 H</span><span>03-14 09:12</span></div>
+                        <div class="bill-item"><span>质押 +1000 H</span><span>03-12 18:45</span></div>
                     </div>
-                    <!-- 收益记录列表 -->
-                    <div class="bill-list hidden" id="rewardRecords">
-                        <div class="bill-item">
-                            <span class="bill-type reward"><i class="fa-regular fa-sun"></i> 发放</span>
-                            <span class="bill-amount">+12.36</span>
-                            <span class="bill-time">03-15 20:00</span>
-                        </div>
-                        <div class="bill-item">
-                            <span class="bill-type claim"><i class="fa-solid fa-hand-holding-heart"></i> 领取</span>
-                            <span class="bill-amount">-45.20</span>
-                            <span class="bill-time">03-14 10:30</span>
-                        </div>
-                        <div class="bill-item">
-                            <span class="bill-type reward"><i class="fa-regular fa-sun"></i> 发放</span>
-                            <span class="bill-amount">+10.15</span>
-                            <span class="bill-time">03-14 20:00</span>
-                        </div>
+                    <div class="bill-list" id="rewardRecords" style="display:none;">
+                        <div class="bill-item"><span>发放 +12.36 H</span><span>03-15 20:00</span></div>
+                        <div class="bill-item"><span>领取 -45.20 H</span><span>03-14 10:30</span></div>
+                        <div class="bill-item"><span>发放 +10.15 H</span><span>03-14 20:00</span></div>
                     </div>
-                    <div class="bill-more">
-                        <a href="#" id="viewMoreLink">查看更多 <i class="fa-regular fa-arrow-right"></i></a>
+                    <div class="bill-more" style="text-align:center; margin-top:12px;">
+                        <a href="#" id="viewMoreLink" style="color:var(--primary);">查看更多 <i class="fa-regular fa-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
-
-            <!-- 脚注说明 -->
-            <div class="footnote">
-                <i class="fa-regular fa-hand-back-point-up"></i> 链上赚币 · OKX Boost · 海豚社区
-            </div>
         </div>
+
+        <!-- 底部导航 -->
+        <nav class="bottom-nav">
+            <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>首页</span></a>
+            <a href="earn.html" class="nav-item active"><i class="fas fa-coins"></i><span>赚币</span></a>
+            <a href="model.html" class="nav-item"><i class="fas fa-robot"></i><span>模型</span></a>
+            <a href="wallet.html" class="nav-item"><i class="fas fa-wallet"></i><span>钱包</span></a>
+        </nav>
     </div>
 
     <script>
@@ -1063,7 +610,6 @@
             const amountInput = document.getElementById('stakeAmount');
             const dailySpan = document.getElementById('dailyReward');
             const maxBtn = document.getElementById('maxBtn');
-            const connectBtn = document.getElementById('connectWalletBtn');
             const stakeBtn = document.getElementById('stakeBtn');
             const unstakeBtn = document.getElementById('unstakeBtn');
             const toggleRuleBtn = document.getElementById('toggleRuleBtn');
@@ -1095,17 +641,8 @@
             });
 
             function demoAlert(action) {
-                alert(`[OKX Wallet] ${action} OKX Wallet正在接入中\n智能合约正在部署`);
+                alert(`[演示] ${action} 功能尚未接入智能合约。\n当前环境为静态原型。`);
             }
-
-            connectBtn.addEventListener('click', function() {
-                demoAlert('连接钱包');
-                const originalHtml = connectBtn.innerHTML;
-                connectBtn.innerHTML = '<i class="fa-regular fa-circle-check"></i>';
-                setTimeout(() => {
-                    connectBtn.innerHTML = originalHtml;
-                }, 1500);
-            });
 
             stakeBtn.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -1142,6 +679,7 @@
                 }
             });
 
+            // 账单标签切换
             const stakeTab = document.querySelector('.bill-tab[data-tab="stake"]');
             const rewardTab = document.querySelector('.bill-tab[data-tab="reward"]');
             const stakeList = document.getElementById('stakeRecords');
@@ -1150,24 +688,30 @@
             stakeTab.addEventListener('click', function() {
                 stakeTab.classList.add('active');
                 rewardTab.classList.remove('active');
-                stakeList.classList.remove('hidden');
-                rewardList.classList.add('hidden');
+                stakeList.style.display = 'block';
+                rewardList.style.display = 'none';
             });
 
             rewardTab.addEventListener('click', function() {
                 rewardTab.classList.add('active');
                 stakeTab.classList.remove('active');
-                rewardList.classList.remove('hidden');
-                stakeList.classList.add('hidden');
+                stakeList.style.display = 'none';
+                rewardList.style.display = 'block';
             });
 
             document.getElementById('viewMoreLink').addEventListener('click', function(e) {
                 e.preventDefault();
                 demoAlert('查看更多记录');
             });
+
+            // 底部导航高亮
+            const currentPage = window.location.pathname.split('/').pop() || 'earn.html';
+            document.querySelectorAll('.nav-item').forEach(a => {
+                if (a.getAttribute('href') === currentPage) {
+                    a.classList.add('active');
+                }
+            });
         })();
     </script>
 </body>
 </html>
-
-
