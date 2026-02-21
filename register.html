@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>注册 · 海豚社区</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="card" style="max-width: 400px;">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <i class="fas fa-water" style="font-size: 3rem; color: var(--primary);"></i>
+            <h1>注册海豚社区</h1>
+        </div>
+
+        <form id="registerForm">
+            <div style="margin-bottom: 1rem;">
+                <label for="username">用户名</label>
+                <input type="text" id="username" placeholder="昵称" required>
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <label for="email">邮箱</label>
+                <input type="email" id="email" placeholder="your@email.com" required>
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <label for="password">密码</label>
+                <input type="password" id="password" placeholder="至少6位" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">注册</button>
+        </form>
+
+        <p style="text-align: center; margin-top: 1.5rem;">
+            已有账号？ <a href="login.html">去登录</a>
+        </p>
+        <p style="text-align: center;">
+            <a href="entry.html">返回进入页</a>
+        </p>
+
+        <div id="message" style="margin-top: 1rem; text-align: center; color: #ef4444;"></div>
+    </div>
+
+    <script type="module">
+        import { supabase } from './js/supabase.js'
+
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault()
+            const username = document.getElementById('username').value
+            const email = document.getElementById('email').value
+            const password = document.getElementById('password').value
+            const messageDiv = document.getElementById('message')
+
+            messageDiv.textContent = '注册中…'
+            messageDiv.style.color = '#3b82f6'
+
+            // 1. 注册用户
+            const { data, error } = await supabase.auth.signUp({
+                email,
+                password,
+                options: {
+                    data: { username }  // 存到 user_metadata
+                }
+            })
+
+            if (error) {
+                messageDiv.textContent = '注册失败：' + error.message
+                messageDiv.style.color = '#ef4444'
+                return
+            }
+
+            if (data.user) {
+                try {
+                    const { error: profileError } = await supabase
+                        .from('profiles')
+                        .insert([
+                            { id: data.user.id, username, points: 0 }
+                        ])
+                    if (profileError) {
+                        console.warn('profile 创建失败，但注册成功', profileError)
+                    }
+                } catch (err) {
+                    console.warn('profile 创建异常', err)
+                }
+            }
+
+            messageDiv.textContent = '注册成功！请查收验证邮件（如有配置），然后登录。'
+            messageDiv.style.color = '#10b981'
+            setTimeout(() => {
+                window.location.href = 'login.html'
+            }, 3000)
+        })
+    </script>
+</body>
+</html>
