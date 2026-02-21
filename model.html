@@ -6,7 +6,8 @@
     <title>海豚社区 · 模型</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -15,57 +16,20 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             line-height: 1.7;
             color: #1a2e3f;
-            padding: 20px 16px;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
         }
-        .app-container { max-width: 700px; width: 100%; }
-
-        .header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-        .back-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 40px;
-            background: white;
-            color: #1a73e8;
-            font-size: 1.2rem;
-            text-decoration: none;
-            border: 1px solid #e2e8f0;
-            transition: 0.2s;
-        }
-        .back-icon:hover {
-            background: #1a73e8;
-            color: white;
-            border-color: #1a73e8;
-        }
-        .header h1 {
-            font-size: 2rem;
-            font-weight: 600;
-            color: #0a1a2f;
-            margin: 0;
-        }
-
-        .cards-container {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
         .drawer-card {
-            background: #ffffff;
-            border-radius: 24px;
-            border: 1px solid #e9eef2;
+            background: rgba(255,255,255,0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 40px;
+            border: 1px solid rgba(255,255,255,0.6);
+            box-shadow: 0 8px 24px -8px rgba(0,0,0,0.10);
             width: 100%;
+            margin-bottom: 20px;
             transition: all 0.2s ease;
         }
 
@@ -73,7 +37,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 16px 16px;
+            padding: 20px 24px;
             cursor: pointer;
             user-select: none;
         }
@@ -91,14 +55,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #1a73e8;
+            background: #8b5cf6;
         }
-        .title-section.card1 i { background: #1a73e8; }
+        .title-section.card1 i { background: #8b5cf6; }
         .title-section.card2 i { background: #8e24aa; }
-        .title-section.card3 i { background: #fb8c00; }
+        .title-section.card3 i { background: #8b5cf6; }
         .title-section.card4 i { background: #d81b60; }
-        .title-section.card5 i { background: #00897b; }
-        .title-section.card6 i { background: #43a047; }
+        .title-section.card5 i { background: #8b5cf6; }
+        .title-section.card6 i { background: #8b5cf6; }
 
         .title-section h2 {
             font-size: 1.25rem;
@@ -107,7 +71,7 @@
         }
         .drawer-header .toggle-icon {
             font-size: 1.2rem;
-            color: #1a73e8;
+            color: #8b5cf6;
             transition: transform 0.3s;
         }
         .drawer-header .toggle-icon.rotated {
@@ -115,48 +79,69 @@
         }
 
         .drawer-content {
-            padding: 0 16px 16px 16px;
+            padding: 0 24px 24px 24px;
             display: none;
-            border-top: 1px solid #edf2f7;
+            border-top: 1px solid rgba(0,0,0,0.06);
         }
         .drawer-card.expanded .drawer-content {
             display: block;
         }
 
+        /* card2 typography improvements */
         .drawer-content p,
         .drawer-content li,
         .drawer-content .paragraph {
             font-size: 1rem;
-            line-height: 1.7;
-            margin-bottom: 1.2rem;
-            color: #1e2f3d;
+            line-height: 1.8;
+            margin-bottom: 1.4rem;
+            color: #374151;
         }
         .drawer-content h2 {
-            font-size: 1.6rem;
-            font-weight: 600;
+            font-size: 1.5rem;
+            font-weight: 700;
             margin: 1.8rem 0 1rem 0;
-            color: #0b4f7c;
-            border-bottom: 2px solid #d4e4f0;
-            padding-bottom: 0.4rem;
+            color: #1a1a2e;
+            border-bottom: 2px solid #ede9fe;
+            padding-bottom: 0.5rem;
         }
         .drawer-content h3 {
-            font-size: 1.3rem;
+            font-size: 1.15rem;
             font-weight: 600;
-            margin: 1.5rem 0 0.8rem 0;
-            color: #13638a;
-            border-left: none;
-            padding-left: 0;
+            margin: 1.4rem 0 0.8rem 0;
+            color: #4c1d95;
+            border-left: 3px solid #8b5cf6;
+            padding-left: 0.7rem;
         }
         .drawer-content ul, .drawer-content ol {
-            margin: 0.8rem 0 1.5rem 1.2rem;
+            margin: 0.8rem 0 1.5rem 1.6rem;
+            list-style: disc;
         }
         .drawer-content li {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .highlight, .highlight-box {
+            background: #f5f3ff;
+            border-left: 4px solid #8b5cf6;
+            border-radius: 16px;
+            padding: 1.2rem 1.2rem;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            color: #3b1f7a;
+        }
+        .card-note {
+            background: #fffbf0;
+            border-left: 4px solid #edb042;
+            border-radius: 16px;
+            padding: 1.2rem 1.2rem;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+            color: #1e2f3d;
         }
 
         .badge {
             display: inline-block;
-            background: #1a73e8;
+            background: #8b5cf6;
             color: white;
             font-size: 0.75rem;
             font-weight: 500;
@@ -166,17 +151,6 @@
             letter-spacing: 0.3px;
         }
         .badge.gold { background: #f1c40f; color: #4a3b00; }
-
-        .highlight, .card-note, .highlight-box {
-            background: #f5f9ff;
-            border-left: 4px solid #1a73e8;
-            border-radius: 16px;
-            padding: 1.2rem 1.2rem;
-            margin: 1.5rem 0;
-            font-size: 0.95rem;
-            color: #1e2f3d;
-        }
-        .card-note { background: #fffbf0; border-left-color: #edb042; }
 
         .flywheel {
             background: #f5f9ff;
@@ -196,7 +170,7 @@
             height: 140px;
             margin-left: -70px;
             margin-top: -70px;
-            border: 2px dashed rgba(26,115,232,0.2);
+            border: 2px dashed rgba(139,92,246,0.2);
             border-radius: 50%;
             animation: spin 15s linear infinite;
             pointer-events: none;
@@ -223,11 +197,11 @@
             font-size: 0.9rem;
             box-shadow: 0 2px 6px rgba(0,0,0,0.02);
         }
-        .flywheel-arrow { color: #1a73e8; font-size: 1rem; }
+        .flywheel-arrow { color: #8b5cf6; font-size: 1rem; }
         .flywheel-note {
             margin-top: 1rem;
             font-weight: 500;
-            color: #1a73e8;
+            color: #8b5cf6;
             font-size: 0.9rem;
         }
 
@@ -245,11 +219,11 @@
         }
         .price-row:last-child { border-bottom: none; }
         .price-label { font-weight: 500; color: #1e2f3d; }
-        .price-value { font-weight: 600; color: #1a73e8; }
+        .price-value { font-weight: 600; color: #8b5cf6; }
         .total-price {
             font-size: 1.3rem;
             font-weight: 700;
-            color: #0d47a1;
+            color: #6d4aff;
             text-align: center;
             margin-top: 1rem;
         }
@@ -281,25 +255,27 @@
         }
 
         /* 模拟交易卡片样式 */
-        .sim-panel { background: #f8fafc; border-radius: 20px; padding: 1.2rem; margin: 1rem 0; }
+        .sim-panel { background: rgba(255,255,255,0.7); border-radius: 30px; padding: 1.2rem; margin: 1rem 0; }
         .sim-flex-row { display: flex; flex-wrap: wrap; gap: 16px; }
-        .sim-action-card { flex: 1 1 280px; background: white; border-radius: 20px; padding: 1.2rem; border: 1px solid #e2e8f0; }
-        .sim-action-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
-        .sim-action-title span { background: #e3f2fd; border-radius: 30px; padding: 0.2rem 0.8rem; font-size: 0.7rem; color: #1a73e8; }
+        .sim-action-card { flex: 1 1 220px; background: rgba(255,255,255,0.9); border-radius: 30px; padding: 1.2rem; border: 1px solid #e2e8f0; }
+        .sim-action-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; color: #0f172a; }
+        .sim-action-title span { background: #ede9fe; border-radius: 30px; padding: 0.2rem 0.8rem; font-size: 0.7rem; color: #8b5cf6; }
         .sim-input-group { margin-bottom: 1rem; }
-        .sim-input-group label { display: block; font-weight: 500; margin-bottom: 0.3rem; }
-        .sim-input-group input { width: 100%; padding: 0.8rem; border-radius: 40px; border: 1px solid #e2e8f0; }
-        .sim-btn { background: #1a73e8; color: white; border: none; border-radius: 40px; padding: 0.8rem; width: 100%; font-weight: 600; margin-bottom: 0.5rem; cursor: pointer; }
-        .sim-btn-success { background: #2e7d32; }
-        .sim-btn-secondary { background: white; color: #1a73e8; border: 1px solid #1a73e8; }
-        .sim-info-badge { background: #f8fafc; border-radius: 20px; padding: 0.8rem; text-align: center; font-size: 0.9rem; }
-        .sim-mechanism-note { margin-top: 1rem; background: #f0f7ff; border-radius: 16px; padding: 0.8rem; font-size: 0.8rem; }
+        .sim-input-group label { display: block; font-weight: 500; margin-bottom: 0.3rem; color: #8b5cf6; }
+        .sim-input-group input { width: 100%; padding: 0.8rem; border-radius: 40px; border: 1px solid #e2e8f0; outline: none; transition: box-shadow 0.2s; }
+        .sim-input-group input:focus { box-shadow: 0 0 0 3px rgba(139,92,246,0.2); border-color: #8b5cf6; }
+        .sim-btn { background: linear-gradient(145deg, #8b5cf6, #7c3aed); color: white; border: none; border-radius: 40px; padding: 0.8rem; width: 100%; font-weight: 600; margin-bottom: 0.5rem; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 6px 16px -6px rgba(109,74,255,0.4); }
+        .sim-btn:active { transform: scale(0.97); box-shadow: 0 3px 8px -3px rgba(0,0,0,0.2); }
+        .sim-btn-success { background: linear-gradient(145deg, #16a34a, #15803d); box-shadow: 0 6px 16px -6px rgba(22,163,74,0.4); }
+        .sim-btn-secondary { background: white; color: #8b5cf6; border: 1px solid #8b5cf6; box-shadow: none; padding: 0.5rem 1.2rem; width: auto; }
+        .sim-info-badge { background: rgba(255,255,255,0.8); border-radius: 20px; padding: 0.8rem; text-align: center; font-size: 0.9rem; color: #64748b; }
+        .sim-mechanism-note { margin-top: 1rem; background: #f5f3ff; border-radius: 16px; padding: 0.8rem; font-size: 0.8rem; color: #64748b; }
         .sim-rate-table { display: grid; grid-template-columns: repeat(5,1fr); gap: 4px; margin-bottom: 1rem; }
-        .sim-rate-item { background: #ecf4ff; border-radius: 20px; padding: 0.5rem 0; text-align: center; }
-        .sim-rate-days { color: #1a73e8; }
-        .sim-rate-percent { color: #2e7d32; font-weight: 700; }
-        .sim-last-sell { background: #e8f0fe; border-radius: 16px; padding: 0.8rem; margin: 0.8rem 0; font-size: 0.8rem; }
-        .sim-profit-estimate { background: #e2f0e8; border-radius: 16px; padding: 0.8rem; font-size: 0.8rem; }
+        .sim-rate-item { background: #f5f3ff; border-radius: 20px; padding: 0.5rem 0; text-align: center; }
+        .sim-rate-days { color: #8b5cf6; }
+        .sim-rate-percent { color: #16a34a; font-weight: 700; }
+        .sim-last-sell { background: #ede9fe; border-radius: 16px; padding: 0.8rem; margin: 0.8rem 0; font-size: 0.8rem; }
+        .sim-profit-estimate { background: #ede9fe; border-radius: 16px; padding: 0.8rem; font-size: 0.8rem; }
         .sim-highlight { background: #fef9e7; border-left: 4px solid #f1c40f; border-radius: 20px; padding: 1rem; margin: 1rem 0; font-size: 0.9rem; }
 
         /* 卡片4 KOL评价 */
@@ -313,24 +289,138 @@
         /* 卡片5价格参照表 */
         .table-wrapper { overflow-x: auto; }
         .repay-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-        .pagination-bar { display: flex; flex-wrap: wrap; justify-content: space-between; margin-top: 1rem; }
+        .pagination-bar { display: flex; flex-wrap: wrap; justify-content: space-between; margin-top: 1rem; align-items: center; gap: 8px; }
+
+        /* 汇总统计区域 */
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(124,58,237,0.12));
+            border-radius: 20px;
+            padding: 14px 12px;
+            border: 1px solid rgba(139,92,246,0.2);
+        }
+        .summary-item {
+            text-align: center;
+            padding: 8px 4px;
+        }
+        .summary-label {
+            font-size: 0.7rem;
+            color: #7c3aed;
+            font-weight: 500;
+            margin-bottom: 4px;
+            letter-spacing: 0.02em;
+        }
+        .summary-value {
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #0f172a;
+            word-break: break-all;
+        }
+        .summary-value.gain {
+            color: #16a34a;
+            font-size: 1rem;
+        }
+
+        /* 价格表 */
+        .price-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+            border: 1px solid rgba(139,92,246,0.18);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .price-table thead tr th {
+            background: linear-gradient(145deg, #8b5cf6, #7c3aed);
+            color: #fff;
+            font-weight: 700;
+            padding: 10px 8px;
+            text-align: center;
+            white-space: nowrap;
+            font-size: 0.78rem;
+            letter-spacing: 0.01em;
+        }
+        .price-table thead tr th:first-child { border-radius: 12px 0 0 0; }
+        .price-table thead tr th:last-child  { border-radius: 0 12px 0 0; }
+        .price-table tbody tr td {
+            padding: 8px 7px;
+            border-bottom: 1px solid rgba(139,92,246,0.08);
+            text-align: right;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 0.79rem;
+            color: #374151;
+        }
+        .price-table tbody tr td:first-child { text-align: center; }
+        .price-table tbody tr:last-child td { border-bottom: none; }
+        .price-table tbody tr:nth-child(even) td { background: rgba(139,92,246,0.03); }
+        .price-table tbody tr:hover td { background: rgba(139,92,246,0.07); transition: background 0.15s; }
+        .price-table .col-price {
+            color: #7c3aed;
+            font-weight: 700;
+        }
+        .trend-up   { color: #16a34a; font-size: 0.75rem; margin-left: 2px; }
+        .trend-down { color: #dc2626; font-size: 0.75rem; margin-left: 2px; }
+
+        /* 分页按钮 */
+        .pagination-controls { display: flex; align-items: center; gap: 4px; }
+        .pagination-btn {
+            background: linear-gradient(145deg, #8b5cf6, #7c3aed);
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            padding: 5px 10px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            box-shadow: 0 3px 8px -3px rgba(109,74,255,0.35);
+            min-width: 32px;
+        }
+        .pagination-btn:hover:not(:disabled) { background: linear-gradient(145deg, #7c3aed, #6d28d9); transform: translateY(-1px); }
+        .pagination-btn:active:not(:disabled) { transform: scale(0.95); }
+        .pagination-btn:disabled { background: #e2e8f0; color: #94a3b8; box-shadow: none; cursor: default; }
+        .page-info {
+            font-size: 0.8rem;
+            color: #7c3aed;
+            font-weight: 600;
+            padding: 0 4px;
+            white-space: nowrap;
+        }
+        .record-stats { font-size: 0.78rem; color: #6b7280; align-self: center; }
+        .rows-per-page { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: #6b7280; }
+        .rows-per-page select {
+            border: 1px solid rgba(139,92,246,0.3);
+            border-radius: 20px;
+            padding: 3px 8px;
+            font-size: 0.78rem;
+            color: #7c3aed;
+            background: #fff;
+            outline: none;
+            cursor: pointer;
+        }
+        .rows-per-page select:focus { box-shadow: 0 0 0 3px rgba(139,92,246,0.2); border-color: #8b5cf6; }
 
         /* 卡片6留言板 */
-        .message-item { display: flex; gap: 12px; margin-bottom: 1rem; }
-        .message-avatar { width: 40px; height: 40px; background: #e3f2fd; border-radius: 20px; display: flex; align-items: center; justify-content: center; }
+        .message-item { display: flex; gap: 12px; margin-bottom: 12px; background: rgba(255,255,255,0.85); border-radius: 24px; padding: 16px; border: 1px solid #e2e8f0; }
+        .message-avatar { width: 40px; height: 40px; background: #ede9fe; border-radius: 20px; display: flex; align-items: center; justify-content: center; color: #7c3aed; font-weight: 600; flex-shrink: 0; }
         .message-input-area { display: flex; gap: 10px; margin-top: 1rem; }
-        .message-input-area input { flex:1; padding: 0.8rem; border-radius: 40px; border: 1px solid #e2e8f0; }
-        .message-input-area button { background: #1a73e8; color: white; border: none; border-radius: 40px; padding: 0.8rem 2rem; cursor: pointer; }
+        .message-input-area input { flex:1; padding: 0.8rem 1.2rem; border-radius: 40px; border: 1px solid #e2e8f0; outline: none; transition: box-shadow 0.2s; }
+        .message-input-area input:focus { box-shadow: 0 0 0 3px rgba(139,92,246,0.2); border-color: #8b5cf6; }
+        .message-input-area button { background: linear-gradient(145deg, #8b5cf6, #7c3aed); color: white; border: none; border-radius: 40px; padding: 0.8rem 2rem; cursor: pointer; font-weight: 600; transition: all 0.2s ease; box-shadow: 0 6px 16px -6px rgba(109,74,255,0.4); }
+        .message-input-area button:active { transform: scale(0.97); }
     </style>
 </head>
 <body>
-    <div class="app-container">
+    <div class="page-content">
         <div class="header">
             <a href="index.html" class="back-icon"><i class="fas fa-arrow-left"></i></a>
-            <h1>模型</h1>
+            <h1>经济模型</h1>
         </div>
 
-        <div class="cards-container">
+
             <!-- 卡片1：海豚模式解析 -->
             <div class="drawer-card" id="card1">
                 <div class="drawer-header" data-target="card1">
@@ -338,7 +428,7 @@
                     <i class="fas fa-chevron-down toggle-icon" id="icon-card1"></i>
                 </div>
                 <div class="drawer-content" id="content-card1">
-                    <div class="intro-text"><i class="fas fa-quote-left" style="color:#1A73E8; margin-right:8px;"></i>海豚模式是基于联合曲线公式的代币经济模型以及创新的协同策略构成的一个由智能合约驱动，用户行为为主导的链上价值循环系统。</div>
+                    <div class="intro-text"><i class="fas fa-quote-left" style="color:#8b5cf6; margin-right:8px;"></i>海豚模式是基于联合曲线公式的代币经济模型以及创新的协同策略构成的一个由智能合约驱动，用户行为为主导的链上价值循环系统。</div>
                     <h2>联合曲线</h2>
                     <p><span class="badge">公平定价</span>海豚代币 H 的价格不由任何人决定，而是由智能合约根据<strong>联合曲线</strong>自动计算——买入时供应增加、价格上升，卖出时反之。核心公式：<strong>x·y = k</strong>（Uniswap AMM 机制），透明且无争议。</p>
                     <h2>H 代币经济模型</h2>
@@ -374,12 +464,12 @@
                     <div class="asset-row"><span class="asset-label">成员持币</span><span class="asset-value">7900万 H</span></div>
                     <div class="asset-row"><span class="asset-label">UniSwap池</span><span class="asset-value">949.9万 H</span></div>
                     <p style="margin-top:16px;">国库收入超1000U即回购300U销毁（合约强制）。外部持币极少，无抛压。</p>
-                    <div class="chart-placeholder" style="background:#f0f4f9;border-radius:28px;height:120px;display:flex;align-items:center;justify-content:center;color:#546E7A;margin:24px0;"><i class="fas fa-chart-bar" style="font-size:30px;color:#1A73E8;"></i><span>数据中心实时看板（示例）</span></div>
+                    <div class="chart-placeholder" style="background:#f0f4f9;border-radius:28px;height:120px;display:flex;align-items:center;justify-content:center;color:#546E7A;margin:24px0;"><i class="fas fa-chart-bar" style="font-size:30px;color:#8b5cf6;"></i><span>数据中心实时看板（示例）</span></div>
                     <h2>天然协调策略</h2>
                     <ul style="list-style:none;margin:16px0;">
-                        <li style="display:flex;gap:12px;margin-bottom:16px;"><i class="fas fa-circle-check" style="color:#1A73E8;"></i>H交易 → 5%税 → 国库</li>
-                        <li style="display:flex;gap:12px;margin-bottom:16px;"><i class="fas fa-circle-check" style="color:#1A73E8;"></i>Boost返佣 → 0.34% → 国库</li>
-                        <li style="display:flex;gap:12px;margin-bottom:16px;"><i class="fas fa-circle-check" style="color:#1A73E8;"></i>用户行为：质押 → 卖出 → 复投 → 推动交易量</li>
+                        <li style="display:flex;gap:12px;margin-bottom:16px;"><i class="fas fa-circle-check" style="color:#8b5cf6;"></i>H交易 → 5%税 → 国库</li>
+                        <li style="display:flex;gap:12px;margin-bottom:16px;"><i class="fas fa-circle-check" style="color:#8b5cf6;"></i>Boost返佣 → 0.34% → 国库</li>
+                        <li style="display:flex;gap:12px;margin-bottom:16px;"><i class="fas fa-circle-check" style="color:#8b5cf6;"></i>用户行为：质押 → 卖出 → 复投 → 推动交易量</li>
                     </ul>
                     <div class="note" style="background:#FEF9E7;border-radius:24px;padding:18px;"><i class="fas fa-lightbulb"></i> 早期用户滋养社区，社区通过国库回购反哺用户，形成独特双向飞轮。</div>
                     <h2>模型计算器</h2>
@@ -488,7 +578,7 @@
                     <div class="sim-panel">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
                             <h3 style="margin:0; font-weight:600;">📊 实时持仓状态</h3>
-                            <button class="sim-btn-secondary" id="sim_resetBtn" style="background:white; color:#1a73e8; border:1px solid #1a73e8; border-radius:40px; padding:0.5rem 1.2rem; cursor:pointer;">⟲ 重置</button>
+                            <button class="sim-btn-secondary" id="sim_resetBtn">⟲ 重置</button>
                         </div>
                         <div class="stats-grid" id="sim_stateGrid" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:12px;"></div>
                     </div>
@@ -583,8 +673,8 @@
                     <i class="fas fa-chevron-down toggle-icon" id="icon-card5"></i>
                 </div>
                 <div class="drawer-content" id="content-card5">
-                    <div class="stats-grid" id="statsPanel5"></div>
-                    <div class="table-wrapper"><table><thead><tr><th>累计买入(U)</th><th>池子U</th><th>池子H</th><th>买入H</th><th>累计买入/H</th><th>占比</th><th>当前价格</th></tr></thead><tbody id="tableBody5"></tbody></table></div>
+                    <div class="summary" id="statsPanel5"></div>
+                    <div class="table-wrapper"><table class="price-table"><thead><tr><th>累计买入(U)</th><th>池子U</th><th>池子H</th><th>买入H</th><th>累计买入/H</th><th>占比</th><th>当前价格</th></tr></thead><tbody id="tableBody5"></tbody></table></div>
                     <div class="pagination-bar">
                         <div class="record-stats" id="totalRecords5">共0条</div>
                         <div class="pagination-controls">
@@ -612,8 +702,14 @@
                     <div class="message-input-area"><input type="text" placeholder="写下你的留言..."><button>发送</button></div>
                 </div>
             </div>
-        </div>
     </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>首页</span></a>
+        <a href="earn.html" class="nav-item"><i class="fas fa-coins"></i><span>赚币</span></a>
+        <a href="model.html" class="nav-item"><i class="fas fa-robot"></i><span>模型</span></a>
+        <a href="wallet.html" class="nav-item"><i class="fas fa-wallet"></i><span>钱包</span></a>
+    </nav>
 
     <script>
         (function() {
@@ -1462,11 +1558,11 @@
                     const first = allData[0];
                     const last = allData[totalRows-1];
                     const priceChange = ((last.价格Num / first.价格Num * 100) - 100).toFixed(2);
+                    const gainSign = parseFloat(priceChange) >= 0 ? '+' : '';
                     const statsHtml = `
-                        <div class="stat-item"><span class="stat-label">总记录数</span><div class="stat-value">${totalRows}</div></div>
-                        <div class="stat-item"><span class="stat-label">起始价格</span><div class="stat-value">${first.价格Num.toFixed(8)}</div></div>
-                        <div class="stat-item"><span class="stat-label">最终价格</span><div class="stat-value">${last.价格Num.toFixed(8)}</div></div>
-                        <div class="stat-item"><span class="stat-label">涨幅</span><div class="stat-value">+${priceChange}%</div></div>
+                        <div class="summary-item"><div class="summary-label">起始价格</div><div class="summary-value">${first.价格Num.toFixed(8)}</div></div>
+                        <div class="summary-item"><div class="summary-label">最终价格</div><div class="summary-value">${last.价格Num.toFixed(8)}</div></div>
+                        <div class="summary-item"><div class="summary-label">总涨幅</div><div class="summary-value gain">${gainSign}${priceChange}%</div></div>
                     `;
                     document.getElementById('statsPanel5').innerHTML = statsHtml;
                 }
@@ -1479,7 +1575,14 @@
                     const end = Math.min(start + rowsPerPage5, totalRows);
                     const pageData = allData.slice(start, end);
                     let tbodyHtml = '';
-                    for (let r of pageData) {
+                    for (let i = 0; i < pageData.length; i++) {
+                        const r = pageData[i];
+                        let trendHtml = '';
+                        if (i > 0) {
+                            const prevPrice = pageData[i - 1].价格Num;
+                            if (r.价格Num > prevPrice) trendHtml = '<span class="trend-up">↑</span>';
+                            else if (r.价格Num < prevPrice) trendHtml = '<span class="trend-down">↓</span>';
+                        }
                         tbodyHtml += `<tr>
                             <td class="text-center">${r.累计买入}</td>
                             <td class="text-right">${r.池子U}</td>
@@ -1487,7 +1590,7 @@
                             <td class="text-right">${r.买入H || '-'}</td>
                             <td class="text-right">${r.累计买入H}</td>
                             <td class="text-right">${r.占比}</td>
-                            <td class="text-right">${r.当前价格}</td>
+                            <td class="text-right col-price">${r.当前价格}${trendHtml}</td>
                         </tr>`;
                     }
                     document.getElementById('tableBody5').innerHTML = tbodyHtml;
@@ -1524,6 +1627,14 @@
                 renderStats5();
                 renderTable5();
             })();
+        })();
+
+        // 底部导航高亮
+        (function() {
+            const current = window.location.pathname.split('/').pop() || 'index.html';
+            document.querySelectorAll('.nav-item').forEach(function(a) {
+                if (a.getAttribute('href') === current) a.classList.add('active');
+            });
         })();
     </script>
 </body>
