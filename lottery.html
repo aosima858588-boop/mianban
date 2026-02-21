@@ -3,248 +3,459 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>抽奖 · 海豚社区</title>
+    <title>积分 · 海豚社区</title>
     <link rel="stylesheet" href="css/style.css">
-    <!-- Font Awesome 图标库 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
     <style>
-        /* 页面特有样式 */
+        /* 紫色主题变量 */
+        :root {
+            --primary: #8b5cf6;
+            --primary-dark: #7c3aed;
+            --primary-light: #ede9fe;
+            --primary-gradient: linear-gradient(145deg, #8b5cf6, #6d4aff);
+            --bg-gradient: radial-gradient(circle at 10% 20%, #ffffff, #f5f3ff);
+            --text-dark: #0f172a;
+            --text-light: #64748b;
+            --card-bg: rgba(255,255,255,0.75);
+            --card-border: 1px solid rgba(255,255,255,0.6);
+            --shadow-lg: 0 20px 40px -15px rgba(0,0,0,0.15);
+        }
         body {
-            background: linear-gradient(145deg, #f3f0ff, #ede9fe);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg-gradient);
+            font-family: 'Inter', sans-serif;
+            padding: 20px 16px;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             margin: 0;
         }
-        /* 统一卡片 */
-        .glass-card {
-            background: rgba(255,255,255,0.75);
+        .app-container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        /* 头部 */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .back-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 9999px;
+            background: rgba(255,255,255,0.6);
+            backdrop-filter: blur(8px);
+            color: var(--primary);
+            font-size: 1.2rem;
+            text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.6);
+            transition: 0.2s;
+        }
+        .back-icon:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        /* 卡片通用 */
+        .card {
+            background: var(--card-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-radius: 40px;
-            padding: 28px 24px;
-            box-shadow: 0 20px 40px -15px rgba(0,20,40,0.15), 0 0 0 1px rgba(255,255,255,0.8) inset;
-            border: 1px solid rgba(255,255,255,0.6);
+            padding: 24px 20px;
+            box-shadow: var(--shadow-lg);
+            border: var(--card-border);
+            margin-bottom: 20px;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 30px 45px -15px rgba(139,92,246,0.2);
+        }
+
+        /* 积分总览 */
+        .points-hero {
+            text-align: center;
             margin-bottom: 20px;
         }
-        /* 抽奖转盘 */
-        .lottery-wheel {
+        .points-icon {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        .points-number {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            line-height: 1;
+        }
+        .points-label {
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        /* 等级进度条 */
+        .level-progress {
             background: white;
-            border-radius: 50%;
-            width: 240px;
-            height: 240px;
-            margin: 20px auto 30px;
+            border-radius: 30px;
+            padding: 18px;
+            margin-bottom: 24px;
+            border: 1px solid #e2e8f0;
+        }
+        .level-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .level-name {
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 1.2rem;
+        }
+        .level-next {
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+        .progress-bar {
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 65%;
+            background: var(--primary-gradient);
+            border-radius: 6px;
+        }
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-light);
+            font-size: 0.8rem;
+        }
+
+        /* 操作按钮 */
+        .points-actions {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        .points-btn {
+            flex: 1;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 40px;
+            padding: 16px 0;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        .points-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px -8px var(--primary);
+        }
+        .points-btn i {
+            margin-right: 8px;
+        }
+
+        /* 积分明细分组 */
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 30px 0 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .detail-group {
+            background: rgba(255,255,255,0.5);
+            border-radius: 30px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .group-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        .detail-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .detail-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            border-radius: 22px;
+            padding: 14px 16px;
+            border: 1px solid #e2e8f0;
+            transition: 0.1s;
+        }
+        .detail-item:hover {
+            border-color: var(--primary);
+        }
+        .detail-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .detail-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 22px;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.4rem;
+        }
+        .detail-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .detail-reason {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        .detail-time {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+        .detail-change {
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+        .detail-change.positive {
+            color: #10b981;
+        }
+        .detail-change.negative {
+            color: #ef4444;
+        }
+
+        /* 底部导航 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(15px);
+            padding: 6px 24px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.8);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            z-index: 100;
+            box-sizing: border-box;
+        }
+        .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            box-shadow: 0 25px 40px -10px rgba(139,92,246,0.3);
-            border: 6px solid rgba(255,255,255,0.9);
-            animation: float 4s ease-in-out infinite;
+            gap: 2px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #94A3B8;
+            text-decoration: none;
+            transition: color 0.2s;
+            padding: 6px 8px;
+            border-radius: 30px;
+            position: relative;
         }
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
-            100% { transform: translateY(0px); }
+        .nav-item i {
+            font-size: 20px;
         }
-        .prize-icon { font-size: 4rem; color: #8b5cf6; margin-bottom: 10px; }
-        .prize-name { font-size: 2.2rem; font-weight: 800; color: #0a1a2f; }
-        .prize-desc { color: #64748b; }
-        .draw-btn {
-            background: linear-gradient(145deg, #8b5cf6, #6d4aff);
-            border: none;
-            padding: 18px 36px;
-            border-radius: 60px;
-            color: white;
-            font-weight: 700;
-            font-size: 1.5rem;
-            cursor: pointer;
-            box-shadow: 0 15px 30px -8px #8b5cf6;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin: 0 auto 20px;
-            border: 1px solid rgba(255,255,255,0.3);
-            width: 100%;
+        .nav-item:hover {
+            color: var(--primary);
+            background: rgba(139,92,246,0.05);
         }
-        .draw-btn:disabled { opacity: 0.5; pointer-events: none; }
-        .prize-list {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin: 30px 0;
+        .nav-item.active {
+            color: var(--primary);
         }
-        .prize-item {
-            background: white;
-            border-radius: 28px;
-            padding: 16px 12px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            border: 1px solid #e2e8f0;
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--primary);
         }
-        .prize-item i {
-            width: 48px; height: 48px; border-radius: 24px; background: #E3F2FD;
-            display: flex; align-items: center; justify-content: center;
-            color: #8b5cf6; font-size: 1.6rem;
+        .content {
+            padding-bottom: 80px;
         }
-        .prize-info { flex: 1; }
-        .prize-title { font-weight: 700; color: #0a1a2f; }
-        .prize-prob { font-size: 0.75rem; color: #64748b; }
-        .history-section { margin-top: 30px; }
-        .history-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 16px;
-        }
-        .history-header h3 { font-size: 1.3rem; font-weight: 700; color: #0a1a2f; }
-        .history-list {
-            background: rgba(255,255,255,0.5); border-radius: 30px;
-            padding: 16px; max-height: 200px; overflow-y: auto;
-        }
-        .history-item {
-            display: flex; justify-content: space-between; padding: 12px 0;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .history-item:last-child { border-bottom: none; }
-        .history-prize { font-weight: 600; color: #0a1a2f; }
-        .history-time { color: #64748b; font-size: 0.8rem; }
-
-
-        /* 气泡动画（可选） */
-        .bubble {
-            position: absolute; background: rgba(139,92,246,0.2); border-radius: 50%;
-            pointer-events: none; animation: float 3s ease-in-out infinite;
-        }
-        .bubble1 { width:10px; height:10px; top:4px; left:8px; animation-delay:0s; }
-        .bubble2 { width:6px; height:6px; bottom:8px; right:4px; animation-delay:0.5s; }
-        .bubble3 { width:5px; height:5px; top:16px; right:16px; animation-delay:1s; }
-        .bubble4 { width:8px; height:8px; bottom:2px; left:16px; animation-delay:1.2s; }
-        .bubble5 { width:6px; height:6px; top:0px; right:24px; animation-delay:0.8s; }
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-5px); }
-            100% { transform: translateY(0px); }
-        }
-        .ripple {
-            position: absolute; border-radius: 50%; background-color: rgba(139,92,246,0.4);
-            transform: scale(0); animation: ripple-animation 0.5s ease-out;
-            pointer-events: none; z-index: 10;
-        }
-        @keyframes ripple-animation { to { transform: scale(6); opacity: 0; } }
     </style>
 </head>
 <body>
-    <div class="page-content">
+    <div class="app-container">
         <div class="header">
             <a href="index.html" class="back-icon"><i class="fas fa-arrow-left"></i></a>
-            <h1></h1>
+            <h1>积分</h1>
         </div>
 
+        <div class="content">
+            <div class="card">
+                <div class="points-hero">
+                    <div class="points-icon"><i class="fas fa-coins"></i></div>
+                    <div class="points-number">12,345</div>
+                    <div class="points-label">当前积分</div>
+                </div>
 
-            <div class="glass-card">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                    <h2 style="font-size:1.8rem; font-weight:700;">🎁 幸运抽奖</h2>
-                    <div class="chance-badge" style="background:white; border-radius:40px; padding:8px 20px; font-size:1.2rem; font-weight:700; color:#8b5cf6; border:1px solid #e2e8f0;">
-                        <i class="fas fa-ticket-alt"></i> <span id="chanceDisplay">3</span>
+                <div class="level-progress">
+                    <div class="level-row">
+                        <span class="level-name">白银会员</span>
+                        <span class="level-next">距黄金还差 5,000 积分</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 65%;"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span>当前 12,345</span>
+                        <span>黄金 20,000</span>
                     </div>
                 </div>
 
-                <div class="lottery-wheel" id="wheel">
-                    <div class="prize-icon"><i class="fas fa-gift" id="prizeIcon"></i></div>
-                    <div class="prize-name" id="prizeName">积分+100</div>
-                    <div class="prize-desc" id="prizeDesc">恭喜获得100积分！</div>
+                <div class="points-actions">
+                    <button class="points-btn" onclick="alert('积分兑换功能开发中')"><i class="fas fa-exchange-alt"></i> 兑换</button>
+                    <button class="points-btn" onclick="alert('积分获取方式')"><i class="fas fa-plus-circle"></i> 获取</button>
                 </div>
 
-                <button class="draw-btn" id="drawBtn"><i class="fas fa-play"></i> 抽奖</button>
+                <div class="section-title"><i class="fas fa-history"></i> 积分明细</div>
 
-                <div class="prize-list">
-                    <div class="prize-item"><i class="fas fa-star"></i><div class="prize-info"><div class="prize-title">积分+100</div><div class="prize-prob">概率 40%</div></div><button class="fav-btn" title="收藏"><i class="fa-regular fa-heart"></i></button></div>
-                    <div class="prize-item"><i class="fas fa-coins"></i><div class="prize-info"><div class="prize-title">H币+50</div><div class="prize-prob">概率 30%</div></div><button class="fav-btn" title="收藏"><i class="fa-regular fa-heart"></i></button></div>
-                    <div class="prize-item"><i class="fas fa-gem"></i><div class="prize-info"><div class="prize-title">空投盲盒</div><div class="prize-prob">概率 20%</div></div><button class="fav-btn" title="收藏"><i class="fa-regular fa-heart"></i></button></div>
-                    <div class="prize-item"><i class="fas fa-crown"></i><div class="prize-info"><div class="prize-title">神秘大奖</div><div class="prize-prob">概率 10%</div></div><button class="fav-btn" title="收藏"><i class="fa-regular fa-heart"></i></button></div>
-                </div>
-
-                <div class="history-section">
-                    <div class="history-header">
-                        <h3><i class="fa-regular fa-clock"></i> 最近记录</h3>
-                        <span style="color:#64748b;">近5条</span>
+                <div class="detail-group">
+                    <div class="group-header"><span>今天</span><span>共 +160</span></div>
+                    <div class="detail-list">
+                        <div class="detail-item">
+                            <div class="detail-left">
+                                <div class="detail-icon"><i class="fas fa-calendar-check"></i></div>
+                                <div class="detail-info">
+                                    <span class="detail-reason">每日签到</span>
+                                    <span class="detail-time">09:00</span>
+                                </div>
+                            </div>
+                            <span class="detail-change positive">+10</span>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-left">
+                                <div class="detail-icon"><i class="fas fa-gift"></i></div>
+                                <div class="detail-info">
+                                    <span class="detail-reason">抽奖奖励</span>
+                                    <span class="detail-time">14:30</span>
+                                </div>
+                            </div>
+                            <span class="detail-change positive">+150</span>
+                        </div>
                     </div>
-                    <div class="history-list" id="historyList">
-                        <div class="history-item"><span class="history-prize">积分+100</span><span class="history-time">今天 14:23</span></div>
-                        <div class="history-item"><span class="history-prize">H币+50</span><span class="history-time">昨天 09:12</span></div>
-                        <div class="history-item"><span class="history-prize">空投盲盒</span><span class="history-time">03-15 20:00</span></div>
+                </div>
+
+                <div class="detail-group">
+                    <div class="group-header"><span>昨天</span><span>共 -200</span></div>
+                    <div class="detail-list">
+                        <div class="detail-item">
+                            <div class="detail-left">
+                                <div class="detail-icon"><i class="fas fa-shopping-cart"></i></div>
+                                <div class="detail-info">
+                                    <span class="detail-reason">兑换H币</span>
+                                    <span class="detail-time">20:00</span>
+                                </div>
+                            </div>
+                            <span class="detail-change negative">-200</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-group">
+                    <div class="group-header"><span>03-15</span><span>共 +210</span></div>
+                    <div class="detail-list">
+                        <div class="detail-item">
+                            <div class="detail-left">
+                                <div class="detail-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                                <div class="detail-info">
+                                    <span class="detail-reason">邀请奖励</span>
+                                    <span class="detail-time">10:12</span>
+                                </div>
+                            </div>
+                            <span class="detail-change positive">+100</span>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-left">
+                                <div class="detail-icon"><i class="fas fa-star"></i></div>
+                                <div class="detail-info">
+                                    <span class="detail-reason">连续签到奖励</span>
+                                    <span class="detail-time">09:00</span>
+                                </div>
+                            </div>
+                            <span class="detail-change positive">+110</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- 底部导航 -->
+        <nav class="bottom-nav">
+            <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>首页</span></a>
+            <a href="earn.html" class="nav-item"><i class="fas fa-coins"></i><span>赚币</span></a>
+            <a href="model.html" class="nav-item"><i class="fas fa-robot"></i><span>模型</span></a>
+            <a href="wallet.html" class="nav-item active"><i class="fas fa-wallet"></i><span>钱包</span></a>
+        </nav>
     </div>
 
-    <nav class="bottom-nav">
-        <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>首页</span></a>
-        <a href="earn.html" class="nav-item"><i class="fas fa-coins"></i><span>赚币</span></a>
-        <a href="model.html" class="nav-item"><i class="fas fa-robot"></i><span>模型</span></a>
-        <a href="wallet.html" class="nav-item"><i class="fas fa-wallet"></i><span>钱包</span></a>
-    </nav>
-
     <script>
+        // 底部导航高亮
         (function() {
-            let chance = 3;
-            const prizes = [
-                { name: '积分+100', desc: '恭喜获得100积分！', icon: 'fa-star', prob: 0.4 },
-                { name: 'H币+50', desc: '获得50 H币', icon: 'fa-coins', prob: 0.3 },
-                { name: '空投盲盒', desc: '获得神秘空投', icon: 'fa-gem', prob: 0.2 },
-                { name: '神秘大奖', desc: '哇！大奖！', icon: 'fa-crown', prob: 0.1 },
-            ];
-
-            function getRandomPrize() {
-                let rand = Math.random(), cum = 0;
-                for (let p of prizes) { cum += p.prob; if (rand < cum) return p; }
-                return prizes[0];
-            }
-
-            function addHistory(prizeName) {
-                let list = document.getElementById('historyList');
-                let now = new Date();
-                let time = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
-                let item = document.createElement('div');
-                item.className = 'history-item';
-                item.innerHTML = `<span class="history-prize">${prizeName}</span><span class="history-time">今天 ${time}</span>`;
-                list.prepend(item);
-                while (list.children.length > 5) list.removeChild(list.lastChild);
-            }
-
-            document.getElementById('drawBtn').addEventListener('click', function() {
-                if (chance <= 0) { alert('抽奖次数已用完'); return; }
-                chance--;
-                document.getElementById('chanceDisplay').textContent = chance;
-                let prize = getRandomPrize();
-                document.getElementById('prizeName').textContent = prize.name;
-                document.getElementById('prizeDesc').textContent = prize.desc;
-                document.getElementById('prizeIcon').className = `fas ${prize.icon}`;
-                addHistory(prize.name);
-                if (chance === 0) {
-                    this.disabled = true;
-                    this.innerHTML = '<i class="fas fa-ban"></i> 次数已用完';
+            const currentPage = window.location.pathname.split('/').pop() || 'points.html';
+            document.querySelectorAll('.nav-item').forEach(a => {
+                if (a.getAttribute('href') === currentPage) {
+                    a.classList.add('active');
                 }
             });
 
-            document.querySelectorAll('.fav-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    this.classList.toggle('active');
-                    const icon = this.querySelector('i');
-                    icon.className = this.classList.contains('active') ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
-                    this.classList.add('pop');
-                    this.addEventListener('animationend', () => this.classList.remove('pop'), { once: true });
+            // 按钮点击脉冲
+            document.querySelectorAll('.points-btn').forEach(btn => {
+                btn.addEventListener('mousedown', () => {
+                    btn.style.transform = 'scale(0.97)';
                 });
-            });
-
-            // 底部导航高亮
-            let current = window.location.pathname.split('/').pop() || 'index.html';
-            document.querySelectorAll('.nav-item').forEach(a => {
-                if (a.getAttribute('href') === current) a.classList.add('active');
+                btn.addEventListener('mouseup', () => {
+                    btn.style.transform = '';
+                });
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = '';
+                });
             });
         })();
     </script>
