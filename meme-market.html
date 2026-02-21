@@ -1,1 +1,421 @@
-1
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Meme 行情 · 海豚社区</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
+    <style>
+        /* 紫色主题变量 */
+        :root {
+            --primary: #8b5cf6;
+            --primary-dark: #7c3aed;
+            --primary-light: #ede9fe;
+            --primary-gradient: linear-gradient(145deg, #8b5cf6, #6d4aff);
+            --bg-gradient: radial-gradient(circle at 10% 20%, #ffffff, #f5f3ff);
+            --text-dark: #0f172a;
+            --text-light: #64748b;
+            --card-bg: rgba(255,255,255,0.75);
+            --card-border: 1px solid rgba(255,255,255,0.6);
+            --shadow-lg: 0 20px 40px -15px rgba(0,0,0,0.15);
+        }
+        body {
+            background: var(--bg-gradient);
+            font-family: 'Inter', sans-serif;
+            padding: 20px 16px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            margin: 0;
+        }
+        .app-container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        /* 头部 */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .back-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 9999px;
+            background: rgba(255,255,255,0.6);
+            backdrop-filter: blur(8px);
+            color: var(--primary);
+            font-size: 1.2rem;
+            text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.6);
+            transition: 0.2s;
+        }
+        .back-icon:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        /* 卡片通用 */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 24px 20px;
+            box-shadow: var(--shadow-lg);
+            border: var(--card-border);
+            margin-bottom: 20px;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 30px 45px -15px rgba(139,92,246,0.2);
+        }
+
+        /* 搜索栏 */
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 40px;
+            padding: 4px 4px 4px 20px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 16px;
+        }
+        .search-box i {
+            color: var(--text-light);
+            font-size: 1.2rem;
+        }
+        .search-box input {
+            flex: 1;
+            border: none;
+            padding: 12px 8px;
+            font-size: 1rem;
+            background: transparent;
+            outline: none;
+        }
+        .search-box button {
+            background: var(--primary-gradient);
+            border: none;
+            color: white;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .search-box button:active {
+            transform: scale(0.97);
+        }
+
+        /* 币种列表头部 */
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 4px 8px;
+            font-size: 0.75rem;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+        .list-header span:first-child {
+            width: 40px;
+            text-align: center;
+        }
+        .list-header span:nth-child(2) {
+            flex: 1;
+        }
+        .list-header span:last-child {
+            width: 80px;
+            text-align: right;
+        }
+
+        /* 币种列表 */
+        .coin-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .coin-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 30px;
+            padding: 12px 16px;
+            border: 1px solid #e2e8f0;
+            transition: 0.2s;
+        }
+        .coin-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px -8px rgba(139,92,246,0.2);
+        }
+        .coin-rank {
+            width: 40px;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: center;
+        }
+        .coin-info {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .coin-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .coin-icon img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+        .coin-details {
+            flex: 1;
+        }
+        .coin-symbol {
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .coin-name {
+            font-size: 0.7rem;
+            color: var(--text-light);
+        }
+        .coin-price {
+            width: 80px;
+            text-align: right;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .coin-change {
+            width: 60px;
+            text-align: right;
+            font-weight: 600;
+        }
+        .coin-change.positive {
+            color: #10b981;
+        }
+        .coin-change.negative {
+            color: #ef4444;
+        }
+
+        /* 加载和错误状态 */
+        .loading, .error {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-light);
+        }
+
+        /* 底部导航 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(15px);
+            padding: 6px 24px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.8);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            z-index: 100;
+            box-sizing: border-box;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #94A3B8;
+            text-decoration: none;
+            transition: color 0.2s;
+            padding: 6px 8px;
+            border-radius: 30px;
+            position: relative;
+        }
+        .nav-item i {
+            font-size: 20px;
+        }
+        .nav-item:hover {
+            color: var(--primary);
+            background: rgba(139,92,246,0.05);
+        }
+        .nav-item.active {
+            color: var(--primary);
+        }
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--primary);
+        }
+        .content {
+            padding-bottom: 80px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="header">
+            <a href="index.html" class="back-icon"><i class="fas fa-arrow-left"></i></a>
+            <h1>Meme 行情</h1>
+        </div>
+
+        <div class="content">
+            <div class="card">
+                <!-- 搜索框（可隐藏，简单保留） -->
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="搜索币种...">
+                    <button id="searchBtn">搜索</button>
+                </div>
+
+                <!-- 列表头部 -->
+                <div class="list-header">
+                    <span>#</span>
+                    <span>币种</span>
+                    <span>价格</span>
+                    <span>24h</span>
+                </div>
+
+                <!-- 币种列表容器 -->
+                <div id="coinList" class="coin-list">
+                    <div class="loading">加载中...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部导航 -->
+        <nav class="bottom-nav">
+            <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>首页</span></a>
+            <a href="earn.html" class="nav-item"><i class="fas fa-coins"></i><span>赚币</span></a>
+            <a href="model.html" class="nav-item"><i class="fas fa-robot"></i><span>模型</span></a>
+            <a href="wallet.html" class="nav-item"><i class="fas fa-wallet"></i><span>钱包</span></a>
+        </nav>
+    </div>
+
+    <script>
+        (function() {
+            const coinListEl = document.getElementById('coinList');
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
+
+            // 热门Meme币ID列表（CoinGecko支持的ID）
+            const memeIds = ['dogecoin', 'shiba-inu', 'pepe', 'bonk', 'floki', 'dogwifcoin', 'book-of-meme', 'memecoin'];
+
+            let allCoins = [];
+
+            async function fetchMemeData() {
+                try {
+                    coinListEl.innerHTML = '<div class="loading">加载中...</div>';
+                    const response = await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${memeIds.join(',')}&order=market_cap_desc&per_page=50&page=1&sparkline=false`);
+                    if (!response.ok) throw new Error('网络错误');
+                    const data = await response.json();
+                    allCoins = data;
+                    renderCoins(allCoins);
+                } catch (error) {
+                    console.error('获取行情失败:', error);
+                    coinListEl.innerHTML = '<div class="error">加载失败，请刷新重试</div>';
+                }
+            }
+
+            function renderCoins(coins) {
+                if (!coins || coins.length === 0) {
+                    coinListEl.innerHTML = '<div class="error">暂无数据</div>';
+                    return;
+                }
+                let html = '';
+                coins.forEach((coin, index) => {
+                    const change = coin.price_change_percentage_24h;
+                    const changeClass = change >= 0 ? 'positive' : 'negative';
+                    const changeIcon = change >= 0 ? 'fa-arrow-up' : 'fa-arrow-down';
+                    const changeFormatted = change ? change.toFixed(2) : '0.00';
+                    const imageHtml = coin.image ? `<img src="${coin.image}" alt="${coin.symbol}">` : `<span class="coin-icon">${coin.symbol.charAt(0).toUpperCase()}</span>`;
+                    html += `
+                        <div class="coin-item">
+                            <div class="coin-rank">${index + 1}</div>
+                            <div class="coin-info">
+                                <div class="coin-icon">${imageHtml}</div>
+                                <div class="coin-details">
+                                    <div class="coin-symbol">${coin.symbol.toUpperCase()}</div>
+                                    <div class="coin-name">${coin.name}</div>
+                                </div>
+                            </div>
+                            <div class="coin-price">$${coin.current_price.toFixed(4)}</div>
+                            <div class="coin-change ${changeClass}">
+                                <i class="fas ${changeIcon}"></i> ${changeFormatted}%
+                            </div>
+                        </div>
+                    `;
+                });
+                coinListEl.innerHTML = html;
+            }
+
+            // 搜索功能（前端过滤）
+            searchBtn.addEventListener('click', () => {
+                const query = searchInput.value.trim().toLowerCase();
+                if (!query) {
+                    renderCoins(allCoins);
+                    return;
+                }
+                const filtered = allCoins.filter(coin => 
+                    coin.name.toLowerCase().includes(query) || 
+                    coin.symbol.toLowerCase().includes(query)
+                );
+                renderCoins(filtered);
+            });
+
+            // 回车搜索
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    searchBtn.click();
+                }
+            });
+
+            // 初始化加载数据
+            fetchMemeData();
+
+            // 底部导航高亮
+            const currentPage = window.location.pathname.split('/').pop() || 'meme-market.html';
+            document.querySelectorAll('.nav-item').forEach(a => {
+                if (a.getAttribute('href') === currentPage) {
+                    a.classList.add('active');
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
