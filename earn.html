@@ -328,18 +328,18 @@
             color: var(--primary);
         }
 
-        /* 按钮组 - 统一大小 */
+        /* 按钮组 - 统一大小，调整尺寸 */
         .button-group {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
-            margin: 20px 0;
+            margin: 16px 0 8px;
         }
         .btn-primary, .btn-secondary {
-            padding: 14px 0;
+            padding: 10px 0;           /* 减小内边距 */
             border-radius: 40px;
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1rem;            /* 调小字体 */
             cursor: pointer;
             transition: 0.2s;
             border: none;
@@ -564,7 +564,7 @@
                         </span>
                     </div>
 
-                    <!-- 按钮组（质押/赎回） -->
+                    <!-- 按钮组（质押/赎回） - 调整后尺寸协调 -->
                     <div class="button-group">
                         <button class="btn-primary" id="stakeBtn"><i class="fa-solid fa-arrow-up-from-bracket"></i> 质押</button>
                         <button class="btn-secondary" id="unstakeBtn"><i class="fa-solid fa-arrow-down-to-bracket"></i> 赎回</button>
