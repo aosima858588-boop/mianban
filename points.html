@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>积分 · 海豚社区</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:opsz,wght@14..32,300..700&family=Playfair+Display:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <style>
+        /* 页面特有样式 - 覆盖或扩展全局变量 */
+        :root {
+            --primary: #8b5cf6;
+            --primary-dark: #7c3aed;
+            --primary-light: #ede9fe;
+            --primary-gradient: linear-gradient(145deg, #8b5cf6, #6d4aff);
+        }
+        body {
+            background: radial-gradient(circle at 10% 20%, #ffffff, #f5f3ff);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        /* 卡片 */
+        .card {
+            background: rgba(255,255,255,0.75);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 28px 24px;
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.15);
+            border: 1px solid rgba(255,255,255,0.6);
+            margin-bottom: 20px;
+            transition: transform 0.25s ease, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 30px 45px -15px rgba(139,92,246,0.2);
+        }
+        /* 积分总览 */
+        .points-hero {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .points-icon {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        .points-number {
+            font-size: 4rem;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1;
+        }
+        .points-label {
+            color: #64748b;
+            margin-top: 4px;
+        }
+        /* 等级进度条 */
+        .level-progress {
+            background: white;
+            border-radius: 30px;
+            padding: 18px;
+            margin-bottom: 24px;
+            border: 1px solid #e2e8f0;
+        }
+        .level-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        .level-name {
+            font-weight: 700;
+            color: #0f172a;
+            font-size: 1.2rem;
+        }
+        .level-next {
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+        .progress-bar {
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 65%;
+            background: var(--primary-gradient);
+            border-radius: 6px;
+        }
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+        /* 操作按钮 */
+        .points-actions {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        .points-btn {
+            flex: 1;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 40px;
+            padding: 16px 0;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            transition: 0.2s;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        .points-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px -8px var(--primary);
+        }
+        .points-btn i {
+            margin-right: 8px;
+        }
+        /* 积分明细分组 */
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 30px 0 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .detail-group {
+            background: rgba(255,255,255,0.5);
+            border-radius: 30px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .group-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        .detail-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .detail-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            border-radius: 22px;
+            padding: 14px 16px;
+            border: 1px solid #e2e8f0;
+            transition: 0.1s;
+        }
+        .detail-item:hover {
+            border-color: var(--primary);
+        }
+        .detail-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .detail-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 22px;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.4rem;
+        }
+        .detail-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .detail-reason {
+            font-weight: 600;
+            color: #0f172a;
+        }
+        .detail-time {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+        .detail-change {
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+        .detail-change.positive {
+            color: #10b981;
+        }
+        .detail-change.negative {
+            color: #ef4444;
+        }
+
+        /* 按钮点击脉冲 */
+        .btn:active {
+            transform: scale(0.97);
+        }
+        .points-btn:active {
+            transform: scale(0.97);
+        }
+        /* 列表图标紫色 */
+        .fa-calendar-check, .fa-gift, .fa-shopping-cart, .fa-hand-holding-heart {
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="page-content">
+        <div class="header">
+            <a href="index.html" class="back-icon"><i class="fas fa-arrow-left"></i></a>
+            <h1></h1>
+        </div>
+
+
+            <div class="card">
+                <div class="points-hero">
+                    <div class="points-icon"><i class="fas fa-coins"></i></div>
+                    <div class="points-number">12,345</div>
+                    <div class="points-label">当前积分</div>
+                </div>
+
+                <div class="level-progress">
+                    <div class="level-row">
+                        <span class="level-name">白银会员</span>
+                        <span class="level-next">距黄金还差 5,000 积分</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 65%;"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span>当前 12,345</span>
+                        <span>黄金 20,000</span>
+                    </div>
+                </div>
+
+                <div class="points-actions">
+                    <button class="points-btn" onclick="alert('积分兑换功能开发中')"><i class="fas fa-exchange-alt"></i> 兑换</button>
+                    <button class="points-btn" onclick="alert('积分获取方式')"><i class="fas fa-plus-circle"></i> 获取</button>
+                </div>
+
+                <div class="section-title"><i class="fas fa-history"></i> 积分明细</div>
+
+                <div class="detail-group">
+                    <div class="group-header"><span>今天</span><span>共 +160</span></div>
+                    <div class="detail-list">
+                        <div class="detail-item">
+                            <div class="detail-left">
+                                <div class="detail-icon"><i class="fas fa-calendar-check"></i></div>
+                                <div class="detail-info">
+                                    <span class="detail-reason">每日签到</span>
+                                    <span class="detail-time">09:00</span>
+                                </div>
+                            </div>
+                            <span class="detail-change positive">+10</span>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-left">
+                                <div class="detail-icon"><i class="fas fa-gift"></i></div>
+                                <div class="detail-info">
+                                    <span class="detail-reason">抽奖奖励</span>
+                                    <span class="detail-time">14:30</span>
+                                </div>
+                            </div>
+                            <span class="detail-change positive">+150</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-group">
+                    <div class="group-header"><span>昨天</span><span>共 -200</span></div>
+                    <div class="detail-list">
+                        <div class="detail-item">
+                            <div class="detail-left">
+                                <div class="detail-icon"><i class="fas fa-shopping-cart"></i></div>
+                                <div class="detail-info">
+                                    <span class="detail-reason">兑换H币</span>
+                                    <span class="detail-time">20:00</span>
+                                </div>
+                            </div>
+                            <span class="detail-change negative">-200</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-group">
+                    <div class="group-header"><span>03-15</span><span>共 +210</span></div>
+                    <div class="detail-list">
+                        <div class="detail-item">
+                            <div class="detail-left">
+                                <div class="detail-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                                <div class="detail-info">
+                                    <span class="detail-reason">邀请奖励</span>
+                                    <span class="detail-time">10:12</span>
+                                </div>
+                            </div>
+                            <span class="detail-change positive">+100</span>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-left">
+                                <div class="detail-icon"><i class="fas fa-star"></i></div>
+                                <div class="detail-info">
+                                    <span class="detail-reason">连续签到奖励</span>
+                                    <span class="detail-time">09:00</span>
+                                </div>
+                            </div>
+                            <span class="detail-change positive">+110</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>首页</span></a>
+        <a href="earn.html" class="nav-item"><i class="fas fa-coins"></i><span>赚币</span></a>
+        <a href="model.html" class="nav-item"><i class="fas fa-robot"></i><span>模型</span></a>
+        <a href="wallet.html" class="nav-item"><i class="fas fa-wallet"></i><span>钱包</span></a>
+    </nav>
+
+    <script>
+        // 底部导航高亮
+        (function() {
+            const currentPage = window.location.pathname.split('/').pop() || 'points.html';
+            document.querySelectorAll('.nav-item').forEach(a => {
+                if (a.getAttribute('href') === currentPage) {
+                    a.classList.add('active');
+                }
+            });
+
+            // 按钮点击脉冲（与全局 .btn:active 配合）
+            document.querySelectorAll('.points-btn').forEach(btn => {
+                btn.addEventListener('mousedown', () => {
+                    btn.style.transform = 'scale(0.97)';
+                });
+                btn.addEventListener('mouseup', () => {
+                    btn.style.transform = '';
+                });
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = '';
+                });
+            });
+        })();
+    </script>
+</body>
+
+</html>
