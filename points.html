@@ -8,39 +8,87 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:opsz,wght@14..32,300..700&family=Playfair+Display:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
     <style>
-        /* 页面特有样式 - 覆盖或扩展全局变量 */
+        /* 紫色主题变量 */
         :root {
             --primary: #8b5cf6;
             --primary-dark: #7c3aed;
             --primary-light: #ede9fe;
             --primary-gradient: linear-gradient(145deg, #8b5cf6, #6d4aff);
+            --bg-gradient: radial-gradient(circle at 10% 20%, #ffffff, #f5f3ff);
+            --text-dark: #0f172a;
+            --text-light: #64748b;
+            --card-bg: rgba(255,255,255,0.75);
+            --card-border: 1px solid rgba(255,255,255,0.6);
+            --shadow-lg: 0 20px 40px -15px rgba(0,0,0,0.15);
         }
         body {
-            background: radial-gradient(circle at 10% 20%, #ffffff, #f5f3ff);
+            background: var(--bg-gradient);
             font-family: 'Inter', sans-serif;
+            padding: 20px 16px;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: flex-start;
+            margin: 0;
+        }
+        .app-container {
+            max-width: 600px;
+            width: 100%;
         }
 
-        /* 卡片 */
-        .card {
-            background: rgba(255,255,255,0.75);
-            backdrop-filter: blur(20px);
-            border-radius: 40px;
-            padding: 28px 24px;
-            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.15);
+        /* 头部 */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .back-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 9999px;
+            background: rgba(255,255,255,0.6);
+            backdrop-filter: blur(8px);
+            color: var(--primary);
+            font-size: 1.2rem;
+            text-decoration: none;
             border: 1px solid rgba(255,255,255,0.6);
+            transition: 0.2s;
+        }
+        .back-icon:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        /* 卡片通用 */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 24px 20px;
+            box-shadow: var(--shadow-lg);
+            border: var(--card-border);
             margin-bottom: 20px;
-            transition: transform 0.25s ease, box-shadow 0.3s;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
         .card:hover {
             transform: translateY(-6px);
             box-shadow: 0 30px 45px -15px rgba(139,92,246,0.2);
         }
+
         /* 积分总览 */
         .points-hero {
             text-align: center;
@@ -54,13 +102,14 @@
         .points-number {
             font-size: 4rem;
             font-weight: 800;
-            color: #0f172a;
+            color: var(--text-dark);
             line-height: 1;
         }
         .points-label {
-            color: #64748b;
+            color: var(--text-light);
             margin-top: 4px;
         }
+
         /* 等级进度条 */
         .level-progress {
             background: white;
@@ -76,11 +125,11 @@
         }
         .level-name {
             font-weight: 700;
-            color: #0f172a;
+            color: var(--text-dark);
             font-size: 1.2rem;
         }
         .level-next {
-            color: #64748b;
+            color: var(--text-light);
             font-size: 0.85rem;
         }
         .progress-bar {
@@ -99,9 +148,10 @@
         .progress-text {
             display: flex;
             justify-content: space-between;
-            color: #64748b;
+            color: var(--text-light);
             font-size: 0.8rem;
         }
+
         /* 操作按钮 */
         .points-actions {
             display: flex;
@@ -131,11 +181,12 @@
         .points-btn i {
             margin-right: 8px;
         }
+
         /* 积分明细分组 */
         .section-title {
             font-size: 1.3rem;
             font-weight: 700;
-            color: #0f172a;
+            color: var(--text-dark);
             margin: 30px 0 16px;
             display: flex;
             align-items: center;
@@ -195,11 +246,11 @@
         }
         .detail-reason {
             font-weight: 600;
-            color: #0f172a;
+            color: var(--text-dark);
         }
         .detail-time {
             font-size: 0.75rem;
-            color: #64748b;
+            color: var(--text-light);
         }
         .detail-change {
             font-weight: 700;
@@ -212,27 +263,71 @@
             color: #ef4444;
         }
 
-        /* 按钮点击脉冲 */
-        .btn:active {
-            transform: scale(0.97);
+        /* 底部导航 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(15px);
+            padding: 6px 24px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid rgba(255,255,255,0.8);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            z-index: 100;
+            box-sizing: border-box;
         }
-        .points-btn:active {
-            transform: scale(0.97);
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #94A3B8;
+            text-decoration: none;
+            transition: color 0.2s;
+            padding: 6px 8px;
+            border-radius: 30px;
+            position: relative;
         }
-        /* 列表图标紫色 */
-        .fa-calendar-check, .fa-gift, .fa-shopping-cart, .fa-hand-holding-heart {
+        .nav-item i {
+            font-size: 20px;
+        }
+        .nav-item:hover {
             color: var(--primary);
+            background: rgba(139,92,246,0.05);
+        }
+        .nav-item.active {
+            color: var(--primary);
+        }
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--primary);
+        }
+        .content {
+            padding-bottom: 80px;
         }
     </style>
 </head>
 <body>
-    <div class="page-content">
+    <div class="app-container">
         <div class="header">
             <a href="index.html" class="back-icon"><i class="fas fa-arrow-left"></i></a>
-            <h1></h1>
+            <h1>积分</h1>
         </div>
 
-
+        <div class="content">
             <div class="card">
                 <div class="points-hero">
                     <div class="points-icon"><i class="fas fa-coins"></i></div>
@@ -330,14 +425,15 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <nav class="bottom-nav">
-        <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>首页</span></a>
-        <a href="earn.html" class="nav-item"><i class="fas fa-coins"></i><span>赚币</span></a>
-        <a href="model.html" class="nav-item"><i class="fas fa-robot"></i><span>模型</span></a>
-        <a href="wallet.html" class="nav-item"><i class="fas fa-wallet"></i><span>钱包</span></a>
-    </nav>
+        <!-- 底部导航 -->
+        <nav class="bottom-nav">
+            <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>首页</span></a>
+            <a href="earn.html" class="nav-item"><i class="fas fa-coins"></i><span>赚币</span></a>
+            <a href="model.html" class="nav-item"><i class="fas fa-robot"></i><span>模型</span></a>
+            <a href="wallet.html" class="nav-item active"><i class="fas fa-wallet"></i><span>钱包</span></a>
+        </nav>
+    </div>
 
     <script>
         // 底部导航高亮
@@ -349,7 +445,7 @@
                 }
             });
 
-            // 按钮点击脉冲（与全局 .btn:active 配合）
+            // 按钮点击脉冲
             document.querySelectorAll('.points-btn').forEach(btn => {
                 btn.addEventListener('mousedown', () => {
                     btn.style.transform = 'scale(0.97)';
@@ -364,5 +460,4 @@
         })();
     </script>
 </body>
-
 </html>
