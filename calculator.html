@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>海豚社区 · H 代币计算器</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #f8fafc;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.7;
+            color: #1a2e3f;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 24px;
+            border: 1px solid #e9eef2;
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1.2rem;
+        }
+        .card-title-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            background: #8b5cf6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        .card-title h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #0a1a2f;
+        }
+
+        /* 池子状态 */
+        .pool-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 1.4rem;
+        }
+        .pool-item {
+            background: #f5f9ff;
+            border-radius: 16px;
+            padding: 0.8rem;
+            text-align: center;
+        }
+        .pool-label {
+            font-size: 0.72rem;
+            color: #546e7a;
+            margin-bottom: 0.2rem;
+        }
+        .pool-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #8b5cf6;
+        }
+
+        /* Tab 切换 */
+        .tab-bar {
+            display: flex;
+            background: #f0f4f8;
+            border-radius: 40px;
+            padding: 4px;
+            margin-bottom: 1.2rem;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 0.55rem 0;
+            border: none;
+            border-radius: 36px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            background: transparent;
+            color: #546e7a;
+            transition: 0.2s;
+        }
+        .tab-btn.active {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        /* 输入区 */
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        .input-group label {
+            display: block;
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 0.35rem;
+            color: #1e2f3d;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 40px;
+            border: 1px solid #e2e8f0;
+            font-size: 1rem;
+            color: #1a2e3f;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .input-group input:focus {
+            border-color: #8b5cf6;
+        }
+
+        /* 预览区 */
+        .preview-box {
+            background: #f5f9ff;
+            border-radius: 16px;
+            padding: 0.9rem 1rem;
+            margin-bottom: 1.2rem;
+            font-size: 0.9rem;
+        }
+        .preview-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.2rem 0;
+        }
+        .preview-label { color: #546e7a; }
+        .preview-value { font-weight: 600; color: #8b5cf6; }
+        .preview-value.tax { color: #fb8c00; }
+        .preview-divider {
+            border: none;
+            border-top: 1px dashed #d0e0f0;
+            margin: 0.4rem 0;
+        }
+
+        /* 按钮 */
+        .btn-row {
+            display: flex;
+            gap: 10px;
+        }
+        .btn-exec {
+            flex: 2;
+            background: #8b5cf6;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 0.8rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-exec:hover { background: #1558b0; }
+        .btn-reset {
+            flex: 1;
+            background: white;
+            color: #8b5cf6;
+            border: 1px solid #8b5cf6;
+            border-radius: 40px;
+            padding: 0.8rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-reset:hover { background: #e8f0fe; }
+
+        .formula-note {
+            margin-top: 1.2rem;
+            background: #fffbf0;
+            border-left: 4px solid #f1c40f;
+            border-radius: 16px;
+            padding: 0.8rem 1rem;
+            font-size: 0.8rem;
+            color: #6b5b1e;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-content">
+        <div class="header">
+            <a href="index.html" class="back-icon"><i class="fas fa-arrow-left"></i></a>
+            <h1>H 代币模拟计算器</h1>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                <div class="card-title-icon"><i class="fas fa-calculator"></i></div>
+                <h2>AMM 恒定乘积计算</h2>
+            </div>
+
+            <!-- 池子状态 -->
+            <div class="pool-grid">
+                <div class="pool-item">
+                    <div class="pool-label">当前价格</div>
+                    <div class="pool-value" id="disp_price">—</div>
+                </div>
+                <div class="pool-item">
+                    <div class="pool-label">池子 H</div>
+                    <div class="pool-value" id="disp_hLp">—</div>
+                </div>
+                <div class="pool-item">
+                    <div class="pool-label">池子 U</div>
+                    <div class="pool-value" id="disp_uLp">—</div>
+                </div>
+            </div>
+
+            <!-- Tab 切换 -->
+            <div class="tab-bar">
+                <button class="tab-btn active" id="tab_buy" onclick="switchTab('buy')">📥 买入</button>
+                <button class="tab-btn" id="tab_sell" onclick="switchTab('sell')">📤 卖出</button>
+            </div>
+
+            <!-- 买入面板 -->
+            <div id="panel_buy">
+                <div class="input-group">
+                    <label>投入 USDT 金额</label>
+                    <input type="number" id="input_buyU" placeholder="请输入 USDT 数量" min="0" step="any">
+                </div>
+                <div class="preview-box" id="preview_buy">
+                    <div class="preview-row">
+                        <span class="preview-label">获得 H 数量</span>
+                        <span class="preview-value" id="buy_getH">—</span>
+                    </div>
+                    <hr class="preview-divider">
+                    <div class="preview-row">
+                        <span class="preview-label">交易税（5%）</span>
+                        <span class="preview-value tax" id="buy_tax">—</span>
+                    </div>
+                    <hr class="preview-divider">
+                    <div class="preview-row">
+                        <span class="preview-label">成交后新价格</span>
+                        <span class="preview-value" id="buy_newPrice">—</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 卖出面板 -->
+            <div id="panel_sell" style="display:none;">
+                <div class="input-group">
+                    <label>卖出 H 数量</label>
+                    <input type="number" id="input_sellH" placeholder="请输入 H 数量" min="0" step="any">
+                </div>
+                <div class="preview-box" id="preview_sell">
+                    <div class="preview-row">
+                        <span class="preview-label">得到 USDT</span>
+                        <span class="preview-value" id="sell_getU">—</span>
+                    </div>
+                    <hr class="preview-divider">
+                    <div class="preview-row">
+                        <span class="preview-label">交易税（5%）</span>
+                        <span class="preview-value tax" id="sell_tax">—</span>
+                    </div>
+                    <hr class="preview-divider">
+                    <div class="preview-row">
+                        <span class="preview-label">成交后新价格</span>
+                        <span class="preview-value" id="sell_newPrice">—</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 操作按钮 -->
+            <div class="btn-row">
+                <button class="btn-exec" id="btn_exec" onclick="execTrade()">模拟执行</button>
+                <button class="btn-reset" onclick="resetState()">⟲ 重置</button>
+            </div>
+
+            <div class="formula-note">
+                📌 <strong>恒定乘积公式</strong> x·y = k（Uniswap AMM）。买入税按投入 USDT 的 5% 计算；卖出税按获得 USDT 的 5% 计算。初始池：H = 17,351,600，U = 109,836.60。
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>首页</span></a>
+        <a href="earn.html" class="nav-item"><i class="fas fa-coins"></i><span>赚币</span></a>
+        <a href="model.html" class="nav-item"><i class="fas fa-robot"></i><span>模型</span></a>
+        <a href="wallet.html" class="nav-item"><i class="fas fa-wallet"></i><span>钱包</span></a>
+    </nav>
+
+    <script>
+        const INIT_STATE = { hLp: 17351600, uLp: 109836.60 };
+        const TAX_RATE = 0.05;
+        const NET_RATE = 1 - TAX_RATE;
+        let state = { hLp: INIT_STATE.hLp, uLp: INIT_STATE.uLp };
+        let currentTab = 'buy';
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.getElementById('tab_buy').classList.toggle('active', tab === 'buy');
+            document.getElementById('tab_sell').classList.toggle('active', tab === 'sell');
+            document.getElementById('panel_buy').style.display = tab === 'buy' ? '' : 'none';
+            document.getElementById('panel_sell').style.display = tab === 'sell' ? '' : 'none';
+            updatePreview();
+        }
+
+        function refreshPoolDisplay() {
+            let price = state.uLp / state.hLp;
+            document.getElementById('disp_price').textContent = price.toFixed(6) + ' U';
+            document.getElementById('disp_hLp').textContent = Math.round(state.hLp).toLocaleString();
+            document.getElementById('disp_uLp').textContent = state.uLp.toFixed(2);
+        }
+
+        function updatePreview() {
+            if (currentTab === 'buy') {
+                let buyU = parseFloat(document.getElementById('input_buyU').value) || 0;
+                if (buyU > 0) {
+                    let tax = buyU * TAX_RATE;
+                    let net = buyU * NET_RATE;
+                    let k = state.hLp * state.uLp;
+                    let newU = state.uLp + net;
+                    let newH = k / newU;
+                    let getH = state.hLp - newH;
+                    let newPrice = newU / newH;
+                    document.getElementById('buy_getH').textContent = getH.toFixed(2) + ' H';
+                    document.getElementById('buy_tax').textContent = tax.toFixed(2) + ' USDT';
+                    document.getElementById('buy_newPrice').textContent = newPrice.toFixed(6) + ' U';
+                } else {
+                    document.getElementById('buy_getH').textContent = '—';
+                    document.getElementById('buy_tax').textContent = '—';
+                    document.getElementById('buy_newPrice').textContent = '—';
+                }
+            } else {
+                let sellH = parseFloat(document.getElementById('input_sellH').value) || 0;
+                if (sellH > 0) {
+                    let k = state.hLp * state.uLp;
+                    let newH = state.hLp + sellH;
+                    let newU = k / newH;
+                    let grossU = state.uLp - newU;
+                    let taxU = grossU * TAX_RATE;
+                    let netU = grossU - taxU;
+                    let newPrice = newU / newH;
+                    document.getElementById('sell_getU').textContent = netU.toFixed(2) + ' USDT';
+                    document.getElementById('sell_tax').textContent = taxU.toFixed(2) + ' USDT';
+                    document.getElementById('sell_newPrice').textContent = newPrice.toFixed(6) + ' U';
+                } else {
+                    document.getElementById('sell_getU').textContent = '—';
+                    document.getElementById('sell_tax').textContent = '—';
+                    document.getElementById('sell_newPrice').textContent = '—';
+                }
+            }
+        }
+
+        function execTrade() {
+            if (currentTab === 'buy') {
+                let buyU = parseFloat(document.getElementById('input_buyU').value) || 0;
+                if (buyU <= 0) return;
+                let net = buyU * NET_RATE;
+                let k = state.hLp * state.uLp;
+                let newU = state.uLp + net;
+                let newH = k / newU;
+                let getH = state.hLp - newH;
+                if (getH > 0) {
+                    state.uLp = newU;
+                    state.hLp = newH;
+                    document.getElementById('input_buyU').value = '';
+                    refreshPoolDisplay();
+                    updatePreview();
+                } else {
+                    alert('交易失败：流动性不足，无法完成买入。');
+                }
+            } else {
+                let sellH = parseFloat(document.getElementById('input_sellH').value) || 0;
+                if (sellH <= 0) return;
+                let k = state.hLp * state.uLp;
+                let newH = state.hLp + sellH;
+                let newU = k / newH;
+                let grossU = state.uLp - newU;
+                if (grossU > 0) {
+                    state.hLp = newH;
+                    state.uLp = newU;
+                    document.getElementById('input_sellH').value = '';
+                    refreshPoolDisplay();
+                    updatePreview();
+                } else {
+                    alert('交易失败：流动性不足，无法完成卖出。');
+                }
+            }
+        }
+
+        function resetState() {
+            state.hLp = INIT_STATE.hLp;
+            state.uLp = INIT_STATE.uLp;
+            document.getElementById('input_buyU').value = '';
+            document.getElementById('input_sellH').value = '';
+            refreshPoolDisplay();
+            updatePreview();
+        }
+
+        document.getElementById('input_buyU').addEventListener('input', updatePreview);
+        document.getElementById('input_sellH').addEventListener('input', updatePreview);
+
+        // 初始化
+        refreshPoolDisplay();
+
+        // 底部导航高亮
+        (function() {
+            const current = window.location.pathname.split('/').pop() || 'index.html';
+            document.querySelectorAll('.nav-item').forEach(function(a) {
+                if (a.getAttribute('href') === current) a.classList.add('active');
+            });
+        })();
+    </script>
+</body>
+</html>
