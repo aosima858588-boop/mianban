@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>OKX Boost · 海豚社区</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
+    <style>
+        /* 紫色主题变量 */
+        :root {
+            --primary: #8b5cf6;
+            --primary-dark: #7c3aed;
+            --primary-light: #ede9fe;
+            --primary-gradient: linear-gradient(145deg, #8b5cf6, #6d4aff);
+        }
+        body {
+            background: radial-gradient(circle at 10% 20%, #ffffff, #f5f3ff);
+            font-family: 'Inter', sans-serif;
+            padding: 20px 16px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            margin: 0;
+            position: relative;
+        }
+        /* 装饰光点 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 80% 20%, rgba(139,92,246,0.1) 0%, transparent 30%),
+                        radial-gradient(circle at 20% 80%, rgba(139,92,246,0.08) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .app-container {
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+        /* 头部：只有返回按钮 */
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        .back-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 9999px;
+            background: rgba(255,255,255,0.6);
+            backdrop-filter: blur(8px);
+            color: var(--primary);
+            font-size: 1.2rem;
+            text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.6);
+            transition: 0.2s;
+        }
+        .back-icon:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        /* 卡片 */
+        .card {
+            background: rgba(255,255,255,0.75);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 28px 24px;
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.15);
+            border: 1px solid rgba(255,255,255,0.6);
+            margin-bottom: 20px;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 30px 45px -15px rgba(139,92,246,0.2);
+        }
+        /* 卡片内小装饰 */
+        .card::after {
+            content: '';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(139,92,246,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        /* 卡片内 h3 标题统一间距 */
+        .card h3 {
+            margin-bottom: 16px;
+        }
+
+        /* 活动头图 */
+        .activity-hero {
+            text-align: center;
+            margin-bottom: 24px;
+            position: relative;
+        }
+        .activity-hero i {
+            font-size: 4rem;
+            color: var(--primary);
+            background: rgba(139,92,246,0.1);
+            padding: 24px;
+            border-radius: 50%;
+            margin-bottom: 16px;
+            box-shadow: 0 10px 25px -5px rgba(139,92,246,0.3);
+        }
+        .activity-hero h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        .activity-hero .badge {
+            background: var(--primary);
+            color: white;
+            padding: 6px 20px;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 10px rgba(139,92,246,0.3);
+        }
+        .activity-hero p {
+            color: #64748b;
+            font-size: 1rem;
+        }
+
+        /* 倒计时 */
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin: 28px 0;
+        }
+        .countdown-item {
+            text-align: center;
+        }
+        .countdown-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            background: white;
+            width: 80px;
+            height: 80px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 6px;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,255,255,0.8);
+            position: relative;
+        }
+        .countdown-number::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 24px;
+            background: linear-gradient(135deg, rgba(139,92,246,0.1), transparent);
+            pointer-events: none;
+        }
+        .countdown-label {
+            font-size: 0.9rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        /* 奖励池网格 */
+        .reward-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin: 24px 0;
+        }
+        .reward-item {
+            background: white;
+            border-radius: 32px;
+            padding: 20px 12px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+        .reward-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 25px -8px rgba(139,92,246,0.15);
+            border-color: var(--primary-light);
+        }
+        .reward-item i {
+            font-size: 2.4rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        .reward-item h4 {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+            color: #0f172a;
+        }
+        .reward-item p {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 0;
+        }
+
+        /* 我的交易量卡片 */
+        .my-stats {
+            background: linear-gradient(135deg, rgba(139,92,246,0.1), rgba(255,255,255,0.5));
+            border-radius: 32px;
+            padding: 18px 20px;
+            margin: 24px 0;
+            border: 1px solid rgba(139,92,246,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .my-volume {
+            display: flex;
+            flex-direction: column;
+        }
+        .my-volume-label {
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+        .my-volume-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .my-rank {
+            text-align: right;
+        }
+        .my-rank-label {
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+        .my-rank-value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        /* 进度条 */
+        .progress-section {
+            margin: 24px 0 16px;
+        }
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+        .progress-bar {
+            height: 14px;
+            background: #e2e8f0;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 65%;
+            background: var(--primary-gradient);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* 实时排行榜 */
+        .leaderboard {
+            background: rgba(255,255,255,0.6);
+            border-radius: 32px;
+            padding: 16px;
+            margin: 24px 0;
+            border: 1px solid #e2e8f0;
+        }
+        .leaderboard h4 {
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+        .leaderboard-rank {
+            width: 30px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .leaderboard-user {
+            flex: 1;
+            font-weight: 500;
+        }
+        .leaderboard-volume {
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        /* 步骤列表（带图标） */
+        .step-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 24px 0;
+        }
+        .step-card {
+            background: white;
+            border-radius: 28px;
+            padding: 18px 10px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            transition: 0.2s;
+        }
+        .step-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px -8px rgba(139,92,246,0.15);
+        }
+        .step-card i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        .step-card h5 {
+            font-size: 1rem;
+            margin-bottom: 4px;
+            color: #0f172a;
+        }
+        .step-card p {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-bottom: 0;
+        }
+
+        /* 规则列表 */
+        .rule-list {
+            list-style: none;
+            padding: 0;
+        }
+        .rule-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 14px;
+            color: #1e293b;
+            font-size: 0.95rem;
+        }
+        .rule-list li i {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+
+        /* 参与按钮 */
+        .join-btn {
+            width: 100%;
+            background: var(--primary-gradient);
+            border: none;
+            padding: 20px 0;
+            border-radius: 60px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: 0 20px 35px -10px var(--primary);
+            transition: all 0.2s;
+            margin: 24px 0 0;
+            border: 1px solid rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .join-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* 底部留白 */
+        .footer-space {
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 头部：仅返回按钮（无标题） -->
+        <div class="header">
+            <a href="index.html" class="back-icon"><i class="fas fa-arrow-left"></i></a>
+        </div>
+
+        <!-- 活动主卡片 -->
+        <div class="card">
+            <div class="activity-hero">
+                <i class="fas fa-rocket"></i>
+                <h2>OKX Boost</h2>
+                <span class="badge">🔥 进行中</span>
+                <p>交易即挖矿，奖励无上限</p>
+            </div>
+
+            <!-- 倒计时 -->
+            <div class="countdown" id="countdown">
+                <div class="countdown-item">
+                    <div class="countdown-number" id="days">03</div>
+                    <div class="countdown-label">天</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="hours">12</div>
+                    <div class="countdown-label">时</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="minutes">45</div>
+                    <div class="countdown-label">分</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="seconds">30</div>
+                    <div class="countdown-label">秒</div>
+                </div>
+            </div>
+
+            <!-- 奖励池 -->
+            <h3>🎁 奖励池</h3>
+            <div class="reward-grid">
+                <div class="reward-item">
+                    <i class="fas fa-coins"></i>
+                    <h4>10,000 USDT</h4>
+                    <p>交易量排名 1-10</p>
+                </div>
+                <div class="reward-item">
+                    <i class="fas fa-gem"></i>
+                    <h4>5,000 H</h4>
+                    <p>幸运抽奖</p>
+                </div>
+                <div class="reward-item">
+                    <i class="fas fa-crown"></i>
+                    <h4>VIP 权益</h4>
+                    <p>前3名专属</p>
+                </div>
+                <div class="reward-item">
+                    <i class="fas fa-tag"></i>
+                    <h4>更多惊喜</h4>
+                    <p>额外空投</p>
+                </div>
+            </div>
+
+            <!-- 我的交易量 & 进度条 -->
+            <div class="my-stats">
+                <div class="my-volume">
+                    <span class="my-volume-label">我的交易量</span>
+                    <span class="my-volume-value">1,245 USDT</span>
+                </div>
+                <div class="my-rank">
+                    <span class="my-rank-label">当前排名</span>
+                    <span class="my-rank-value">#18</span>
+                </div>
+            </div>
+
+            <!-- 奖励池进度条 -->
+            <div class="progress-section">
+                <div class="progress-header">
+                    <span>奖励池已发放</span>
+                    <span>65%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+
+            <!-- 实时排行榜（前3名） -->
+            <div class="leaderboard">
+                <h4><i class="fas fa-chart-line"></i> 实时排行榜</h4>
+                <div class="leaderboard-item">
+                    <span class="leaderboard-rank">1</span>
+                    <span class="leaderboard-user">0x3aB...cD2</span>
+                    <span class="leaderboard-volume">45.2k USDT</span>
+                </div>
+                <div class="leaderboard-item">
+                    <span class="leaderboard-rank">2</span>
+                    <span class="leaderboard-user">0x7f8...e1A</span>
+                    <span class="leaderboard-volume">32.8k USDT</span>
+                </div>
+                <div class="leaderboard-item">
+                    <span class="leaderboard-rank">3</span>
+                    <span class="leaderboard-user">0x2b5...9f3</span>
+                    <span class="leaderboard-volume">28.4k USDT</span>
+                </div>
+            </div>
+
+            <!-- 参与步骤（4个图标卡片） -->
+            <h3>📝 参与步骤</h3>
+            <div class="step-grid">
+                <div class="step-card">
+                    <i class="fas fa-wallet"></i>
+                    <h5>连接钱包</h5>
+                    <p>确保有 H 或 USDT</p>
+                </div>
+                <div class="step-card">
+                    <i class="fas fa-exchange-alt"></i>
+                    <h5>交易 H</h5>
+                    <p>在 OKX DEX 交易</p>
+                </div>
+                <div class="step-card">
+                    <i class="fas fa-chart-simple"></i>
+                    <h5>累积交易量</h5>
+                    <p>交易量越高奖励越多</p>
+                </div>
+                <div class="step-card">
+                    <i class="fas fa-gift"></i>
+                    <h5>领取奖励</h5>
+                    <p>活动结束后发放</p>
+                </div>
+            </div>
+
+            <!-- 活动规则 -->
+            <h3>📋 活动规则</h3>
+            <ul class="rule-list">
+                <li><i class="fas fa-check-circle"></i> 活动时间：2026年3月21日 20:00 - 3月28日 20:00 (UTC+8)</li>
+                <li><i class="fas fa-check-circle"></i> 交易对：H/USDT, H/OKB</li>
+                <li><i class="fas fa-check-circle"></i> 交易量按买入+卖出总和计算</li>
+                <li><i class="fas fa-check-circle"></i> 奖励将在活动结束后7天内发放</li>
+                <li><i class="fas fa-check-circle"></i> 本活动最终解释权归海豚社区所有</li>
+            </ul>
+
+            <!-- 参与按钮 -->
+            <button class="btn-primary join-btn" onclick="alert('参与活动功能开发中')">
+                <i class="fas fa-rocket"></i> 立即参与
+            </button>
+        </div>
+
+        <!-- 底部留白（无导航） -->
+        <div class="footer-space"></div>
+    </div>
+
+    <script>
+        (function () {
+        // 动态倒计时（示例：倒计时到3月28日20:00）
+        function startCountdown() {
+            const targetDate = new Date('2026-03-28T20:00:00+08:00').getTime();
+            const interval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+                if (distance < 0) {
+                    clearInterval(interval);
+                    document.getElementById('days').innerText = '00';
+                    document.getElementById('hours').innerText = '00';
+                    document.getElementById('minutes').innerText = '00';
+                    document.getElementById('seconds').innerText = '00';
+                    return;
+                }
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                document.getElementById('days').innerText = days.toString().padStart(2, '0');
+                document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
+            }, 1000);
+        }
+        startCountdown();
+
+        // 模拟数据变化（增强热闹感）
+        setInterval(() => {
+            // 随机微调排行榜数据（仅演示）
+            const rank1 = document.querySelector('.leaderboard-volume');
+            if (rank1) {
+                let val = parseFloat(rank1.innerText);
+                val += Math.random() * 10 - 5;
+                rank1.innerText = val.toFixed(1) + 'k USDT';
+            }
+        }, 5000);
+        })();
+    </script>
+</body>
+</html>
