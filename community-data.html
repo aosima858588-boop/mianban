@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>社区数据 · 海豚社区</title>
+    <!-- 公共样式 -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Chart.js 图表库 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        /* 页面特有样式 */
+        body {
+            background: linear-gradient(145deg, #f3f0ff, #ede9fe);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            margin: 0;
+        }
+
+        /* 统一毛玻璃卡片 */
+        .glass-card {
+            background: rgba(255,255,255,0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 24px 20px;
+            box-shadow: 0 20px 40px -15px rgba(0,20,40,0.15), 0 0 0 1px rgba(255,255,255,0.8) inset;
+            border: 1px solid rgba(255,255,255,0.6);
+            margin-bottom: 20px;
+        }
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0a1a2f;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card-title i {
+            color: #8b5cf6;
+        }
+        /* 统计卡片网格 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .stat-item {
+            background: white;
+            border-radius: 24px;
+            padding: 16px 12px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+        .stat-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .stat-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #8b5cf6;
+            line-height: 1.2;
+        }
+        .stat-trend {
+            font-size: 0.7rem;
+            color: #10b981;
+            margin-top: 4px;
+        }
+        /* 图表容器 */
+        .chart-container {
+            background: white;
+            border-radius: 24px;
+            padding: 16px;
+            margin-bottom: 20px;
+            border: 1px solid #e2e8f0;
+        }
+        .chart-wrapper {
+            height: 150px;
+            position: relative;
+        }
+        /* 个人数据分析卡片 */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 10px;
+        }
+        .metric-item {
+            background: white;
+            border-radius: 20px;
+            padding: 14px 10px;
+            border: 1px solid #e2e8f0;
+        }
+        .metric-label {
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+        .metric-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #0a1a2f;
+        }
+        .metric-unit {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-left: 2px;
+        }
+        /* 利润日历 */
+        .calendar-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .month-nav {
+            display: flex;
+            gap: 10px;
+        }
+        .nav-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 18px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            color: #8b5cf6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .nav-btn:hover {
+            background: #8b5cf6;
+            color: white;
+        }
+        .range-btns {
+            display: flex;
+            gap: 6px;
+        }
+        .range-btn {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 30px;
+            padding: 6px 14px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+        }
+        .range-btn.active {
+            background: #8b5cf6;
+            color: white;
+            border-color: #8b5cf6;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            margin-top: 12px;
+        }
+        .calendar-day {
+            aspect-ratio: 1 / 1;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: 1px solid #e2e8f0;
+        }
+        /* 热度颜色等级 */
+        .heat-0 { background-color: #f1f5f9; }
+        .heat-1 { background-color: #bae6fd; }
+        .heat-2 { background-color: #7ab3f0; }
+        .heat-3 { background-color: #4285f4; color: white; }
+        .heat-4 { background-color: #1a5bbf; color: white; }
+
+    </style>
+</head>
+<body>
+    <div class="page-content">
+        <!-- 头部 -->
+        <div class="header">
+            <a href="index.html" class="back-icon"><i class="fas fa-arrow-left"></i></a>
+            <h1></h1>
+        </div>
+
+
+            <!-- 统计卡片 -->
+            <div class="glass-card">
+                <div class="card-title"><i class="fas fa-chart-pie"></i> 实时概览</div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-label">总锁仓价值 (TVL)</div>
+                        <div class="stat-value">$18.42M</div>
+                        <div class="stat-trend">↑ 5.2%</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">总用户数</div>
+                        <div class="stat-value">12,345</div>
+                        <div class="stat-trend">+238 今日</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">国库余额</div>
+                        <div class="stat-value">$1.23M</div>
+                        <div class="stat-trend">≈ 1.2M USDT</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">质押总量</div>
+                        <div class="stat-value">6.42M H</div>
+                        <div class="stat-trend">占流通 64%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TVL趋势图表 -->
+            <div class="glass-card">
+                <div class="card-title"><i class="fas fa-chart-line"></i> TVL 趋势 (7天)</div>
+                <div class="chart-container">
+                    <div class="chart-wrapper">
+                        <canvas id="tvlChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 日交易量柱状图 & 用户增长折线图 (并排放置在小屏幕上堆叠) -->
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+                <div class="glass-card">
+                    <div class="card-title"><i class="fas fa-chart-bar"></i> 日交易量</div>
+                    <div class="chart-container">
+                        <div class="chart-wrapper">
+                            <canvas id="volumeChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-card">
+                    <div class="card-title"><i class="fas fa-users"></i> 用户增长</div>
+                    <div class="chart-container">
+                        <div class="chart-wrapper">
+                            <canvas id="usersChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 个人数据分析卡片 -->
+            <div class="glass-card">
+                <div class="card-title"><i class="fas fa-id-card"></i> 个人分析</div>
+                <div class="metrics-grid">
+                    <div class="metric-item">
+                        <div class="metric-label">平均质押</div>
+                        <div class="metric-value">2,450 <span class="metric-unit">H</span></div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">活跃用户</div>
+                        <div class="metric-value">8,234</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">总交易笔数</div>
+                        <div class="metric-value">45.2k</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">平均交易额</div>
+                        <div class="metric-value">$1,280</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">质押参与率</div>
+                        <div class="metric-value">52<span class="metric-unit">%</span></div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">VIP用户</div>
+                        <div class="metric-value">342</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 利润日历 -->
+            <div class="glass-card">
+                <div class="card-title"><i class="fas fa-calendar-alt"></i> 利润日历</div>
+                <div class="calendar-controls">
+                    <div class="month-nav">
+                        <span class="nav-btn" id="prevMonth"><i class="fas fa-chevron-left"></i></span>
+                        <span class="nav-btn" id="nextMonth"><i class="fas fa-chevron-right"></i></span>
+                    </div>
+                    <div class="range-btns">
+                        <span class="range-btn active" data-range="15">15d</span>
+                        <span class="range-btn" data-range="30">30d</span>
+                        <span class="range-btn" data-range="60">60d</span>
+                        <span class="range-btn" data-range="90">90d</span>
+                    </div>
+                </div>
+                <div id="calendarGrid" class="calendar-grid">
+                    <!-- 由JS动态生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部导航 -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>首页</span></a>
+        <a href="earn.html" class="nav-item"><i class="fas fa-coins"></i><span>赚币</span></a>
+        <a href="model.html" class="nav-item"><i class="fas fa-robot"></i><span>模型</span></a>
+        <a href="wallet.html" class="nav-item"><i class="fas fa-wallet"></i><span>钱包</span></a>
+    </nav>
+
+    <script>
+        (function() {
+            // 初始化 Chart.js 图表
+            const tvlCtx = document.getElementById('tvlChart').getContext('2d');
+            new Chart(tvlCtx, {
+                type: 'line',
+                data: {
+                    labels: ['3/15', '3/16', '3/17', '3/18', '3/19', '3/20', '3/21'],
+                    datasets: [{
+                        label: 'TVL (M)',
+                        data: [16.2, 16.8, 17.5, 18.1, 18.4, 18.9, 19.2],
+                        borderColor: '#8b5cf6',
+                        backgroundColor: 'rgba(139,92,246,0.1)',
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            const volumeCtx = document.getElementById('volumeChart').getContext('2d');
+            new Chart(volumeCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['一', '二', '三', '四', '五', '六', '日'],
+                    datasets: [{
+                        label: '交易量 (k USDT)',
+                        data: [220, 340, 280, 410, 390, 520, 480],
+                        backgroundColor: '#8b5cf6',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            const usersCtx = document.getElementById('usersChart').getContext('2d');
+            new Chart(usersCtx, {
+                type: 'line',
+                data: {
+                    labels: ['1月', '2月', '3月', '4月', '5月', '6月'],
+                    datasets: [{
+                        label: '用户数',
+                        data: [8200, 9500, 11200, 13400, 15800, 18500],
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16,185,129,0.1)',
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            // 利润日历模拟数据
+            function generateCalendarHeatmap(range) {
+                const daysInMonth = 30; // 简化，实际应计算当前月份
+                let html = '';
+                // 模拟7天一周的网格，先填充空白
+                const firstDay = 3; // 假设本月第一天是周三
+                for (let i = 0; i < firstDay; i++) {
+                    html += '<div class="calendar-day"></div>';
+                }
+                for (let d = 1; d <= daysInMonth; d++) {
+                    // 随机热度等级 0-4
+                    const heat = Math.floor(Math.random() * 5);
+                    html += `<div class="calendar-day heat-${heat}">${d}</div>`;
+                }
+                document.getElementById('calendarGrid').innerHTML = html;
+            }
+            generateCalendarHeatmap(30);
+
+            // 范围按钮切换
+            document.querySelectorAll('.range-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    const range = this.dataset.range;
+                    // 模拟更新日历（此处可根据range重新生成不同数据）
+                    generateCalendarHeatmap(parseInt(range));
+                });
+            });
+
+            // 月份切换（简单模拟）
+            document.getElementById('prevMonth').addEventListener('click', () => {
+                alert('上一月（演示）');
+            });
+            document.getElementById('nextMonth').addEventListener('click', () => {
+                alert('下一月（演示）');
+            });
+
+            // 底部导航高亮
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            document.querySelectorAll('.nav-item').forEach(a => {
+                if (a.getAttribute('href') === currentPage) a.classList.add('active');
+            });
+        })();
+    </script>
+</body>
+</html>
