@@ -3,21 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>钱包 · 海豚社区</title>
+    <title>H Wallet · 海豚社区</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:opsz,wght@14..32,300..700&family=Playfair+Display:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:opsz,wght@14..32,300..700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        /* 页面特有样式覆盖（确保紫色主题） */
         :root {
             --primary: #8b5cf6;
             --primary-dark: #7c3aed;
             --primary-light: #ede9fe;
             --primary-gradient: linear-gradient(145deg, #8b5cf6, #6d4aff);
-            --primary-shadow: #4c1d95;
+            --text-dark: #0f172a;
+            --text-light: #64748b;
         }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background: radial-gradient(circle at 10% 20%, #ffffff, #f5f3ff);
             font-family: 'Inter', sans-serif;
@@ -25,727 +28,2189 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            margin: 0;
-            padding: 20px 0;  /* 上下内边距保留，左右为0 */
         }
-
-        /* 内容容器 - 添加左右内边距，让内容与屏幕边缘有间距 */
-        .page-content {
-            max-width: 600px;
+        .app-container {
+            max-width: 430px;
             width: 100%;
-            margin: 0 auto;
-            padding: 0 12px;  /* 左右各12px间距，不贴边 */
-        }
-
-        /* 卡片通用 */
-        .card {
-            background: rgba(255,255,255,0.75);
-            backdrop-filter: blur(20px);
-            border-radius: 40px;
-            padding: 24px 20px;
-            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.15);
-            border: 1px solid rgba(255,255,255,0.6);
-            margin: 0 0 16px 0;   /* 左右边距为0，靠容器内边距留空 */
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-        }
-        .card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 30px 45px -15px rgba(139,92,246,0.2);
-        }
-
-        /* 总资产卡片（径向渐变） */
-        .asset-card {
-            background: radial-gradient(circle at 30% 30%, #a78bfa, #7c3aed);
-            border-color: rgba(255,255,255,0.1);
-            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.45);
-        }
-        .asset-card:hover {
-            box-shadow: 0 30px 45px -15px rgba(109,74,255,0.35);
-        }
-        .asset-summary {
+            background: #ffffff;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            min-height: 100vh;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);
+            position: relative;
         }
-        .total-asset {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: white;
-            font-family: var(--font-sans);
-            display: flex;
-            align-items: baseline;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .asset-change {
-            font-size: 1rem;
-            font-weight: 500;
-            color: #10b981;
-            background: rgba(16,185,129,0.2);
-            padding: 4px 12px;
-            border-radius: 30px;
-        }
-        .yield-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: rgba(255,255,255,0.6);
-            font-size: 0.88rem;
-            padding: 2px 0;
-        }
-        .yield-row .yield-amount {
-            color: #10b981;
-        }
-        .address-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(255,255,255,0.12);
-            border-radius: 30px;
-            padding: 6px 12px;
-            margin-top: 8px;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-        .address-text {
-            font-family: 'Fira Code', monospace;
-            font-size: 0.8rem;
-            color: rgba(255,255,255,0.85);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 200px;
-        }
-        .copy-btn {
-            background: rgba(255,255,255,0.25);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.4);
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: 0.2s;
-            flex-shrink: 0;
-        }
-        .copy-btn:hover {
-            background: rgba(255,255,255,0.4);
-            transform: scale(1.05);
-        }
-        .copy-btn i {
-            font-size: 1rem;
-        }
+        .hidden { display: none !important; }
 
-        /* 操作按钮组 - 透明底色，线条交互 */
-        .action-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin: 20px 0;
+        /* ===== Landing Page ===== */
+        #landingPage {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 0 24px 100px;
         }
-        .action-btn {
-            background: transparent;
-            border: none;
-            border-radius: 40px;
-            padding: 12px 0;
-            font-weight: 600;
-            color: var(--primary);
+        .brand-section {
             text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 1rem;
-            position: relative;
-        }
-        .action-btn i {
-            font-size: 1.4rem;
-            color: var(--primary);
-            transition: transform 0.2s;
-        }
-        .action-btn .btn-divider {
-            width: 1px;
-            height: 20px;
-            background: var(--primary-light);
-            transition: height 0.2s, background 0.2s;
-        }
-        .action-btn:hover .btn-divider {
-            height: 28px;
-            background: var(--primary);
-        }
-        .action-btn:active {
-            transform: scale(0.97);
-        }
-
-        /* 资产项 */
-        .asset-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 14px 0;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .asset-item:last-child {
-            border-bottom: none;
-        }
-        .asset-left {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-        .asset-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 20px;
-            background: var(--primary-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            font-weight: 700;
-            font-size: 1rem;
-        }
-        .asset-info {
+            flex: 1;
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 0 20px;
         }
-        .asset-symbol {
-            font-weight: 700;
-            color: #0f172a;
-        }
-        .asset-name {
-            font-size: 0.75rem;
-            color: #94a3b8;
-        }
-        .asset-right {
-            text-align: right;
-        }
-        .asset-balance {
-            font-weight: 700;
-            font-family: var(--font-sans);
-            font-size: var(--font-size-base);
-            color: #0f172a;
-        }
-        .asset-value {
-            font-size: 0.8rem;
-            font-family: var(--font-sans);
-            color: #64748b;
-        }
-
-        /* DeFi 标签切换 */
-        .defi-tabs {
+        .brand-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #a78bfa, #6d4aff, #4f46e5);
             display: flex;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-        .defi-tab {
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.82rem;
-            font-weight: 600;
-            cursor: pointer;
-            border: 1.5px solid var(--primary-light);
-            color: #64748b;
-            background: none;
-            transition: background 0.18s, color 0.18s, border-color 0.18s;
-        }
-        .defi-tab.active {
-            background: var(--primary);
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 56px;
+            font-weight: 800;
             color: white;
-            border-color: var(--primary);
-        }
-
-        /* 交易记录 */
-        .tx-list {
-            margin-top: 12px;
-        }
-        .tx-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .tx-item:last-child {
-            border-bottom: none;
-        }
-        .tx-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .tx-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 18px;
-            background: var(--primary-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-        }
-        .tx-detail {
-            display: flex;
-            flex-direction: column;
-        }
-        .tx-type {
-            font-weight: 600;
-            color: #0f172a;
-        }
-        .tx-time {
-            font-size: 0.75rem;
-            color: #64748b;
-        }
-        .tx-amount {
-            font-weight: 700;
-        }
-        .tx-amount.positive {
-            color: #10b981;
-        }
-        .tx-amount.negative {
-            color: #ef4444;
-        }
-
-        /* 展开信息区域（充币/提币） */
-        .expand-section {
-            max-height: 0;
+            box-shadow: 0 15px 30px -10px rgba(139,92,246,0.5);
+            border: 3px solid rgba(255,255,255,0.3);
+            position: relative;
             overflow: hidden;
-            transition: max-height 0.35s ease, padding 0.35s ease, margin 0.35s ease;
-            padding: 0 16px;
-            margin: 0;
-            background: white;
-            border-radius: 24px;
-            border: 2px solid transparent;
-            box-sizing: border-box;
         }
-        .expand-section.is-open {
-            max-height: 600px;
-            padding: 16px;
-            margin: 12px 0 8px;
-            border-color: var(--primary);
-        }
-        .expand-section h4 {
-            font-size: 1rem;
-            margin-bottom: 14px;
-            color: var(--primary);
-            font-weight: 700;
-        }
-        .expand-section input {
-            width: 100%;
-            padding: 12px 16px;
-            border-radius: 40px;
-            border: 1px solid #e2e8f0;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-            outline: none;
-            transition: box-shadow 0.2s, border-color 0.2s;
-            box-sizing: border-box;
-        }
-        .expand-section input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(139,92,246,0.2);
-        }
-        .expand-section .confirm-btn {
-            background: var(--primary-gradient);
-            color: white;
-            border: none;
-            border-radius: 40px;
-            padding: 13px;
-            width: 100%;
-            font-weight: 700;
-            cursor: pointer;
-            font-size: 0.95rem;
-            transition: opacity 0.2s;
-        }
-        .expand-section .confirm-btn:active {
-            opacity: 0.85;
-        }
-        /* QR 占位 */
-        .qr-placeholder {
-            width: 120px;
-            height: 120px;
-            border-radius: 16px;
-            background: var(--primary-light);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px;
-            color: var(--primary);
-            gap: 8px;
-        }
-        .qr-placeholder i {
-            font-size: 3rem;
-        }
-        .qr-placeholder span {
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        /* 充币展开中的地址行 */
-        .expand-deposit .address-row {
-            background: rgba(139,92,246,0.06);
-            border: 1px solid rgba(139,92,246,0.2);
-            margin-top: 0;
-        }
-        .expand-deposit .address-text {
-            color: #0f172a;
-        }
-        /* Toast 提示 */
-        .wallet-toast {
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #0f172a;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            z-index: 9999;
-            transition: opacity 0.4s;
-            pointer-events: none;
-        }
-
-        /* 底部导航（稳重版） */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(255,255,255,0.8);
-            backdrop-filter: blur(15px);
-            padding: 6px 20px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            border-top: 1px solid rgba(255,255,255,0.8);
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-            z-index: 100;
-            box-sizing: border-box;
-        }
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-            font-size: 11px;
-            font-weight: 600;
-            color: #94A3B8;
-            text-decoration: none;
-            transition: color 0.2s;
-            padding: 6px 8px;
-            border-radius: 30px;
-            position: relative;
-        }
-        .nav-item i {
-            font-size: 20px;
-        }
-        .nav-item:hover {
-            color: var(--primary);
-            background: rgba(139,92,246,0.05);
-        }
-        .nav-item.active {
-            color: var(--primary);
-        }
-        .nav-item.active::after {
+        .brand-icon::after {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shine 3s infinite;
+        }
+        @keyframes shine { to { left: 100%; } }
+        .brand-title {
+            font-size: 40px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #0f172a, var(--primary), #4f46e5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        .brand-sub {
+            font-size: 16px;
+            color: var(--text-light);
+            letter-spacing: 3px;
+            font-weight: 300;
+        }
+        .action-buttons { display: flex; flex-direction: column; gap: 14px; margin: 32px 0 16px; }
+        .btn-large {
+            padding: 18px 0;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            border: none;
+            outline: none;
+        }
+        .btn-fill {
+            background: linear-gradient(145deg, #8b5cf6, #6d4aff);
+            color: white;
+            box-shadow: 0 12px 24px -8px rgba(139,92,246,0.5);
+        }
+        .btn-fill:active { transform: scale(0.97); }
+        .btn-ghost {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        .btn-ghost:active { transform: scale(0.97); }
+
+        /* ===== Wallet Creation Modal ===== */
+        #walletModal {
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            background: rgba(15,23,42,0.55);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+        .modal-sheet {
+            width: 100%;
+            max-width: 430px;
+            max-height: 92vh;
+            background: rgba(255,255,255,0.93);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-radius: 32px 32px 0 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .modal-handle {
+            width: 40px;
+            height: 4px;
+            background: #cbd5e1;
+            border-radius: 2px;
+            margin: 12px auto 0;
+            flex-shrink: 0;
+        }
+        .modal-header {
+            padding: 16px 24px 0;
+            flex-shrink: 0;
+        }
+        .modal-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-light);
+            letter-spacing: 2px;
+            text-align: center;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+        /* Step indicator */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            padding: 0 4px;
+            margin-bottom: 4px;
+        }
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            flex: 1;
+        }
+        .step-circle {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            background: #e2e8f0;
+            color: #94a3b8;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+        .step-circle.done {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        .step-circle.active {
+            background: white;
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(139,92,246,0.15);
+        }
+        .step-label {
+            font-size: 9px;
+            font-weight: 600;
+            color: #94a3b8;
+            white-space: nowrap;
+            text-align: center;
+        }
+        .step-label.active { color: var(--primary); }
+        .step-label.done { color: var(--primary-dark); }
+        .step-connector {
+            flex: 1;
+            height: 2px;
+            background: #e2e8f0;
+            margin-bottom: 20px;
+            max-width: 28px;
+            transition: background 0.3s;
+        }
+        .step-connector.done { background: var(--primary); }
+        .modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 24px 40px;
+            -webkit-overflow-scrolling: touch;
+        }
+        .modal-body::-webkit-scrollbar { width: 3px; }
+        .modal-body::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+
+        /* ===== Step Pages ===== */
+        .step-page { display: none; }
+        .step-page.active { display: block; }
+        .step-heading {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+        .step-desc {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .field-group { margin-bottom: 18px; }
+        .field-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            display: block;
+        }
+        .field-input {
+            width: 100%;
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            padding: 14px 16px;
+            border-radius: 16px;
+            font-size: 15px;
+            color: var(--text-dark);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .field-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(139,92,246,0.15);
+        }
+        .field-error {
+            font-size: 12px;
+            color: #ef4444;
+            margin-top: 6px;
+            display: none;
+        }
+        .strength-bar {
             height: 4px;
             border-radius: 2px;
-            background: var(--primary);
+            background: #e2e8f0;
+            margin-top: 8px;
+            overflow: hidden;
         }
-        .content {
-            padding-bottom: 80px;
+        .strength-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.3s, background 0.3s;
+            width: 0%;
+        }
+        .strength-text { font-size: 11px; color: var(--text-light); margin-top: 4px; }
+
+        /* ===== Mnemonic Grid ===== */
+        .mnemonic-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin: 16px 0;
+        }
+        .mnemonic-word {
+            background: linear-gradient(145deg, #f8f4ff, #f0ebff);
+            border: 1.5px solid rgba(139,92,246,0.2);
+            border-radius: 12px;
+            padding: 10px 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+        }
+        .mnemonic-num {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--primary);
+            opacity: 0.7;
+        }
+        .mnemonic-text {
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        .copy-strip {
+            background: rgba(139,92,246,0.08);
+            border-radius: 12px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-bottom: 14px;
+        }
+        .copy-strip:active { background: rgba(139,92,246,0.15); }
+        .copy-strip span { font-size: 13px; color: var(--primary); font-weight: 600; }
+        .confirm-check {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 0;
+            cursor: pointer;
+        }
+        .confirm-check input[type="checkbox"] {
+            width: 18px; height: 18px;
+            accent-color: var(--primary);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .confirm-check span { font-size: 14px; color: var(--text-dark); }
+
+        /* ===== Verify Step ===== */
+        .verify-group {
+            margin-bottom: 18px;
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 16px;
+        }
+        .verify-question {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+        .verify-choices { display: flex; flex-direction: column; gap: 8px; }
+        .choice-btn {
+            padding: 11px 16px;
+            border-radius: 12px;
+            border: 1.5px solid #e2e8f0;
+            background: white;
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            color: var(--text-dark);
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.15s;
+        }
+        .choice-btn:hover { border-color: var(--primary); background: rgba(139,92,246,0.05); }
+        .choice-btn.selected { border-color: var(--primary); background: rgba(139,92,246,0.1); color: var(--primary); font-weight: 600; }
+        .choice-btn.correct { border-color: #22c55e; background: rgba(34,197,94,0.1); color: #16a34a; font-weight: 600; pointer-events: none; }
+        .choice-btn.wrong { border-color: #ef4444; background: rgba(239,68,68,0.1); color: #dc2626; pointer-events: none; }
+
+        /* ===== Success Step ===== */
+        .success-center { text-align: center; padding: 32px 0; }
+        .success-icon {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #22c55e, #16a34a);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 36px;
+            color: white;
+            box-shadow: 0 12px 24px -8px rgba(34,197,94,0.4);
+        }
+        .success-title { font-size: 24px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
+        .success-desc { font-size: 15px; color: var(--text-light); line-height: 1.6; }
+
+        /* ===== Warning Box ===== */
+        .warning-box {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 13px;
+            color: #92400e;
+            display: flex; gap: 8px; align-items: flex-start;
+            margin: 12px 0;
+        }
+        .warning-box i { color: #f59e0b; margin-top: 1px; flex-shrink: 0; }
+
+        /* ===== CTA Button ===== */
+        .cta-btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 20px;
+            border: none;
+            background: var(--primary-gradient);
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 0 8px 20px -6px rgba(109,74,255,0.5);
+            margin-top: 8px;
+        }
+        .cta-btn:active { transform: scale(0.97); box-shadow: none; }
+        .cta-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+        /* ===== Wallet Dashboard ===== */
+        #walletDashboard { flex: 1; display: flex; flex-direction: column; background: #f5f3ff; }
+
+        /* Asset panel */
+        .asset-panel {
+            background: linear-gradient(145deg, #7c3aed, #4f46e5);
+            padding: 20px 20px 28px;
+            color: white;
+        }
+        .asset-panel-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 14px;
+        }
+        .asset-label { font-size: 13px; opacity: 0.75; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .asset-total { font-size: 34px; font-weight: 700; letter-spacing: -1px; }
+        .settings-btn {
+            width: 36px; height: 36px;
+            background: rgba(255,255,255,0.18);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+        .settings-btn:active { background: rgba(255,255,255,0.3); }
+        .asset-addr {
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            opacity: 0.7;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .backup-banner {
+            background: rgba(251,191,36,0.18);
+            border: 1px solid rgba(251,191,36,0.4);
+            border-radius: 10px;
+            padding: 9px 12px;
+            margin-top: 14px;
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer;
+        }
+        .backup-banner span { font-size: 12px; color: #fbbf24; font-weight: 600; }
+
+        /* Action buttons */
+        .action-row {
+            display: flex;
+            justify-content: space-around;
+            padding: 16px;
+            background: white;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .action-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+        .action-icon {
+            width: 48px; height: 48px;
+            border-radius: 14px;
+            background: var(--primary-light);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+            color: var(--primary);
+            transition: transform 0.15s;
+        }
+        .action-icon:active { transform: scale(0.9); }
+        .action-icon.locked { background: #f1f5f9; color: #94a3b8; }
+        .action-label { font-size: 11px; font-weight: 600; color: var(--text-dark); }
+
+        /* Network tabs */
+        .network-tabs {
+            display: flex;
+            gap: 8px;
+            padding: 12px 16px;
+            background: white;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .net-tab {
+            flex: 1;
+            padding: 8px 0;
+            border-radius: 24px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1.5px solid #e2e8f0;
+            background: white;
+            color: var(--text-light);
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .net-tab.active { background: var(--primary); border-color: var(--primary); color: white; }
+
+        /* Token list */
+        .token-list { flex: 1; background: white; overflow-y: auto; }
+        .token-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .token-item:active { background: #f8fafc; }
+        .token-icon {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        .token-info { flex: 1; min-width: 0; }
+        .token-name { font-size: 15px; font-weight: 600; color: var(--text-dark); }
+        .token-amount { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+        .token-right { text-align: right; flex-shrink: 0; }
+        .token-value { font-size: 15px; font-weight: 600; color: var(--text-dark); }
+        .token-change { font-size: 12px; margin-top: 2px; }
+        .token-change.up { color: #22c55e; }
+        .token-change.down { color: #ef4444; }
+
+        /* ===== Token Detail Page ===== */
+        #tokenDetail { flex: 1; display: flex; flex-direction: column; }
+        .detail-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            background: white;
+            border-bottom: 1px solid #f1f5f9;
+            flex-shrink: 0;
+        }
+        .back-btn {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            color: var(--text-dark);
+            font-size: 15px;
+            transition: background 0.15s;
+            flex-shrink: 0;
+        }
+        .back-btn:active { background: #e2e8f0; }
+        .detail-header-title { font-size: 17px; font-weight: 700; color: var(--text-dark); }
+        .detail-panel {
+            background: linear-gradient(145deg, #7c3aed, #4f46e5);
+            padding: 24px 20px 28px;
+            color: white;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .detail-token-icon {
+            width: 56px; height: 56px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; font-weight: 700;
+            margin: 0 auto 12px;
+        }
+        .detail-token-value { font-size: 30px; font-weight: 700; margin-bottom: 4px; }
+        .detail-token-price { font-size: 14px; opacity: 0.8; }
+        .detail-actions {
+            display: flex;
+            justify-content: space-around;
+            padding: 16px;
+            background: white;
+            border-bottom: 1px solid #f1f5f9;
+            flex-shrink: 0;
+        }
+        .detail-scroll { flex: 1; overflow-y: auto; padding: 0 16px 32px; background: #f5f3ff; }
+        .section-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-light);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 16px 0 8px;
+        }
+        .address-box {
+            background: white;
+            border-radius: 14px;
+            padding: 14px;
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            color: var(--text-dark);
+            word-break: break-all;
+            line-height: 1.6;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .copy-icon { color: var(--primary); cursor: pointer; font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+        .tx-item {
+            background: white;
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .tx-icon {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .tx-icon.in { background: rgba(34,197,94,0.1); color: #22c55e; }
+        .tx-icon.out { background: rgba(239,68,68,0.1); color: #ef4444; }
+        .tx-info { flex: 1; min-width: 0; }
+        .tx-type { font-size: 14px; font-weight: 600; color: var(--text-dark); }
+        .tx-date { font-size: 12px; color: var(--text-light); margin-top: 1px; }
+        .tx-amount { font-size: 14px; font-weight: 700; flex-shrink: 0; }
+        .tx-amount.in { color: #22c55e; }
+        .tx-amount.out { color: #ef4444; }
+
+        /* ===== Settings Overlay ===== */
+        #settingsOverlay {
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            background: rgba(15,23,42,0.55);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        .settings-sheet {
+            width: 100%;
+            max-width: 430px;
+            background: white;
+            border-radius: 32px 32px 0 0;
+            padding: 16px 24px 40px;
+        }
+        .settings-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+        }
+        .settings-item:last-of-type { border-bottom: none; }
+        .settings-item-left { display: flex; align-items: center; gap: 12px; }
+        .settings-icon {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            background: var(--primary-light);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--primary);
+            font-size: 15px;
+        }
+        .settings-name { font-size: 15px; font-weight: 600; color: var(--text-dark); }
+        .settings-arrow { color: #94a3b8; font-size: 13px; }
+
+        /* ===== Backup Gate Modal ===== */
+        #backupGate {
+            position: fixed;
+            inset: 0;
+            z-index: 400;
+            background: rgba(15,23,42,0.55);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .gate-card {
+            background: white;
+            border-radius: 24px;
+            padding: 28px 24px;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+        }
+        .gate-icon { font-size: 40px; margin-bottom: 12px; }
+        .gate-title { font-size: 18px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
+        .gate-desc { font-size: 14px; color: var(--text-light); line-height: 1.6; margin-bottom: 20px; }
+        .gate-actions { display: flex; gap: 10px; }
+        .gate-btn-primary { flex: 1; padding: 14px; border-radius: 14px; border: none; background: var(--primary-gradient); color: white; font-weight: 700; cursor: pointer; font-size: 15px; }
+        .gate-btn-cancel { flex: 1; padding: 14px; border-radius: 14px; border: 1.5px solid #e2e8f0; background: white; color: var(--text-light); font-weight: 600; cursor: pointer; font-size: 15px; }
+
+        /* ===== Enhanced Asset Panel ===== */
+        .asset-panel {
+            background: linear-gradient(150deg, #6d28d9 0%, #4f46e5 60%, #2563eb 100%);
+            padding: 24px 20px 32px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .asset-panel::before {
+            content: '';
+            position: absolute;
+            top: -40px; right: -40px;
+            width: 180px; height: 180px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+            pointer-events: none;
+        }
+        .asset-panel::after {
+            content: '';
+            position: absolute;
+            bottom: -30px; left: -20px;
+            width: 130px; height: 130px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            pointer-events: none;
+        }
+        .asset-total { font-size: 36px; font-weight: 800; letter-spacing: -1.5px; line-height: 1.1; }
+        .asset-label { font-size: 12px; opacity: 0.7; letter-spacing: 0.8px; margin-bottom: 6px; text-transform: uppercase; }
+        .asset-addr {
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            opacity: 0.75;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 5px 12px;
+            margin-top: 8px;
+            transition: background 0.2s;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+        .asset-addr:active { background: rgba(255,255,255,0.2); }
+        .settings-btn {
+            width: 40px; height: 40px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            flex-shrink: 0;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .settings-btn:active { background: rgba(255,255,255,0.3); transform: scale(0.92); }
+        .wallet-nickname {
+            font-size: 13px;
+            font-weight: 600;
+            opacity: 0.9;
+            margin-bottom: 2px;
+        }
+
+        /* Enhanced action row */
+        .action-row {
+            display: flex;
+            justify-content: space-around;
+            padding: 18px 8px;
+            background: white;
+            border-bottom: 1px solid #f1f5f9;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .action-item { display: flex; flex-direction: column; align-items: center; gap: 7px; cursor: pointer; padding: 0 8px; }
+        .action-icon {
+            width: 52px; height: 52px;
+            border-radius: 16px;
+            background: var(--primary-light);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+            color: var(--primary);
+            transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 0 4px 12px rgba(139,92,246,0.15);
+        }
+        .action-icon:active { transform: scale(0.88); }
+        .action-icon.locked { background: #f1f5f9; color: #94a3b8; box-shadow: none; }
+        .action-label { font-size: 12px; font-weight: 600; color: var(--text-dark); }
+
+        /* Enhanced token list */
+        .token-list { flex: 1; background: #f8f7ff; overflow-y: auto; padding: 8px 12px 16px; }
+        .token-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: white;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .token-item:active { transform: scale(0.98); box-shadow: 0 4px 14px rgba(139,92,246,0.12); }
+        .token-icon {
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #ede9fe, #ddd6fe);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-right: 14px;
+            flex-shrink: 0;
+            border: 2px solid rgba(139,92,246,0.1);
+        }
+
+        /* ===== Universal Bottom Sheet ===== */
+        .sheet-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 500;
+            background: rgba(10,15,40,0.55);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            pointer-events: none;
+        }
+        .sheet-overlay.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .bottom-sheet {
+            width: 100%;
+            max-width: 430px;
+            background: white;
+            border-radius: 28px 28px 0 0;
+            padding: 0 0 40px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: translateY(100%);
+            transition: transform 0.32s cubic-bezier(0.34, 1.2, 0.64, 1);
+            -webkit-overflow-scrolling: touch;
+        }
+        .sheet-overlay.visible .bottom-sheet {
+            transform: translateY(0);
+        }
+        .sheet-handle {
+            width: 40px; height: 4px;
+            background: #cbd5e1;
+            border-radius: 2px;
+            margin: 14px auto 0;
+        }
+        .sheet-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px 12px;
+        }
+        .sheet-title { font-size: 18px; font-weight: 700; color: var(--text-dark); }
+        .sheet-close {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            color: var(--text-light);
+            font-size: 14px;
+            transition: background 0.15s;
+            border: none;
+            flex-shrink: 0;
+        }
+        .sheet-close:active { background: #e2e8f0; }
+        .sheet-body { padding: 8px 24px 0; }
+
+        /* ===== Deposit Sheet ===== */
+        .qr-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0 16px;
+        }
+        .qr-box {
+            width: 180px; height: 180px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 3px solid var(--primary-light);
+        }
+        .qr-box canvas, .qr-box img { width: 100% !important; height: 100% !important; }
+        .qr-network-badge {
+            margin-top: 12px;
+            background: var(--primary-light);
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 5px 14px;
+            border-radius: 20px;
+            letter-spacing: 0.3px;
+        }
+        .addr-copy-row {
+            background: #f8f7ff;
+            border-radius: 14px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .addr-copy-text {
+            flex: 1;
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            color: var(--text-dark);
+            word-break: break-all;
+            line-height: 1.5;
+        }
+        .addr-copy-btn {
+            flex-shrink: 0;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.15s, opacity 0.15s;
+            display: flex; align-items: center; gap: 5px;
+        }
+        .addr-copy-btn:active { transform: scale(0.94); opacity: 0.85; }
+        .deposit-info-box {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: 12px;
+            padding: 11px 14px;
+            font-size: 13px;
+            color: #92400e;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        /* ===== Withdraw Sheet ===== */
+        .sheet-field { margin-bottom: 16px; }
+        .sheet-field-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 7px;
+            display: block;
+        }
+        .sheet-field-input {
+            width: 100%;
+            background: #f8f7ff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 13px 16px;
+            font-size: 15px;
+            color: var(--text-dark);
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            font-family: inherit;
+        }
+        .sheet-field-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(139,92,246,0.12);
+        }
+        .sheet-field-input::placeholder { color: #94a3b8; }
+        .field-inline-row { display: flex; align-items: center; gap: 8px; }
+        .field-max-btn {
+            flex-shrink: 0;
+            background: var(--primary-light);
+            color: var(--primary);
+            border: none;
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .sheet-error { font-size: 12px; color: #ef4444; margin-top: 5px; display: none; }
+        .sheet-submit-btn {
+            width: 100%;
+            background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 16px;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 8px;
+            box-shadow: 0 8px 20px -6px rgba(109,74,255,0.4);
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .sheet-submit-btn:active { transform: scale(0.97); box-shadow: none; }
+        .sheet-submit-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+        /* ===== Settings enhancements ===== */
+        .settings-sheet { max-height: 80vh; overflow-y: auto; }
+        .settings-group-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-light);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 16px 0 6px;
         }
     </style>
 </head>
 <body>
-    <div class="page-content">
-        <!-- 总资产卡片 -->
-        <div class="card asset-card">
-            <div class="asset-summary">
-                <div class="total-asset">
-                    $ 1,098
-                    <span class="asset-change">+$90 (8.2%)</span>
+<div class="app-container">
+
+    <!-- ===== Landing Page ===== -->
+    <div id="landingPage" style="flex:1;display:flex;flex-direction:column;">
+        <div class="brand-section">
+            <div class="brand-icon">H</div>
+            <div class="brand-title">H Wallet</div>
+            <div class="brand-sub">钱包 · 交易 · 赚币</div>
+        </div>
+        <div class="action-buttons">
+            <button class="btn-large btn-fill" id="landingCreateBtn">创建钱包</button>
+            <button class="btn-large btn-ghost" id="landingImportBtn">导入钱包</button>
+        </div>
+    </div>
+
+    <!-- ===== Wallet Creation Modal ===== -->
+    <div id="walletModal" class="hidden">
+        <div class="modal-sheet">
+            <div class="modal-handle"></div>
+            <div class="modal-header">
+                <div class="modal-title">完成进度</div>
+                <div class="step-indicator">
+                    <div class="step-item">
+                        <div class="step-circle active" id="sc1">1</div>
+                        <div class="step-label active" id="sl1">设置密码</div>
+                    </div>
+                    <div class="step-connector" id="conn1"></div>
+                    <div class="step-item">
+                        <div class="step-circle" id="sc2">2</div>
+                        <div class="step-label" id="sl2">抄写助记词</div>
+                    </div>
+                    <div class="step-connector" id="conn2"></div>
+                    <div class="step-item">
+                        <div class="step-circle" id="sc3">3</div>
+                        <div class="step-label" id="sl3">验证助记词</div>
+                    </div>
+                    <div class="step-connector" id="conn3"></div>
+                    <div class="step-item">
+                        <div class="step-circle" id="sc4">4</div>
+                        <div class="step-label" id="sl4">备份成功</div>
+                    </div>
                 </div>
-                <div class="yield-row">
-                    <span>昨日收益</span>
-                    <span class="yield-amount">+$100</span>
+            </div>
+            <div class="modal-body">
+
+                <!-- Step 1: Set Password -->
+                <div class="step-page active" id="step1">
+                    <div class="step-heading">设置钱包密码</div>
+                    <div class="step-desc">密码用于保护你的钱包，请设置至少 8 位字符。</div>
+                    <div class="field-group">
+                        <label class="field-label" for="pwdInput">设置密码</label>
+                        <input type="password" class="field-input" id="pwdInput" placeholder="至少 8 位字符" autocomplete="new-password">
+                        <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+                        <div class="strength-text" id="strengthText"></div>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label" for="pwdConfirm">确认密码</label>
+                        <input type="password" class="field-input" id="pwdConfirm" placeholder="再次输入密码" autocomplete="new-password">
+                        <div class="field-error" id="pwdError">两次密码不一致</div>
+                    </div>
+                    <button class="cta-btn" id="step1Next">下一步</button>
                 </div>
-                <div class="address-row">
-                    <span class="address-text" id="walletAddress">0x8c3D0b7C1E9a6D3aA9C0B4F9e7D1a8b3c2d3a2F1</span>
-                    <button class="copy-btn" onclick="copyAddress()"><i class="far fa-copy"></i></button>
+
+                <!-- Step 2: Write Mnemonic -->
+                <div class="step-page" id="step2">
+                    <div class="step-heading">抄写助记词</div>
+                    <div class="step-desc">请按序号抄写以下 12 个助记词，妥善保管。任何人获得助记词即可完全控制你的钱包。</div>
+                    <div class="warning-box">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>切勿截图，不要分享给任何人，不要保存到云端</span>
+                    </div>
+                    <div class="mnemonic-grid" id="mnemonicGrid"></div>
+                    <div class="copy-strip" id="copyMnemonicBtn">
+                        <span><i class="far fa-copy"></i>&nbsp; 复制助记词</span>
+                        <i class="fas fa-chevron-right" style="color:var(--primary);font-size:11px;"></i>
+                    </div>
+                    <label class="confirm-check">
+                        <input type="checkbox" id="mnemonicConfirm">
+                        <span>我已在安全的地方抄写了助记词</span>
+                    </label>
+                    <button class="cta-btn" id="step2Next" disabled>下一步</button>
                 </div>
+
+                <!-- Step 3: Verify Mnemonic -->
+                <div class="step-page" id="step3">
+                    <div class="step-heading">验证助记词</div>
+                    <div class="step-desc">请在下方三道题中各选出正确的助记词，以完成备份验证。</div>
+                    <div id="verifyGroups"></div>
+                    <div class="field-error" id="verifyError" style="text-align:center;font-size:13px;padding:8px 0;">请完成所有选择</div>
+                    <button class="cta-btn" id="step3Next">验证并完成备份</button>
+                </div>
+
+                <!-- Step 4: Backup Success -->
+                <div class="step-page" id="step4">
+                    <div class="success-center">
+                        <div class="success-icon"><i class="fas fa-check"></i></div>
+                        <div class="success-title">备份成功！</div>
+                        <div class="success-desc">你的钱包已成功备份。<br>请务必妥善保管助记词，不要告诉任何人。</div>
+                    </div>
+                    <button class="cta-btn" id="step4Done">进入钱包</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Wallet Dashboard ===== -->
+    <div id="walletDashboard" class="hidden" style="flex:1;display:flex;flex-direction:column;">
+        <!-- Asset panel -->
+        <div class="asset-panel">
+            <div class="asset-panel-top">
+                <div>
+                    <div class="wallet-nickname" id="walletNickname">我的钱包</div>
+                    <div class="asset-label">总资产估值</div>
+                    <div class="asset-total" id="totalAsset">$0.00</div>
+                </div>
+                <div class="settings-btn" id="settingsBtn" title="设置中心">
+                    <i class="fas fa-sliders-h" style="color:white;font-size:16px;"></i>
+                </div>
+            </div>
+            <div class="asset-addr" id="assetAddr">
+                <i class="fas fa-wallet" style="font-size:10px;opacity:0.7;"></i>
+                <span id="addrShort">--</span>
+                <i class="far fa-copy" style="font-size:10px;"></i>
+            </div>
+            <div class="backup-banner" id="backupBanner">
+                <span><i class="fas fa-shield-alt"></i>&nbsp; 钱包未备份，点击立即完成备份</span>
+                <i class="fas fa-chevron-right" style="color:#fbbf24;font-size:12px;"></i>
             </div>
         </div>
 
-        <!-- 操作按钮 -->
-        <div class="action-grid">
-            <div class="action-btn" data-action="deposit" onclick="toggleExpand('deposit')">
-                <i class="fas fa-arrow-down"></i>
-                <span class="btn-divider"></span>
-                充币
+        <!-- Action buttons -->
+        <div class="action-row">
+            <div class="action-item" id="btnDeposit">
+                <div class="action-icon locked" id="iconDeposit"><i class="fas fa-arrow-down"></i></div>
+                <div class="action-label">充币</div>
             </div>
-            <div class="action-btn" data-action="withdraw" onclick="toggleExpand('withdraw')">
-                <i class="fas fa-arrow-up"></i>
-                <span class="btn-divider"></span>
-                提币
+            <div class="action-item" id="btnWithdraw">
+                <div class="action-icon locked" id="iconWithdraw"><i class="fas fa-arrow-up"></i></div>
+                <div class="action-label">提币</div>
             </div>
-            <div class="action-btn" onclick="alert('交易功能开发中')">
-                <i class="fas fa-exchange-alt"></i>
-                <span class="btn-divider"></span>
-                交易
+            <div class="action-item" id="btnTrade">
+                <div class="action-icon locked" id="iconTrade"><i class="fas fa-exchange-alt"></i></div>
+                <div class="action-label">交易</div>
             </div>
-            <div class="action-btn" onclick="alert('账单功能开发中')">
-                <i class="fas fa-file-invoice"></i>
-                <span class="btn-divider"></span>
-                账单
+            <div class="action-item" id="btnDapp">
+                <div class="action-icon"><i class="fas fa-th"></i></div>
+                <div class="action-label">应用</div>
             </div>
         </div>
 
-        <!-- 充币展开区域 -->
-        <div id="depositExpand" class="expand-section expand-deposit">
-            <h4>充币</h4>
-            <div class="qr-placeholder">
-                <i class="fas fa-qrcode"></i>
-                <span>扫码充币</span>
-            </div>
-            <div class="address-row">
-                <span class="address-text" id="depositAddress">0x8c3D0b7C1E9a6D3aA9C0B4F9e7D1a8b3c2d3a2F1</span>
-                <button class="copy-btn" onclick="copyDepositAddress()"><i class="far fa-copy"></i></button>
-            </div>
+        <!-- Network tabs -->
+        <div class="network-tabs">
+            <div class="net-tab active" id="netXLayer">X Layer</div>
+            <div class="net-tab" id="netBNB">BNB Chain</div>
         </div>
 
-        <!-- 提币展开区域 -->
-        <div id="withdrawExpand" class="expand-section expand-withdraw">
-            <h4>提币</h4>
-            <input type="text" placeholder="提币地址">
-            <input type="number" placeholder="提币金额">
-            <input type="password" placeholder="交易密码">
-            <button class="confirm-btn" onclick="alert('提币功能开发中')">确认提币</button>
+        <!-- Token list -->
+        <div class="token-list" id="tokenList"></div>
+    </div>
+
+    <!-- ===== Token Detail Page ===== -->
+    <div id="tokenDetail" class="hidden" style="flex:1;display:flex;flex-direction:column;background:#f5f3ff;">
+        <div class="detail-header">
+            <div class="back-btn" id="detailBackBtn"><i class="fas fa-arrow-left"></i></div>
+            <div class="detail-header-title" id="detailTitle">代币详情</div>
         </div>
-
-        <!-- 币种列表 -->
-        <div class="card">
-            <!-- DeFi 标签 -->
-            <div class="defi-tabs">
-                <button class="defi-tab active" onclick="switchDefi(0)">资产</button>
-                <button class="defi-tab" onclick="switchDefi(1)">DeFi 2</button>
+        <div class="detail-panel">
+            <div class="detail-token-icon" id="detailIcon">T</div>
+            <div class="detail-token-value" id="detailValue">$0.00</div>
+            <div class="detail-token-price" id="detailPrice">$0.00</div>
+        </div>
+        <div class="detail-actions">
+            <div class="action-item" id="detailBtnDeposit">
+                <div class="action-icon locked" id="detailIconDeposit"><i class="fas fa-arrow-down"></i></div>
+                <div class="action-label">充币</div>
             </div>
-
-            <!-- 资产列表（原DeFi 1） -->
-            <div id="assetList" class="defi-list">
-                <div class="asset-item">
-                    <div class="asset-left">
-                        <div class="asset-icon">₮</div>
-                        <div class="asset-info">
-                            <span class="asset-symbol">USDT</span>
-                            <span class="asset-name">1,234.56</span>
-                        </div>
-                    </div>
-                    <div class="asset-right">
-                        <div class="asset-balance">1,234.56</div>
-                        <div class="asset-value">≈ $1,234.56</div>
-                    </div>
-                </div>
-                <div class="asset-item">
-                    <div class="asset-left">
-                        <div class="asset-icon">OKB</div>
-                        <div class="asset-info">
-                            <span class="asset-symbol">OKB</span>
-                            <span class="asset-name">56.78</span>
-                        </div>
-                    </div>
-                    <div class="asset-right">
-                        <div class="asset-balance">56.78</div>
-                        <div class="asset-value">≈ $890.23</div>
-                    </div>
-                </div>
-                <div class="asset-item">
-                    <div class="asset-left">
-                        <div class="asset-icon">H</div>
-                        <div class="asset-info">
-                            <span class="asset-symbol">H</span>
-                            <span class="asset-name">8,600</span>
-                        </div>
-                    </div>
-                    <div class="asset-right">
-                        <div class="asset-balance">8,600</div>
-                        <div class="asset-value">≈ $172.00</div>
-                    </div>
-                </div>
-                <div class="asset-item">
-                    <div class="asset-left">
-                        <div class="asset-icon">₿</div>
-                        <div class="asset-info">
-                            <span class="asset-symbol">BTC</span>
-                            <span class="asset-name">0.0023</span>
-                        </div>
-                    </div>
-                    <div class="asset-right">
-                        <div class="asset-balance">0.0023</div>
-                        <div class="asset-value">≈ $89.47</div>
-                    </div>
-                </div>
+            <div class="action-item" id="detailBtnWithdraw">
+                <div class="action-icon locked" id="detailIconWithdraw"><i class="fas fa-arrow-up"></i></div>
+                <div class="action-label">提币</div>
             </div>
-
-            <!-- DeFi 2 资产列表 -->
-            <div id="assetList2" class="defi-list" style="display:none;">
-                <div class="asset-item">
-                    <div class="asset-left">
-                        <div class="asset-icon">ETH</div>
-                        <div class="asset-info">
-                            <span class="asset-symbol">ETH</span>
-                            <span class="asset-name">0.52</span>
-                        </div>
-                    </div>
-                    <div class="asset-right">
-                        <div class="asset-balance">0.52</div>
-                        <div class="asset-value">≈ $1,560.00</div>
-                    </div>
-                </div>
-                <div class="asset-item">
-                    <div class="asset-left">
-                        <div class="asset-icon">BNB</div>
-                        <div class="asset-info">
-                            <span class="asset-symbol">BNB</span>
-                            <span class="asset-name">3.80</span>
-                        </div>
-                    </div>
-                    <div class="asset-right">
-                        <div class="asset-balance">3.80</div>
-                        <div class="asset-value">≈ $2,204.00</div>
-                    </div>
-                </div>
-                <div class="asset-item">
-                    <div class="asset-left">
-                        <div class="asset-icon">SOL</div>
-                        <div class="asset-info">
-                            <span class="asset-symbol">SOL</span>
-                            <span class="asset-name">12.00</span>
-                        </div>
-                    </div>
-                    <div class="asset-right">
-                        <div class="asset-balance">12.00</div>
-                        <div class="asset-value">≈ $1,800.00</div>
-                    </div>
-                </div>
+            <div class="action-item" id="detailBtnTrade">
+                <div class="action-icon locked" id="detailIconTrade"><i class="fas fa-exchange-alt"></i></div>
+                <div class="action-label">交易</div>
             </div>
         </div>
+        <div class="detail-scroll">
+            <div class="section-label">我的地址</div>
+            <div class="address-box">
+                <span id="detailAddr">--</span>
+                <i class="far fa-copy copy-icon" id="detailCopyAddr"></i>
+            </div>
+            <div class="section-label">交易记录</div>
+            <div id="txList"></div>
+        </div>
+        <!-- No bottom nav on token detail page -->
+    </div>
 
-        <!-- 交易记录 -->
-        <div class="card">
-            <h3 style="margin-bottom: 16px; font-size: 1.2rem;">交易记录</h3>
-            <div class="tx-list">
-                <div class="tx-item">
-                    <div class="tx-left">
-                        <div class="tx-icon"><i class="fas fa-arrow-down"></i></div>
-                        <div class="tx-detail">
-                            <span class="tx-type">收到 USDT</span>
-                            <span class="tx-time">今天 10:23</span>
-                        </div>
-                    </div>
-                    <span class="tx-amount positive">+500.00</span>
+    <!-- ===== Settings Overlay ===== -->
+    <div id="settingsOverlay" class="hidden">
+        <div class="settings-sheet">
+            <div class="modal-handle" style="margin-bottom:16px;"></div>
+            <div style="font-size:18px;font-weight:700;color:var(--text-dark);margin-bottom:4px;">设置中心</div>
+            <div class="settings-group-label">钱包</div>
+            <div class="settings-item" id="settingAddress">
+                <div class="settings-item-left">
+                    <div class="settings-icon"><i class="fas fa-wallet"></i></div>
+                    <div class="settings-name">我的地址</div>
                 </div>
-                <div class="tx-item">
-                    <div class="tx-left">
-                        <div class="tx-icon"><i class="fas fa-arrow-up"></i></div>
-                        <div class="tx-detail">
-                            <span class="tx-type">发送 H 币</span>
-                            <span class="tx-time">昨天 15:47</span>
-                        </div>
-                    </div>
-                    <span class="tx-amount negative">-200.00</span>
+                <i class="fas fa-chevron-right settings-arrow"></i>
+            </div>
+            <div class="settings-item" id="settingNickname">
+                <div class="settings-item-left">
+                    <div class="settings-icon"><i class="fas fa-pen"></i></div>
+                    <div class="settings-name">修改钱包昵称</div>
                 </div>
-                <div class="tx-item">
-                    <div class="tx-left">
-                        <div class="tx-icon"><i class="fas fa-exchange-alt"></i></div>
-                        <div class="tx-detail">
-                            <span class="tx-type">交易 OKB</span>
-                            <span class="tx-time">03-20 09:12</span>
-                        </div>
-                    </div>
-                    <span class="tx-amount positive">+50.00</span>
+                <i class="fas fa-chevron-right settings-arrow"></i>
+            </div>
+            <div class="settings-item" id="settingExport">
+                <div class="settings-item-left">
+                    <div class="settings-icon"><i class="fas fa-key"></i></div>
+                    <div class="settings-name">导出助记词</div>
+                </div>
+                <i class="fas fa-chevron-right settings-arrow"></i>
+            </div>
+            <div class="settings-group-label">账号安全</div>
+            <div class="settings-item" id="settingChangePwd">
+                <div class="settings-item-left">
+                    <div class="settings-icon" style="background:#e0f2fe;color:#0284c7;"><i class="fas fa-lock"></i></div>
+                    <div class="settings-name">修改密码</div>
+                </div>
+                <i class="fas fa-chevron-right settings-arrow"></i>
+            </div>
+            <div class="settings-item" id="settingBindEmail">
+                <div class="settings-item-left">
+                    <div class="settings-icon" style="background:#d1fae5;color:#059669;"><i class="fas fa-envelope"></i></div>
+                    <div class="settings-name">绑定邮箱</div>
+                </div>
+                <i class="fas fa-chevron-right settings-arrow"></i>
+            </div>
+            <div class="settings-group-label">危险操作</div>
+            <div class="settings-item" id="settingDelete">
+                <div class="settings-item-left">
+                    <div class="settings-icon" style="background:#fee2e2;color:#ef4444;"><i class="fas fa-trash-alt"></i></div>
+                    <div class="settings-name" style="color:#ef4444;">删除钱包</div>
+                </div>
+                <i class="fas fa-chevron-right settings-arrow"></i>
+            </div>
+            <button class="cta-btn" style="margin-top:16px;" id="closeSettingsBtn">关闭</button>
+        </div>
+    </div>
+
+    <!-- ===== Backup Gate Modal ===== -->
+    <div id="backupGate" class="hidden">
+        <div class="gate-card">
+            <div class="gate-icon">🔒</div>
+            <div class="gate-title">需要先备份钱包</div>
+            <div class="gate-desc">充币、提币、交易等地址相关功能在备份钱包之前不可用。<br>请先完成助记词备份，保障资产安全。</div>
+            <div class="gate-actions">
+                <button class="gate-btn-cancel" id="gateCancel">取消</button>
+                <button class="gate-btn-primary" id="gateBackup">立即备份</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Deposit Bottom Sheet ===== -->
+    <div class="sheet-overlay hidden" id="depositSheet">
+        <div class="bottom-sheet">
+            <div class="sheet-handle"></div>
+            <div class="sheet-header">
+                <div class="sheet-title">充币</div>
+                <button class="sheet-close" id="depositSheetClose"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="sheet-body">
+                <div class="qr-container">
+                    <div class="qr-box" id="depositQRBox"></div>
+                    <div class="qr-network-badge" id="depositNetworkBadge">X Layer 网络</div>
+                </div>
+                <div class="addr-copy-row">
+                    <div class="addr-copy-text" id="depositAddrText">--</div>
+                    <button class="addr-copy-btn" id="depositCopyBtn">
+                        <i class="far fa-copy"></i> 复制
+                    </button>
+                </div>
+                <div class="deposit-info-box">
+                    <i class="fas fa-info-circle" style="color:#f59e0b;margin-right:6px;"></i>
+                    仅向此地址发送 <strong id="depositTokenSymbol">代币</strong>，发送其他资产可能导致永久丢失。请确认网络一致。
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 底部导航 -->
-    <nav class="bottom-nav">
+    <!-- ===== Withdraw Bottom Sheet ===== -->
+    <div class="sheet-overlay hidden" id="withdrawSheet">
+        <div class="bottom-sheet">
+            <div class="sheet-handle"></div>
+            <div class="sheet-header">
+                <div class="sheet-title">提币</div>
+                <button class="sheet-close" id="withdrawSheetClose"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="sheet-body">
+                <div class="sheet-field">
+                    <label class="sheet-field-label">提币金额</label>
+                    <div class="field-inline-row">
+                        <input type="number" class="sheet-field-input" id="withdrawAmount" placeholder="0.00" min="0" step="any">
+                        <button class="field-max-btn" id="withdrawMaxBtn">全部</button>
+                    </div>
+                    <div class="sheet-error" id="withdrawAmountError">请输入有效的金额</div>
+                </div>
+                <div class="sheet-field">
+                    <label class="sheet-field-label">提币地址</label>
+                    <input type="text" class="sheet-field-input" id="withdrawAddr" placeholder="输入接收地址 (0x...)">
+                    <div class="sheet-error" id="withdrawAddrError">请输入有效的钱包地址</div>
+                </div>
+                <div class="sheet-field">
+                    <label class="sheet-field-label">钱包密码</label>
+                    <input type="password" class="sheet-field-input" id="withdrawPwd" placeholder="输入钱包密码以确认">
+                    <div class="sheet-error" id="withdrawPwdError">密码错误，请重新输入</div>
+                </div>
+                <div style="padding:6px 0 4px;">
+                    <div style="font-size:12px;color:var(--text-light);line-height:1.5;">
+                        <i class="fas fa-gas-pump" style="margin-right:4px;color:var(--primary);"></i>
+                        预估手续费：<strong>~0.001 <span id="withdrawFeeSymbol">ETH</span></strong>
+                    </div>
+                </div>
+                <button class="sheet-submit-btn" id="withdrawSubmitBtn">确认提币</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Change Password Sheet ===== -->
+    <div class="sheet-overlay hidden" id="changePwdSheet">
+        <div class="bottom-sheet">
+            <div class="sheet-handle"></div>
+            <div class="sheet-header">
+                <div class="sheet-title">修改密码</div>
+                <button class="sheet-close" id="changePwdSheetClose"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="sheet-body">
+                <div class="sheet-field">
+                    <label class="sheet-field-label">当前密码</label>
+                    <input type="password" class="sheet-field-input" id="changePwdOld" placeholder="输入当前密码">
+                    <div class="sheet-error" id="changePwdOldError">当前密码错误</div>
+                </div>
+                <div class="sheet-field">
+                    <label class="sheet-field-label">新密码</label>
+                    <input type="password" class="sheet-field-input" id="changePwdNew" placeholder="至少 8 位字符" autocomplete="new-password">
+                    <div class="sheet-error" id="changePwdNewError">密码至少 8 位字符</div>
+                </div>
+                <div class="sheet-field">
+                    <label class="sheet-field-label">确认新密码</label>
+                    <input type="password" class="sheet-field-input" id="changePwdConfirm" placeholder="再次输入新密码" autocomplete="new-password">
+                    <div class="sheet-error" id="changePwdConfirmError">两次密码不一致</div>
+                </div>
+                <button class="sheet-submit-btn" id="changePwdSubmitBtn">确认修改</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Bind Email Sheet ===== -->
+    <div class="sheet-overlay hidden" id="bindEmailSheet">
+        <div class="bottom-sheet">
+            <div class="sheet-handle"></div>
+            <div class="sheet-header">
+                <div class="sheet-title">绑定邮箱</div>
+                <button class="sheet-close" id="bindEmailSheetClose"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="sheet-body">
+                <div class="sheet-field">
+                    <label class="sheet-field-label">邮箱地址</label>
+                    <input type="email" class="sheet-field-input" id="bindEmailInput" placeholder="example@email.com">
+                    <div class="sheet-error" id="bindEmailInputError">请输入有效的邮箱地址</div>
+                </div>
+                <div class="sheet-field">
+                    <label class="sheet-field-label">验证码</label>
+                    <div class="field-inline-row">
+                        <input type="text" class="sheet-field-input" id="bindEmailCode" placeholder="请输入 6 位验证码" maxlength="6">
+                        <button class="field-max-btn" id="bindEmailSendBtn" style="white-space:nowrap;padding:10px 12px;">发送验证码</button>
+                    </div>
+                    <div class="sheet-error" id="bindEmailCodeError">验证码错误或已过期</div>
+                </div>
+                <button class="sheet-submit-btn" id="bindEmailSubmitBtn">确认绑定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Change Nickname Sheet ===== -->
+    <div class="sheet-overlay hidden" id="changeNicknameSheet">
+        <div class="bottom-sheet">
+            <div class="sheet-handle"></div>
+            <div class="sheet-header">
+                <div class="sheet-title">修改钱包昵称</div>
+                <button class="sheet-close" id="changeNicknameSheetClose"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="sheet-body">
+                <div class="sheet-field">
+                    <label class="sheet-field-label">钱包昵称</label>
+                    <input type="text" class="sheet-field-input" id="nicknameInput" placeholder="输入钱包昵称" maxlength="20">
+                    <div class="sheet-error" id="nicknameInputError">昵称不能为空</div>
+                </div>
+                <div style="font-size:12px;color:var(--text-light);margin-bottom:12px;">最多 20 个字符</div>
+                <button class="sheet-submit-btn" id="nicknameSubmitBtn">保存昵称</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== Bottom Navigation ===== -->
+    <nav class="bottom-nav" id="bottomNav">
         <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>首页</span></a>
         <a href="earn.html" class="nav-item"><i class="fas fa-coins"></i><span>赚币</span></a>
         <a href="model.html" class="nav-item"><i class="fas fa-robot"></i><span>模型</span></a>
         <a href="wallet.html" class="nav-item active"><i class="fas fa-wallet"></i><span>钱包</span></a>
     </nav>
 
-    <script>
-        (function () {
-            function showToast(msg) {
-                var toast = document.createElement('div');
-                toast.className = 'wallet-toast';
-                toast.textContent = msg;
-                document.body.appendChild(toast);
-                var removed = false;
-                function removeToast() {
-                    if (!removed && toast.parentNode) {
-                        removed = true;
-                        document.body.removeChild(toast);
+</div>
+
+<script>
+(function () {
+    'use strict';
+
+    // ===== Storage keys =====
+    var STORAGE_ADDR = 'hw_address';
+    var STORAGE_BACKED = 'hw_backed_up';
+    var STORAGE_PWD = 'hw_pwd_hash';
+    var STORAGE_NICKNAME = 'hw_nickname';
+
+    // ===== Mock token data =====
+    var TOKENS = {
+        xlayer: [
+            { symbol: 'OKB',  name: 'OKB',        amount: '0.000', value: '$0.00', price: '$52.34',    change: '+2.51%', up: true  },
+            { symbol: 'ETH',  name: 'Ethereum',    amount: '0.000', value: '$0.00', price: '$3,245.00', change: '-1.23%', up: false },
+            { symbol: 'USDT', name: 'Tether USD',  amount: '0.00',  value: '$0.00', price: '$1.00',     change: '+0.01%', up: true  }
+        ],
+        bnb: [
+            { symbol: 'BNB',  name: 'BNB',         amount: '0.000', value: '$0.00', price: '$415.20', change: '+3.12%', up: true  },
+            { symbol: 'USDT', name: 'Tether USD',  amount: '0.00',  value: '$0.00', price: '$1.00',   change: '+0.01%', up: true  },
+            { symbol: 'CAKE', name: 'PancakeSwap', amount: '0.000', value: '$0.00', price: '$2.81',   change: '-0.83%', up: false }
+        ]
+    };
+
+    var MOCK_TX = [
+        { type: 'in',  label: '收款', addr: '0x1a2b...3c4d', date: '2025-01-15', amount: '+0.01 ETH'  },
+        { type: 'out', label: '转账', addr: '0x5e6f...7g8h', date: '2025-01-10', amount: '-0.005 ETH' },
+        { type: 'in',  label: '收款', addr: '0x9i0j...1k2l', date: '2025-01-05', amount: '+10 USDT'   }
+    ];
+
+    // ===== State =====
+    var currentNetwork = 'xlayer';
+    var walletAddress = localStorage.getItem(STORAGE_ADDR) || '';
+    var backedUp = localStorage.getItem(STORAGE_BACKED) === 'true';
+    var tempMnemonic = '';
+    var verifyIndices = [];
+    var verifySelections = {};
+
+    // ===== DOM =====
+    var landingPage    = document.getElementById('landingPage');
+    var walletModal    = document.getElementById('walletModal');
+    var walletDash     = document.getElementById('walletDashboard');
+    var tokenDetailEl  = document.getElementById('tokenDetail');
+    var bottomNav      = document.getElementById('bottomNav');
+    var settingsOv     = document.getElementById('settingsOverlay');
+    var backupGateEl   = document.getElementById('backupGate');
+
+    // ===== Utility =====
+    function escHtml(s) {
+        return String(s == null ? '' : s)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    function pickRandom(max, n) {
+        var arr = [];
+        for (var i = 0; i < max; i++) arr.push(i);
+        for (var j = arr.length - 1; j > 0; j--) {
+            var k = Math.floor(Math.random() * (j + 1));
+            var tmp = arr[j]; arr[j] = arr[k]; arr[k] = tmp;
+        }
+        return arr.slice(0, n);
+    }
+
+    function shuffle(arr) {
+        var a = arr.slice();
+        for (var i = a.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var t = a[i]; a[i] = a[j]; a[j] = t;
+        }
+        return a;
+    }
+
+    // ===== Init =====
+    if (walletAddress) {
+        showDashboard();
+    }
+
+    // ===== Landing =====
+    document.getElementById('landingCreateBtn').addEventListener('click', openCreateModal);
+    document.getElementById('landingImportBtn').addEventListener('click', openImportFlow);
+
+    function openCreateModal() {
+        // Generate wallet first; surface error before showing modal
+        try {
+            var wallet = ethers.Wallet.createRandom();
+            tempMnemonic = wallet.mnemonic.phrase;
+            walletAddress = wallet.address;
+        } catch (e) {
+            alert('钱包生成失败，请刷新页面后重试');
+            return;
+        }
+
+        landingPage.classList.add('hidden');
+        walletDash.classList.add('hidden');
+        tokenDetailEl.classList.add('hidden');
+        walletModal.classList.remove('hidden');
+        bottomNav.classList.remove('hidden');
+
+        verifyIndices = [];
+        verifySelections = {};
+        goToStep(1);
+    }
+
+    function openImportFlow() {
+        var mnemonic = prompt('请输入助记词（12 或 24 个单词，用空格分隔）:');
+        if (!mnemonic) return;
+        try {
+            var wallet = ethers.Wallet.fromMnemonic(mnemonic.trim());
+            walletAddress = wallet.address;
+            localStorage.setItem(STORAGE_ADDR, walletAddress);
+            backedUp = true;
+            localStorage.setItem(STORAGE_BACKED, 'true');
+            showDashboard();
+        } catch (e) {
+            alert('助记词无效，请检查格式');
+        }
+    }
+
+    // ===== Step navigation =====
+    function goToStep(n) {
+        // Hide all step pages
+        document.querySelectorAll('.step-page').forEach(function (p) {
+            p.classList.remove('active');
+        });
+        document.getElementById('step' + n).classList.add('active');
+
+        // Update indicators
+        for (var i = 1; i <= 4; i++) {
+            var circle = document.getElementById('sc' + i);
+            var label  = document.getElementById('sl' + i);
+            circle.classList.remove('active', 'done');
+            label.classList.remove('active', 'done');
+            if (i < n) {
+                circle.classList.add('done');
+                circle.innerHTML = '<i class="fas fa-check" style="font-size:9px;"></i>';
+                label.classList.add('done');
+            } else if (i === n) {
+                circle.classList.add('active');
+                circle.textContent = i;
+                label.classList.add('active');
+            } else {
+                circle.textContent = i;
+            }
+        }
+        for (var c = 1; c <= 3; c++) {
+            document.getElementById('conn' + c).classList.toggle('done', c < n);
+        }
+
+        // Step-specific init
+        if (n === 2) buildMnemonicGrid();
+        if (n === 3) buildVerifyStep();
+    }
+
+    // ===== Step 1: Password =====
+    var pwdInput     = document.getElementById('pwdInput');
+    var pwdConfirm   = document.getElementById('pwdConfirm');
+    var strengthFill = document.getElementById('strengthFill');
+    var strengthText = document.getElementById('strengthText');
+    var pwdError     = document.getElementById('pwdError');
+
+    pwdInput.addEventListener('input', function () {
+        var val = pwdInput.value;
+        var score = 0;
+        if (val.length >= 8) score++;
+        if (/[A-Z]/.test(val)) score++;
+        if (/[0-9]/.test(val)) score++;
+        if (/[^A-Za-z0-9]/.test(val)) score++;
+        var labels = ['', '弱', '中', '强', '非常强'];
+        var colors = ['#e2e8f0', '#ef4444', '#f59e0b', '#22c55e', '#16a34a'];
+        strengthFill.style.width = (score / 4 * 100) + '%';
+        strengthFill.style.background = colors[score];
+        strengthText.textContent = score > 0 ? '密码强度：' + labels[score] : '';
+    });
+
+    document.getElementById('step1Next').addEventListener('click', function () {
+        var pwd     = pwdInput.value;
+        var confirm = pwdConfirm.value;
+        if (pwd.length < 8) { alert('密码至少 8 位字符'); return; }
+        if (pwd !== confirm) { pwdError.style.display = 'block'; return; }
+        pwdError.style.display = 'none';
+        localStorage.setItem(STORAGE_PWD, btoa(encodeURIComponent(pwd)));
+        goToStep(2);
+    });
+
+    // ===== Step 2: Mnemonic =====
+    function buildMnemonicGrid() {
+        var words = tempMnemonic.split(' ');
+        document.getElementById('mnemonicGrid').innerHTML = words.map(function (w, i) {
+            return '<div class="mnemonic-word">'
+                + '<span class="mnemonic-num">' + (i + 1) + '</span>'
+                + '<span class="mnemonic-text">' + escHtml(w) + '</span>'
+                + '</div>';
+        }).join('');
+        // Reset confirm checkbox
+        document.getElementById('mnemonicConfirm').checked = false;
+        document.getElementById('step2Next').disabled = true;
+    }
+
+    document.getElementById('copyMnemonicBtn').addEventListener('click', function () {
+        navigator.clipboard.writeText(tempMnemonic).then(function () {
+            var span = document.querySelector('#copyMnemonicBtn span');
+            span.innerHTML = '<i class="fas fa-check"></i>&nbsp; 已复制！';
+            setTimeout(function () {
+                span.innerHTML = '<i class="far fa-copy"></i>&nbsp; 复制助记词';
+            }, 2000);
+        }).catch(function () { alert('复制失败，请手动选择文字复制'); });
+    });
+
+    document.getElementById('mnemonicConfirm').addEventListener('change', function () {
+        document.getElementById('step2Next').disabled = !this.checked;
+    });
+
+    document.getElementById('step2Next').addEventListener('click', function () { goToStep(3); });
+
+    // ===== Step 3: Verify =====
+    function buildVerifyStep() {
+        var words = tempMnemonic.split(' ');
+        verifyIndices = pickRandom(words.length, 3).sort(function (a, b) { return a - b; });
+        verifySelections = {};
+
+        var html = verifyIndices.map(function (idx, gi) {
+            var correct  = words[idx];
+            var wrongPool = words.filter(function (_, i) { return i !== idx; });
+            var wrongs   = pickRandom(wrongPool.length, 2).map(function (i) { return wrongPool[i]; });
+            var choices  = shuffle([correct].concat(wrongs));
+            var choiceHtml = choices.map(function (c) {
+                return '<button class="choice-btn" data-group="' + gi + '" data-word="' + escHtml(c) + '">'
+                    + escHtml(c) + '</button>';
+            }).join('');
+            return '<div class="verify-group">'
+                + '<div class="verify-question">第 ' + (gi + 1) + ' 题：请选出第 <strong>' + (idx + 1) + '</strong> 个助记词</div>'
+                + '<div class="verify-choices">' + choiceHtml + '</div>'
+                + '</div>';
+        }).join('');
+
+        document.getElementById('verifyGroups').innerHTML = html;
+        document.getElementById('verifyError').style.display = 'none';
+
+        // Bind choice buttons
+        document.querySelectorAll('.choice-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var gi   = parseInt(btn.dataset.group, 10);
+                var word = btn.dataset.word;
+                // Clear group
+                btn.closest('.verify-choices').querySelectorAll('.choice-btn').forEach(function (b) {
+                    b.classList.remove('selected');
+                });
+                btn.classList.add('selected');
+                verifySelections[gi] = word;
+            });
+        });
+    }
+
+    document.getElementById('step3Next').addEventListener('click', function () {
+        if (Object.keys(verifySelections).length < verifyIndices.length) {
+            document.getElementById('verifyError').style.display = 'block';
+            return;
+        }
+        document.getElementById('verifyError').style.display = 'none';
+
+        var words = tempMnemonic.split(' ');
+        var allCorrect = true;
+
+        verifyIndices.forEach(function (idx, gi) {
+            var correctWord = words[idx];
+            var btns = document.querySelectorAll('[data-group="' + gi + '"]');
+            btns.forEach(function (b) {
+                if (b.dataset.word === verifySelections[gi]) {
+                    if (verifySelections[gi] === correctWord) {
+                        b.classList.remove('selected');
+                        b.classList.add('correct');
+                    } else {
+                        b.classList.remove('selected');
+                        b.classList.add('wrong');
+                        allCorrect = false;
+                        // Highlight correct answer
+                        btns.forEach(function (bb) {
+                            if (bb.dataset.word === correctWord) bb.classList.add('correct');
+                        });
                     }
                 }
-                setTimeout(function () { toast.style.opacity = '0'; }, 1500);
-                setTimeout(removeToast, 1900);
-            }
+            });
+        });
 
-            function copyAddress() {
-                var addr = document.getElementById('walletAddress').innerText;
-                navigator.clipboard.writeText(addr).then(function () {
-                    showToast('地址已复制');
-                }).catch(function () {
-                    showToast('复制失败，请手动复制');
+        if (allCorrect) {
+            setTimeout(function () { goToStep(4); }, 500);
+        } else {
+            alert('验证失败，请重新选择正确的助记词');
+            setTimeout(function () { buildVerifyStep(); }, 800);
+        }
+    });
+
+    // ===== Step 4: Success =====
+    document.getElementById('step4Done').addEventListener('click', function () {
+        localStorage.setItem(STORAGE_ADDR, walletAddress);
+        backedUp = true;
+        localStorage.setItem(STORAGE_BACKED, 'true');
+        walletModal.classList.add('hidden');
+        showDashboard();
+    });
+
+    // ===== Dashboard =====
+    function showDashboard() {
+        landingPage.classList.add('hidden');
+        walletModal.classList.add('hidden');
+        tokenDetailEl.classList.add('hidden');
+        walletDash.classList.remove('hidden');
+        bottomNav.classList.remove('hidden');
+        updateDashboard();
+    }
+
+    function updateDashboard() {
+        var short = walletAddress
+            ? walletAddress.slice(0, 6) + '...' + walletAddress.slice(-4)
+            : '--';
+        document.getElementById('addrShort').textContent = short;
+
+        // Nickname
+        var nickname = localStorage.getItem(STORAGE_NICKNAME) || '我的钱包';
+        document.getElementById('walletNickname').textContent = nickname;
+
+        // Backup banner
+        document.getElementById('backupBanner').classList.toggle('hidden', backedUp);
+
+        // Action lock state
+        var locked = !backedUp;
+        ['iconDeposit', 'iconWithdraw', 'iconTrade'].forEach(function (id) {
+            document.getElementById(id).classList.toggle('locked', locked);
+        });
+
+        renderTokenList();
+    }
+
+    function renderTokenList() {
+        var tokens = TOKENS[currentNetwork];
+        document.getElementById('tokenList').innerHTML = tokens.map(function (t, i) {
+            return '<div class="token-item" data-token-idx="' + i + '">'
+                + '<div class="token-icon">' + escHtml(t.symbol.slice(0, 3)) + '</div>'
+                + '<div class="token-info">'
+                + '<div class="token-name">' + escHtml(t.name) + '</div>'
+                + '<div class="token-amount">' + escHtml(t.amount) + ' ' + escHtml(t.symbol) + '</div>'
+                + '</div>'
+                + '<div class="token-right">'
+                + '<div class="token-value">' + escHtml(t.value) + '</div>'
+                + '<div class="token-change ' + (t.up ? 'up' : 'down') + '">'
+                + escHtml(t.price) + ' · ' + escHtml(t.change)
+                + '</div>'
+                + '</div>'
+                + '</div>';
+        }).join('');
+
+        document.querySelectorAll('.token-item').forEach(function (item) {
+            item.addEventListener('click', function () {
+                openTokenDetail(parseInt(item.dataset.tokenIdx, 10));
+            });
+        });
+    }
+
+    // Network switch
+    document.getElementById('netXLayer').addEventListener('click', function () { switchNetwork('xlayer'); });
+    document.getElementById('netBNB').addEventListener('click', function () { switchNetwork('bnb'); });
+
+    function switchNetwork(net) {
+        currentNetwork = net;
+        document.getElementById('netXLayer').classList.toggle('active', net === 'xlayer');
+        document.getElementById('netBNB').classList.toggle('active', net === 'bnb');
+        renderTokenList();
+    }
+
+    // Copy address from asset panel
+    document.getElementById('assetAddr').addEventListener('click', function () {
+        navigator.clipboard.writeText(walletAddress).then(function () { alert('地址已复制'); }).catch(function () { alert('复制失败，请手动复制地址'); });
+    });
+
+    // Backup banner -> open create modal
+    document.getElementById('backupBanner').addEventListener('click', openCreateModal);
+
+    // Gated actions
+    document.getElementById('btnDeposit').addEventListener('click',  function () { gatedAction('deposit'); });
+    document.getElementById('btnWithdraw').addEventListener('click', function () { gatedAction('withdraw'); });
+    document.getElementById('btnTrade').addEventListener('click',    function () { gatedAction('交易'); });
+    document.getElementById('btnDapp').addEventListener('click',     function () { alert('DApp 功能开发中'); });
+
+    // ===== Current token context (for detail page actions) =====
+    var currentTokenIdx = 0;
+
+    function gatedAction(name) {
+        if (!backedUp) {
+            backupGateEl.classList.remove('hidden');
+        } else if (name === 'deposit') {
+            openDepositSheet();
+        } else if (name === 'withdraw') {
+            openWithdrawSheet();
+        } else {
+            alert(name + ' 功能开发中');
+        }
+    }
+
+    // ===== Bottom Sheet helpers =====
+    function openSheet(overlayEl) {
+        overlayEl.classList.remove('hidden');
+        // trigger animation on next tick
+        requestAnimationFrame(function () {
+            overlayEl.classList.add('visible');
+        });
+    }
+    function closeSheet(overlayEl) {
+        overlayEl.classList.remove('visible');
+        overlayEl.addEventListener('transitionend', function handler() {
+            overlayEl.classList.add('hidden');
+            overlayEl.removeEventListener('transitionend', handler);
+        });
+    }
+
+    // Close sheet when clicking on overlay backdrop
+    ['depositSheet','withdrawSheet','changePwdSheet','bindEmailSheet','changeNicknameSheet'].forEach(function (id) {
+        var el = document.getElementById(id);
+        el.addEventListener('click', function (e) {
+            if (e.target === el) closeSheet(el);
+        });
+    });
+
+    // ===== Deposit Sheet =====
+    var depositSheet = document.getElementById('depositSheet');
+    var depositQRRendered = false;
+    var depositQRInstance = null;
+
+    function openDepositSheet(tokenSymbol) {
+        var sym = tokenSymbol || (TOKENS[currentNetwork][currentTokenIdx] || {}).symbol || '代币';
+        var netLabel = currentNetwork === 'xlayer' ? 'X Layer 网络' : 'BNB Chain 网络';
+        document.getElementById('depositNetworkBadge').textContent = netLabel;
+        document.getElementById('depositTokenSymbol').textContent = sym;
+        document.getElementById('depositAddrText').textContent = walletAddress || '--';
+
+        // Generate QR code
+        var qrBox = document.getElementById('depositQRBox');
+        qrBox.innerHTML = '';
+        if (walletAddress && typeof QRCode !== 'undefined') {
+            try {
+                new QRCode(qrBox, {
+                    text: walletAddress,
+                    width: 174,
+                    height: 174,
+                    colorDark: '#0f172a',
+                    colorLight: '#ffffff',
+                    correctLevel: QRCode.CorrectLevel.M
                 });
+            } catch (e) {
+                qrBox.innerHTML = '<div style="font-size:11px;color:#94a3b8;text-align:center;padding:12px;">二维码加载失败</div>';
             }
+        } else {
+            qrBox.innerHTML = '<div style="font-size:11px;color:#94a3b8;text-align:center;padding:12px;">--</div>';
+        }
 
-            function copyDepositAddress() {
-                var addr = document.getElementById('depositAddress').innerText;
-                navigator.clipboard.writeText(addr).then(function () {
-                    showToast('充币地址已复制');
-                }).catch(function () {
-                    showToast('复制失败，请手动复制');
-                });
+        openSheet(depositSheet);
+    }
+
+    document.getElementById('depositSheetClose').addEventListener('click', function () {
+        closeSheet(depositSheet);
+    });
+    document.getElementById('depositCopyBtn').addEventListener('click', function () {
+        navigator.clipboard.writeText(walletAddress)
+            .then(function () {
+                var btn = document.getElementById('depositCopyBtn');
+                btn.innerHTML = '<i class="fas fa-check"></i> 已复制';
+                setTimeout(function () { btn.innerHTML = '<i class="far fa-copy"></i> 复制'; }, 2000);
+            })
+            .catch(function () { alert('复制失败，请手动复制'); });
+    });
+
+    // ===== Withdraw Sheet =====
+    var withdrawSheet = document.getElementById('withdrawSheet');
+
+    function openWithdrawSheet(tokenSymbol) {
+        var sym = tokenSymbol || (TOKENS[currentNetwork][currentTokenIdx] || {}).symbol || 'ETH';
+        document.getElementById('withdrawFeeSymbol').textContent = sym;
+        document.getElementById('withdrawAmount').value = '';
+        document.getElementById('withdrawAddr').value = '';
+        document.getElementById('withdrawPwd').value = '';
+        ['withdrawAmountError','withdrawAddrError','withdrawPwdError'].forEach(function (id) {
+            document.getElementById(id).style.display = 'none';
+        });
+        openSheet(withdrawSheet);
+    }
+
+    document.getElementById('withdrawSheetClose').addEventListener('click', function () {
+        closeSheet(withdrawSheet);
+    });
+    document.getElementById('withdrawMaxBtn').addEventListener('click', function () {
+        var token = TOKENS[currentNetwork][currentTokenIdx];
+        if (token) document.getElementById('withdrawAmount').value = token.amount;
+    });
+    document.getElementById('withdrawSubmitBtn').addEventListener('click', function () {
+        var amount = document.getElementById('withdrawAmount').value.trim();
+        var addr   = document.getElementById('withdrawAddr').value.trim();
+        var pwd    = document.getElementById('withdrawPwd').value;
+        var valid  = true;
+
+        // Validate amount
+        var amountErr = document.getElementById('withdrawAmountError');
+        if (!amount || isNaN(parseFloat(amount)) || parseFloat(amount) <= 0) {
+            amountErr.style.display = 'block';
+            valid = false;
+        } else { amountErr.style.display = 'none'; }
+
+        // Validate address (basic hex check)
+        var addrErr = document.getElementById('withdrawAddrError');
+        if (!addr || !/^0x[0-9a-fA-F]{40}$/.test(addr)) {
+            addrErr.style.display = 'block';
+            valid = false;
+        } else { addrErr.style.display = 'none'; }
+
+        // Validate password
+        var pwdErr = document.getElementById('withdrawPwdError');
+        var storedPwd = localStorage.getItem(STORAGE_PWD);
+        if (!pwd || !storedPwd || btoa(encodeURIComponent(pwd)) !== storedPwd) {
+            pwdErr.style.display = 'block';
+            valid = false;
+        } else { pwdErr.style.display = 'none'; }
+
+        if (!valid) return;
+
+        closeSheet(withdrawSheet);
+        alert('提币申请已提交！（模拟）\n金额：' + amount + '\n地址：' + addr);
+    });
+
+    // Backup gate
+    document.getElementById('gateCancel').addEventListener('click', function () {
+        backupGateEl.classList.add('hidden');
+    });
+    document.getElementById('gateBackup').addEventListener('click', function () {
+        backupGateEl.classList.add('hidden');
+        openCreateModal();
+    });
+
+    // ===== Token Detail =====
+    function openTokenDetail(idx) {
+        currentTokenIdx = idx;
+        var token = TOKENS[currentNetwork][idx];
+        document.getElementById('detailTitle').textContent = token.name;
+        document.getElementById('detailIcon').textContent  = token.symbol.slice(0, 3);
+        document.getElementById('detailValue').textContent = token.value;
+        document.getElementById('detailPrice').textContent = token.price + '  ' + token.change;
+        document.getElementById('detailAddr').textContent  = walletAddress || '--';
+
+        // Detail action lock state
+        var locked = !backedUp;
+        ['detailIconDeposit', 'detailIconWithdraw', 'detailIconTrade'].forEach(function (id) {
+            document.getElementById(id).classList.toggle('locked', locked);
+        });
+
+        renderTxList();
+
+        walletDash.classList.add('hidden');
+        bottomNav.classList.add('hidden');
+        tokenDetailEl.classList.remove('hidden');
+    }
+
+    document.getElementById('detailBackBtn').addEventListener('click', function () {
+        tokenDetailEl.classList.add('hidden');
+        walletDash.classList.remove('hidden');
+        bottomNav.classList.remove('hidden');
+    });
+
+    document.getElementById('detailBtnDeposit').addEventListener('click',  function () { gatedAction('deposit'); });
+    document.getElementById('detailBtnWithdraw').addEventListener('click', function () { gatedAction('withdraw'); });
+    document.getElementById('detailBtnTrade').addEventListener('click',    function () { gatedAction('交易'); });
+
+    document.getElementById('detailCopyAddr').addEventListener('click', function () {
+        navigator.clipboard.writeText(walletAddress).then(function () { alert('地址已复制'); }).catch(function () { alert('复制失败，请手动复制地址'); });
+    });
+
+    function renderTxList() {
+        document.getElementById('txList').innerHTML = MOCK_TX.map(function (tx) {
+            return '<div class="tx-item">'
+                + '<div class="tx-icon ' + escHtml(tx.type) + '">'
+                + '<i class="fas fa-' + (tx.type === 'in' ? 'arrow-down' : 'arrow-up') + '"></i>'
+                + '</div>'
+                + '<div class="tx-info">'
+                + '<div class="tx-type">' + escHtml(tx.label) + ' · ' + escHtml(tx.addr) + '</div>'
+                + '<div class="tx-date">' + escHtml(tx.date) + '</div>'
+                + '</div>'
+                + '<div class="tx-amount ' + escHtml(tx.type) + '">' + escHtml(tx.amount) + '</div>'
+                + '</div>';
+        }).join('');
+    }
+
+    // ===== Settings =====
+    document.getElementById('settingsBtn').addEventListener('click', function () {
+        settingsOv.classList.remove('hidden');
+    });
+    document.getElementById('closeSettingsBtn').addEventListener('click', function () {
+        settingsOv.classList.add('hidden');
+    });
+    document.getElementById('settingAddress').addEventListener('click', function () {
+        settingsOv.classList.add('hidden');
+        if (!backedUp) {
+            backupGateEl.classList.remove('hidden');
+        } else {
+            alert('地址：' + walletAddress);
+        }
+    });
+    document.getElementById('settingExport').addEventListener('click', function () {
+        settingsOv.classList.add('hidden');
+        if (!backedUp) {
+            backupGateEl.classList.remove('hidden');
+        } else {
+            alert('助记词导出功能需要密码验证（完整版）');
+        }
+    });
+    document.getElementById('settingDelete').addEventListener('click', function () {
+        settingsOv.classList.add('hidden');
+        if (confirm('确定要删除钱包吗？此操作不可撤销，请确保已备份助记词！')) {
+            localStorage.removeItem(STORAGE_ADDR);
+            localStorage.removeItem(STORAGE_BACKED);
+            localStorage.removeItem(STORAGE_PWD);
+            localStorage.removeItem(STORAGE_NICKNAME);
+            walletAddress = '';
+            backedUp = false;
+            walletDash.classList.add('hidden');
+            landingPage.classList.remove('hidden');
+            bottomNav.classList.remove('hidden');
+        }
+    });
+
+    // ===== Change Password Sheet =====
+    var changePwdSheet = document.getElementById('changePwdSheet');
+    document.getElementById('settingChangePwd').addEventListener('click', function () {
+        settingsOv.classList.add('hidden');
+        document.getElementById('changePwdOld').value = '';
+        document.getElementById('changePwdNew').value = '';
+        document.getElementById('changePwdConfirm').value = '';
+        ['changePwdOldError','changePwdNewError','changePwdConfirmError'].forEach(function (id) {
+            document.getElementById(id).style.display = 'none';
+        });
+        openSheet(changePwdSheet);
+    });
+    document.getElementById('changePwdSheetClose').addEventListener('click', function () {
+        closeSheet(changePwdSheet);
+    });
+    document.getElementById('changePwdSubmitBtn').addEventListener('click', function () {
+        var oldPwd  = document.getElementById('changePwdOld').value;
+        var newPwd  = document.getElementById('changePwdNew').value;
+        var confirm = document.getElementById('changePwdConfirm').value;
+        var valid   = true;
+        var storedPwd = localStorage.getItem(STORAGE_PWD);
+
+        var oldErr = document.getElementById('changePwdOldError');
+        if (!oldPwd || !storedPwd || btoa(encodeURIComponent(oldPwd)) !== storedPwd) {
+            oldErr.style.display = 'block'; valid = false;
+        } else { oldErr.style.display = 'none'; }
+
+        var newErr = document.getElementById('changePwdNewError');
+        if (newPwd.length < 8) {
+            newErr.style.display = 'block'; valid = false;
+        } else { newErr.style.display = 'none'; }
+
+        var confErr = document.getElementById('changePwdConfirmError');
+        if (newPwd !== confirm) {
+            confErr.style.display = 'block'; valid = false;
+        } else { confErr.style.display = 'none'; }
+
+        if (!valid) return;
+        localStorage.setItem(STORAGE_PWD, btoa(encodeURIComponent(newPwd)));
+        closeSheet(changePwdSheet);
+        setTimeout(function () { alert('密码修改成功！'); }, 350);
+    });
+
+    // ===== Bind Email Sheet =====
+    var bindEmailSheet = document.getElementById('bindEmailSheet');
+    document.getElementById('settingBindEmail').addEventListener('click', function () {
+        settingsOv.classList.add('hidden');
+        document.getElementById('bindEmailInput').value = '';
+        document.getElementById('bindEmailCode').value = '';
+        ['bindEmailInputError','bindEmailCodeError'].forEach(function (id) {
+            document.getElementById(id).style.display = 'none';
+        });
+        openSheet(bindEmailSheet);
+    });
+    document.getElementById('bindEmailSheetClose').addEventListener('click', function () {
+        closeSheet(bindEmailSheet);
+    });
+    document.getElementById('bindEmailSendBtn').addEventListener('click', function () {
+        var email = document.getElementById('bindEmailInput').value.trim();
+        var emailErr = document.getElementById('bindEmailInputError');
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            emailErr.style.display = 'block'; return;
+        }
+        emailErr.style.display = 'none';
+        var btn = document.getElementById('bindEmailSendBtn');
+        var count = 60;
+        btn.disabled = true;
+        btn.textContent = count + 's';
+        var timer = setInterval(function () {
+            count--;
+            btn.textContent = count + 's';
+            if (count <= 0) {
+                clearInterval(timer);
+                btn.disabled = false;
+                btn.textContent = '发送验证码';
             }
+        }, 1000);
+        alert('验证码已发送至 ' + email + '（模拟）');
+    });
+    document.getElementById('bindEmailSubmitBtn').addEventListener('click', function () {
+        var email = document.getElementById('bindEmailInput').value.trim();
+        var code  = document.getElementById('bindEmailCode').value.trim();
+        var valid = true;
 
-            function toggleExpand(type) {
-                var depositEl = document.getElementById('depositExpand');
-                var withdrawEl = document.getElementById('withdrawExpand');
-                if (type === 'deposit') {
-                    depositEl.classList.toggle('is-open');
-                    withdrawEl.classList.remove('is-open');
-                } else if (type === 'withdraw') {
-                    withdrawEl.classList.toggle('is-open');
-                    depositEl.classList.remove('is-open');
-                }
-            }
+        var emailErr = document.getElementById('bindEmailInputError');
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            emailErr.style.display = 'block'; valid = false;
+        } else { emailErr.style.display = 'none'; }
 
-            function switchDefi(idx) {
-                var lists = document.querySelectorAll('.defi-list');
-                var tabs = document.querySelectorAll('.defi-tab');
-                lists.forEach(function (el, i) { el.style.display = i === idx ? 'block' : 'none'; });
-                tabs.forEach(function (el, i) { el.classList.toggle('active', i === idx); });
-            }
+        var codeErr = document.getElementById('bindEmailCodeError');
+        if (!code || code.length !== 6) {
+            codeErr.style.display = 'block'; valid = false;
+        } else { codeErr.style.display = 'none'; }
 
-            window.switchDefi = switchDefi;
-            window.copyAddress = copyAddress;
-            window.copyDepositAddress = copyDepositAddress;
-            window.toggleExpand = toggleExpand;
-        })();
-    </script>
+        if (!valid) return;
+        closeSheet(bindEmailSheet);
+        setTimeout(function () { alert('邮箱绑定成功！（模拟）'); }, 350);
+    });
+
+    // ===== Change Nickname Sheet =====
+    var changeNicknameSheet = document.getElementById('changeNicknameSheet');
+    document.getElementById('settingNickname').addEventListener('click', function () {
+        settingsOv.classList.add('hidden');
+        var cur = localStorage.getItem(STORAGE_NICKNAME) || '我的钱包';
+        document.getElementById('nicknameInput').value = cur;
+        document.getElementById('nicknameInputError').style.display = 'none';
+        openSheet(changeNicknameSheet);
+    });
+    document.getElementById('changeNicknameSheetClose').addEventListener('click', function () {
+        closeSheet(changeNicknameSheet);
+    });
+    document.getElementById('nicknameSubmitBtn').addEventListener('click', function () {
+        var val = document.getElementById('nicknameInput').value.trim();
+        var err = document.getElementById('nicknameInputError');
+        if (!val) { err.style.display = 'block'; return; }
+        err.style.display = 'none';
+        localStorage.setItem(STORAGE_NICKNAME, val);
+        var nicknameEl = document.getElementById('walletNickname');
+        if (nicknameEl) nicknameEl.textContent = val;
+        closeSheet(changeNicknameSheet);
+    });
+
+}());
+</script>
 </body>
 </html>
