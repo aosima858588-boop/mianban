@@ -37,7 +37,7 @@
       margin: 0;
       background: var(--bg);
       font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-      padding: 18px 16px 90px;
+      padding: 18px 20px 90px;
       display: flex;
       justify-content: center;
       align-items: flex-start;
@@ -144,33 +144,62 @@
       display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px;
     }
     .select {
-      background: rgba(255,255,255,0.72);
-      border: 1px solid var(--stroke); border-radius: 16px;
-      padding: 10px 12px; display: flex; gap: 10px; align-items: center;
+      background: rgba(255,255,255,0.85);
+      border: 1px solid rgba(139,92,246,0.18); border-radius: 16px;
+      padding: 11px 14px; display: flex; gap: 10px; align-items: center;
+      transition: border-color .2s, box-shadow .2s;
     }
-    .select label { font-size: 0.78rem; font-weight: 800; color: var(--muted); min-width: 52px; }
+    .select:hover {
+      border-color: rgba(139,92,246,0.38);
+      box-shadow: 0 4px 12px -6px rgba(139,92,246,0.18);
+    }
+    .select:focus-within {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(139,92,246,0.14);
+    }
+    .select label {
+      font-size: 0.76rem; font-weight: 800; color: var(--primary);
+      min-width: 36px; white-space: nowrap;
+      padding-right: 10px; border-right: 1px solid rgba(139,92,246,0.18);
+    }
     .select select {
       width: 100%; border: none; background: transparent; outline: none;
-      font-weight: 800; color: var(--text); font-size: 0.92rem; cursor: pointer;
+      font-weight: 700; color: var(--text); font-size: 0.9rem; cursor: pointer;
+      padding-left: 4px;
     }
 
     /* search */
     .search {
-      display: flex; align-items: center; gap: 10px; margin-top: 12px;
-      background: rgba(255,255,255,0.72);
-      border: 1px solid var(--stroke); border-radius: 9999px;
-      padding: 6px 6px 6px 14px;
+      display: flex; align-items: center; gap: 8px; margin-top: 12px;
+      background: rgba(255,255,255,0.85);
+      border: 1px solid rgba(139,92,246,0.18); border-radius: 9999px;
+      padding: 5px 5px 5px 14px;
+      transition: border-color .2s, box-shadow .2s;
     }
-    .search i { color: var(--muted); }
+    .search:focus-within {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(139,92,246,0.14);
+    }
+    .search i { color: var(--primary); font-size: 0.9rem; flex-shrink: 0; }
     .search input {
       flex: 1; border: none; outline: none; background: transparent;
-      font-size: 0.98rem; padding: 10px 0; font-weight: 700; color: var(--text);
+      font-size: 0.95rem; padding: 10px 0; font-weight: 600; color: var(--text);
     }
+    .search input::placeholder { color: rgba(100,116,139,0.6); font-weight: 500; }
+    .search-clear {
+      border: none; background: none; cursor: pointer;
+      color: var(--muted); font-size: 1rem; padding: 4px 6px;
+      line-height: 1; border-radius: 50%; transition: .15s;
+      display: none; flex-shrink: 0;
+    }
+    .search-clear:hover { background: rgba(139,92,246,0.08); color: var(--primary); }
     .search button {
-      border: none; cursor: pointer; padding: 10px 16px; border-radius: 9999px;
-      background: var(--primary-gradient); color: #fff; font-weight: 900; transition: .2s;
+      border: none; cursor: pointer; padding: 10px 18px; border-radius: 9999px;
+      background: var(--primary-gradient); color: #fff; font-weight: 800;
+      font-size: 0.88rem; transition: .2s; flex-shrink: 0;
     }
-    .search button:active { transform: scale(0.98); }
+    .search button:hover { box-shadow: 0 6px 14px -6px rgba(139,92,246,0.5); }
+    .search button:active { transform: scale(0.97); }
 
     /* table header */
     .list-head {
@@ -287,7 +316,6 @@
         <a class="back" href="index.html" aria-label="返回"><i class="fas fa-arrow-left"></i></a>
         <div>
           <h1>Meme 热门榜</h1>
-          <div class="subtitle">OKX Wallet · 按涨幅 / 成交量 / 市值排序（最多 100 条）</div>
         </div>
       </div>
 
@@ -302,10 +330,10 @@
     <div class="card">
       <!-- chain tabs -->
       <div class="segmented" role="tablist" aria-label="网络选择">
-        <button class="chain-btn active" data-chain="501" type="button"><span class="pill-dot"></span>Solana</button>
-        <button class="chain-btn" data-chain="56" type="button"><span class="pill-dot"></span>BNB</button>
+        <button class="chain-btn active" data-chain="501,56,196" type="button"><span class="pill-dot"></span>全部</button>
         <button class="chain-btn" data-chain="196" type="button"><span class="pill-dot"></span>X Layer</button>
-        <button class="chain-btn" data-chain="501,56,196" type="button"><span class="pill-dot"></span>全部</button>
+        <button class="chain-btn" data-chain="56" type="button"><span class="pill-dot"></span>BNB</button>
+        <button class="chain-btn" data-chain="501" type="button"><span class="pill-dot"></span>Solana</button>
       </div>
 
       <div class="filters">
@@ -331,6 +359,7 @@
       <div class="search">
         <i class="fas fa-magnifying-glass"></i>
         <input id="searchInput" type="text" placeholder="搜索 Symbol 或名称（如 BONK）" />
+        <button id="clearBtn" class="search-clear" type="button" aria-label="清除">✕</button>
         <button id="searchBtn" type="button">搜索</button>
       </div>
 
@@ -376,8 +405,9 @@
       const timeFrameEl = document.getElementById('timeFrame');
       const searchInput = document.getElementById('searchInput');
       const searchBtn = document.getElementById('searchBtn');
+      const clearBtn = document.getElementById('clearBtn');
 
-      let currentChain = '501';
+      let currentChain = '501,56,196';
       let allCoins = [];
       let lastFingerprint = '';
       let lastFetchAt = 0;
@@ -549,7 +579,7 @@
         btn.addEventListener('click', () => {
           chainBtns.forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
-          currentChain = btn.dataset.chain || '501';
+          currentChain = btn.dataset.chain || '501,56,196';
           lastFingerprint = '';
           fetchToplist({ chain: currentChain, silent: false });
         });
@@ -567,6 +597,14 @@
 
       searchBtn.addEventListener('click', applySearch);
       searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') applySearch(); });
+      searchInput.addEventListener('input', () => {
+        clearBtn.style.display = searchInput.value ? 'block' : 'none';
+      });
+      clearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        clearBtn.style.display = 'none';
+        render(allCoins);
+      });
 
       refreshBtn.addEventListener('click', () => {
         lastFingerprint = '';
