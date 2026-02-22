@@ -227,6 +227,82 @@
                 </div>
             </div>
 
+            <!-- H持币分布 -->
+            <!-- TODO: 持币分布数据待对接链上/后端接口。
+                 建议数据源: 链上合约 getTokenDistribution() 或社区统计 API /api/community/token-distribution。
+                 字段映射: community_holding(社区持币), staking_pool(质押池), member_holding(成员持有),
+                            treasury_holding(国库持有), external_holding(外部持有)。 -->
+            <div class="glass-card">
+                <div class="card-title"><i class="fas fa-coins"></i> H 持币分布</div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-label">社区持币</div>
+                        <div class="stat-value">32.4M H</div>
+                        <div class="stat-trend">占总量 32%</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">质押池</div>
+                        <div class="stat-value">6.42M H</div>
+                        <div class="stat-trend">占流通 64%</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">成员持有</div>
+                        <div class="stat-value">18.7M H</div>
+                        <div class="stat-trend">↑ 2.1%</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">国库持有</div>
+                        <div class="stat-value">5.28M H</div>
+                        <div class="stat-trend">≈ $1.23M</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">外部持有</div>
+                        <div class="stat-value">7.9M H</div>
+                        <div class="stat-trend">↓ 0.8%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 社区收入板块 -->
+            <!-- TODO: 收入数据待对接后端接口。
+                 建议数据源: /api/community/income 或财务统计 API。
+                 字段映射: tax_income(税费收入), rebate_income(返佣收入)。 -->
+            <div class="glass-card">
+                <div class="card-title"><i class="fas fa-arrow-circle-up" style="color:#10b981;"></i> 社区收入</div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-label">税费收入</div>
+                        <div class="stat-value">$84.2k</div>
+                        <div class="stat-trend">↑ 9.3%</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">返佣收入</div>
+                        <div class="stat-value">$36.5k</div>
+                        <div class="stat-trend">↑ 4.7%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 社区支出板块 -->
+            <!-- TODO: 支出数据待对接后端接口。
+                 建议数据源: /api/community/expenditure 或财务统计 API。
+                 字段映射: dividend_payout(社区分红), activity_reward(活动奖励)。 -->
+            <div class="glass-card">
+                <div class="card-title"><i class="fas fa-arrow-circle-down" style="color:#ef4444;"></i> 社区支出</div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-label">社区分红</div>
+                        <div class="stat-value">$52.1k</div>
+                        <div class="stat-trend">本月累计</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">活动奖励</div>
+                        <div class="stat-value">$18.3k</div>
+                        <div class="stat-trend">本月累计</div>
+                    </div>
+                </div>
+            </div>
+
             <!-- TVL趋势图表 -->
             <div class="glass-card">
                 <div class="card-title"><i class="fas fa-chart-line"></i> TVL 趋势 (7天)</div>
