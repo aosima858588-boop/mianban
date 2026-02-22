@@ -128,56 +128,58 @@
         .announcement .more:active {
             transform: translateX(3px);
         }
-        /* 数据总览 - 四列 */
+        /* 数据总览 - 横向滚动，与 Meme 行情卡片尺寸一致 */
         .stats-grid {
             display: flex;
-            gap: 8px;
-            margin-top: 4px;
-            white-space: nowrap;
+            gap: 10px;
         }
         .stat-item {
             text-align: center;
-            background: rgba(255,255,255,0.4);
-            border-radius: 16px;
-            padding: 12px 6px;  /* 增加垂直内边距 */
-            min-width: 85px;      /* 增加最小宽度 */
+            background: white;
+            border-radius: 20px;
+            padding: 12px;
+            min-width: 140px;
             flex-shrink: 0;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            transition: 0.2s;
+            white-space: normal;
+        }
+        .stat-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -8px rgba(139,92,246,0.2);
         }
         .stat-value {
-            font-size: 20px;      /* 从16px增大到20px */
+            font-size: 1rem;
             font-weight: 700;
-            color: var(--text-dark);
+            color: #0f172a;
             line-height: 1.2;
-            margin-bottom: 4px;    /* 增加间距 */
+            margin-bottom: 4px;
             font-family: var(--font-sans);
         }
         .stat-compare {
-            font-size: 12px;
+            font-size: 0.8rem;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
             gap: 2px;
-            background: white;
-            padding: 2px 6px;
-            border-radius: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
         }
-        .stat-compare.positive { color: #2E7D32; }
-        .stat-compare.negative { color: #C62828; }
+        .stat-compare.positive { color: #10b981; }
+        .stat-compare.negative { color: #ef4444; }
         .stat-label {
-            font-size: 12px;
+            font-size: 0.8rem;
             color: var(--text-light);
             font-weight: 500;
-            margin-top: 6px;       /* 增加顶部间距 */
+            margin-top: 6px;
             font-family: var(--font-sans);
         }
         .stats-scroll {
             overflow-x: auto;
             white-space: nowrap;
             -webkit-overflow-scrolling: touch;
-            padding-bottom: 4px;
-            margin: 0 -4px;
-            padding-left: 4px;
+            padding-bottom: 6px;
+            margin: 0 -16px;
+            padding-left: 16px;
         }
         .stats-scroll::-webkit-scrollbar {
             display: none;
@@ -652,6 +654,14 @@
                             <div class="stat-value">12.3k</div>
                             <div class="stat-compare negative"><i class="fas fa-arrow-down"></i> 1.5%</div>
                             <div class="stat-label">活跃人数</div>
+                        </div>
+                        <!-- TODO: 发放奖励 - 待后端/链上提供 rewards_distributed 字段后替换占位数据。
+                             建议接口: 社区统计 API /api/community/stats 或链上读取合约 getRewardsDistributed()。
+                             替换时同步更新数值格式与其他统计卡片一致（千分位/单位）。 -->
+                        <div class="stat-item" data-placeholder="rewards_distributed">
+                            <div class="stat-value">56.8k</div>
+                            <div class="stat-compare positive"><i class="fas fa-arrow-up"></i> 8.1%</div>
+                            <div class="stat-label">发放奖励</div>
                         </div>
                     </div>
                 </div>
