@@ -26,6 +26,7 @@
             display: flex;
             flex-direction: column;
             gap: 16px;
+            background: linear-gradient(180deg, rgba(139,92,246,0.12) 0%, rgba(255,255,255,0) 200px);
         }
         .user-panel-header {
             display: flex;
@@ -80,7 +81,7 @@
         }
         .expand-content {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 16px;
             text-align: center;
             padding-top: 22px;
@@ -358,73 +359,67 @@
             100% { transform: translateY(0px); }
         }
 
-        /* 资产行 - 醒目版（带图标） */
-        .asset-row {
-            display: flex;
-            align-items: baseline;
-            gap: 12px;
-            margin: 14px 0 10px;
-            padding: 10px 16px;
-            background: linear-gradient(145deg, #ffffff, #f8fafc);
-            border-radius: 40px;
-            border: 1px solid rgba(26,115,232,0.2);
-            box-shadow: 0 8px 20px rgba(26,115,232,0.12);
-            font-size: 1rem;
-            position: relative;
-            overflow: hidden;
+        /* === 用户面板 液态玻璃（Liquid Glass）风格 === */
+        #userPanel {
+            background: rgba(255, 255, 255, 0.55);
+            -webkit-backdrop-filter: blur(20px) saturate(160%);
+            backdrop-filter: blur(20px) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.72);
+            border-radius: 24px;
+            box-shadow:
+                0 8px 32px rgba(139, 92, 246, 0.14),
+                0 2px 8px rgba(0, 0, 0, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9),
+                inset 0 -1px 0 rgba(139, 92, 246, 0.06);
+            transition: box-shadow 0.25s ease, transform 0.25s ease;
         }
-        .asset-row::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 6px;
-            height: 100%;
-            background: linear-gradient(to bottom, #1A73E8, #0D47A1);
-            border-radius: 40px 0 0 40px;
+        #userPanel:hover {
+            box-shadow:
+                0 12px 40px rgba(139, 92, 246, 0.2),
+                0 4px 12px rgba(0, 0, 0, 0.07),
+                inset 0 1px 0 rgba(255, 255, 255, 0.95);
+            transform: translateY(-2px);
         }
-        .asset-label {
+        #userPanel .user-name {
             color: #1e293b;
+            font-size: 16px;
             font-weight: 600;
-            letter-spacing: 0.3px;
         }
-        .asset-value {
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: #0A1929;
-            margin-right: 4px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        #userPanel .expand-indicator {
+            color: #7c3aed;
         }
-        .asset-change {
-            font-weight: 700;
-            font-size: 1rem;
-            padding: 4px 14px;
-            border-radius: 40px;
-            background: rgba(34,197,94,0.15);
-            color: #166534;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-left: auto;
-            border: 1px solid rgba(34,197,94,0.3);
-            backdrop-filter: blur(4px);
+        #userPanel .expand-content {
+            border-top: 1px solid rgba(148, 163, 184, 0.25);
         }
-        .asset-change i {
-            font-size: 1rem;
+        /* 降级：不支持 backdrop-filter 时改用较不透明背景 */
+        @supports not (backdrop-filter: blur(1px)) {
+            #userPanel {
+                background: rgba(255, 255, 255, 0.93);
+                border: 1px solid rgba(139, 92, 246, 0.2);
+                box-shadow:
+                    0 4px 20px rgba(139, 92, 246, 0.1),
+                    0 1px 4px rgba(0, 0, 0, 0.06);
+            }
         }
-        .asset-change.positive {
-            background: rgba(34,197,94,0.15);
-            color: #166534;
+        /* 暗色模式适配 */
+        @media (prefers-color-scheme: dark) {
+            #userPanel {
+                background: rgba(30, 27, 60, 0.55);
+                border: 1px solid rgba(139, 92, 246, 0.3);
+                box-shadow:
+                    0 8px 32px rgba(0, 0, 0, 0.35),
+                    0 2px 8px rgba(0, 0, 0, 0.2),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            }
+            #userPanel .user-name { color: #e2e8f0; }
+            #userPanel .expand-indicator { color: #a78bfa; }
+            #userPanel .expand-content { border-top: 1px solid rgba(255, 255, 255, 0.1); }
+            #userPanel .expand-item .value { color: #f1f5f9; }
+            #userPanel .expand-item .label { color: #94a3b8; }
+            @supports not (backdrop-filter: blur(1px)) {
+                #userPanel { background: rgba(30, 27, 60, 0.93); }
+            }
         }
-        .asset-change.negative {
-            background: rgba(239,68,68,0.15);
-            color: #b91c1c;
-            border-color: rgba(239,68,68,0.3);
-        }
-        .asset-change.negative i {
-            color: #b91c1c;
-        }
-
         /* ===== Meme行情模块样式 ===== */
         .meme-section {
             margin: 8px 0;
@@ -596,24 +591,9 @@
                     <i class="fas fa-chevron-down expand-indicator"></i>
                 </div>
 
-                <!-- 资产行 -->
-                <div class="asset-row">
-                    <span class="asset-label">资产</span>
-                    <span class="asset-value" id="totalAsset">$1,234.56</span>
-                    <span class="asset-change positive" id="assetChange">
-                        <i class="fas fa-arrow-up"></i> +$101 (0.14%)
-                    </span>
-                </div>
-
-                <div class="button-row">
-                    <button class="btn-block" onclick="alert('充币')"><i class="fas fa-arrow-up"></i> 充币</button>
-                    <button class="btn-block outline" onclick="alert('提币')"><i class="fas fa-arrow-down"></i> 提币</button>
-                </div>
-
                 <div class="expand-content hidden" id="expandArea">
                     <div class="expand-item"><div class="value" id="userPoints">0</div><div class="label">积分</div></div>
                     <div class="expand-item"><div class="value">$12.3k</div><div class="label">身价</div></div>
-                    <div class="expand-item"><div class="value">5.82</div><div class="label">资产</div></div>
                     <div class="expand-item"><div class="value">89.2k</div><div class="label">贡献度</div></div>
                 </div>
             </div>
