@@ -661,7 +661,7 @@
             <div class="card meme-section">
                 <div class="meme-header">
                     <h2><i class="fas fa-dog"></i> Meme 行情</h2>
-                    <a href="meme-market.html" class="meme-refresh"><i class="fas fa-arrow-right"></i> 更多</a>
+                    <a href="meme-toplist.html" class="meme-refresh"><i class="fas fa-arrow-right"></i> 更多</a>
                 </div>
                 <div id="memeContainer" class="meme-scroll">
                     <div class="meme-loading">加载中...</div>
@@ -721,6 +721,11 @@
                         <div class="tool-icon"><i class="fas fa-download"></i></div>
                         <span class="tool-label">下载中心</span>
                     </div>
+                    <!-- Meme 热门榜 -->
+                    <div class="tool-item" onclick="location.href='meme-toplist.html'">
+                        <div class="tool-icon"><i class="fas fa-fire"></i></div>
+                        <span class="tool-label">Meme 榜</span>
+                    </div>
                 </div>
             </div>
 
@@ -752,6 +757,7 @@
         </div>
     </div>
 
+    <script src="./js/config.js"></script>
     <script type="module">
         import { supabase } from './js/supabase.js'
         import { getCurrentUser } from './js/main.js'
